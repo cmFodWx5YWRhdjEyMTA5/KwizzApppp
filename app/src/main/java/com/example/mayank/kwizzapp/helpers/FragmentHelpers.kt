@@ -54,3 +54,6 @@ fun Fragment.switchToFragment(activity: Activity,newFrag: Fragment) {
                 .commit()
     }
 }
+fun Fragment.switchToFragment(newFrag: Fragment) {
+    activity?.switchToFragment(newFrag)
+}

@@ -1,60 +1,110 @@
 package com.example.mayank.kwizzapp.userInfo
 
 import android.content.Context
+import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import com.example.mayank.kwizzapp.KwizzApp
 
 import com.example.mayank.kwizzapp.R
+import com.example.mayank.kwizzapp.dashboard.DashboardFragment
+import com.example.mayank.kwizzapp.databinding.UserInfoBinding
+import com.example.mayank.kwizzapp.dependency.components.DaggerInjectFragmentComponent
+import com.example.mayank.kwizzapp.helpers.processRequest
+import com.example.mayank.kwizzapp.network.IUser
+import com.example.mayank.kwizzapp.viewmodels.Users
+import io.reactivex.disposables.CompositeDisposable
+import net.rmitsolutions.mfexpert.lms.helpers.*
+import net.rmitsolutions.mfexpert.lms.helpers.SharedPrefKeys.DISPLAY_NAME
+import org.jetbrains.anko.find
+import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [UserInfoFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [UserInfoFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
-class UserInfoFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class UserInfoFragment : Fragment(), View.OnClickListener {
+
+    @Inject
+    lateinit var userService : IUser
     private var listener: OnFragmentInteractionListener? = null
+    private lateinit var dataBinding : UserInfoBinding
+    private lateinit var userInfoVm : Users.UserInfo
+    private lateinit var submitData : Button
+    private lateinit var compositeDisposable: CompositeDisposable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
+        }
+        compositeDisposable = CompositeDisposable()
+        val depComponent = DaggerInjectFragmentComponent.builder()
+                .applicationComponent(KwizzApp.applicationComponent)
+                .build()
+        depComponent.injectUserInfoFragment(this)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_info, container,false)
+        val view = dataBinding.root
+        userInfoVm = Users.UserInfo()
+        dataBinding.userInfoVm = userInfoVm
+        val firstName = activity?.getPref(SharedPrefKeys.FIRST_NAME, "")
+        val lastName = activity?.getPref(SharedPrefKeys.LAST_NAME, "")
+        when {
+            firstName!="" || lastName != "" -> {
+                dataBinding.userInfoVm!!.firstName.set(firstName)
+                dataBinding.userInfoVm!!.lastName.set(lastName)
+            }
+        }
+        submitData = view.find(R.id.buttonSubmitInfo)
+        submitData.setOnClickListener(this)
+        return view
+    }
+
+    override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.buttonSubmitInfo ->{
+                dataBinding.userInfoVm
+                dataBinding.userInfoVm?.displayName = activity?.getPref(DISPLAY_NAME, "")
+                compositeDisposable.add(userService.addDetails(dataBinding.userInfoVm?.firstName?.get()!!,
+                        dataBinding.userInfoVm?.lastName?.get()!!,dataBinding.userInfoVm?.displayName!!,
+                        dataBinding.userInfoVm?.mobileNumber!!, dataBinding.userInfoVm?.email!!).processRequest(
+                        {response ->
+                            if (response.isSuccess){
+                                toast(response.message)
+                                switchToDashboard(dataBinding.userInfoVm!!)
+                            }else{
+                                toast(response.message)
+                            }
+                },{ err ->
+                    logD("Error - ${err.toString()}")
+                }))
+            }
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_info, container, false)
+    private fun switchToDashboard(userInfoVm: Users.UserInfo) {
+        activity?.putPref(SharedPrefKeys.FIRST_NAME, userInfoVm.firstName.get())
+        activity?.putPref(SharedPrefKeys.LAST_NAME, userInfoVm.lastName.get())
+        activity?.putPref(SharedPrefKeys.MOBILE_NUMBER, userInfoVm.mobileNumber)
+        activity?.putPref(SharedPrefKeys.EMAIL, userInfoVm.email)
+        val dashboardFrag = DashboardFragment()
+        switchToFragment(dashboardFrag)
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+        when (context) {
+            is OnFragmentInteractionListener -> listener = context
+            else -> throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
         }
     }
 
@@ -63,38 +113,16 @@ class UserInfoFragment : Fragment() {
         listener = null
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment UserInfoFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
                 UserInfoFragment().apply {
                     arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
                     }
                 }
     }
