@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/invititation_dialog_background">
+
+
+    <TextView
+        android:textColor="@color/primary_text"
+        android:id="@+id/textViewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:padding="8dp"
+        android:text="Label Text"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:textColor="@color/secondary_text"
+        android:id="@+id/textViewMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:text="Message Text"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:padding="@dimen/dimen_16dp">
+
+        <android.support.v7.widget.AppCompatButton
+            android:textColor="@color/white"
+            android:background="@color/primaryColor"
+            android:id="@+id/buttonAccept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accept"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:textColor="@color/white"
+            android:background="@color/red"
+            android:id="@+id/buttonReject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_8dp"
+            android:text="Reject"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

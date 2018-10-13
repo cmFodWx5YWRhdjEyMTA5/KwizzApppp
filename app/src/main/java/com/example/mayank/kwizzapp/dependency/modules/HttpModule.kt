@@ -33,6 +33,7 @@ class HttpModule {
                 .readTimeout(Constants.READ_TIMEOUT, java.util.concurrent.TimeUnit.SECONDS)
                 .connectTimeout(Constants.CONNECTION_TIMEOUT, java.util.concurrent.TimeUnit.SECONDS)
                 .addInterceptor(loggingInterceptor)
+                .retryOnConnectionFailure(true)
                 .build()
     }
 

@@ -2,13 +2,17 @@ package net.rmitsolutions.mfexpert.lms.helpers
 
 import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Environment
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import com.example.mayank.kwizzapp.R
+import com.example.mayank.kwizzapp.dialog.ProgressDialog
+import com.example.mayank.kwizzapp.dialog.ShowDialog
 import com.madhuteja.checknet.CheckConnection
 import timber.log.Timber
 
@@ -26,21 +30,22 @@ fun Activity.finishNoAnim() {
 }
 
 
-//val progressDialog = ProgressDialog()
+val progressDialog = ProgressDialog()
 
-/*fun Activity.showProgress() {
+fun Activity.showProgress() {
     progressDialog.showProgressDialog(this)
 }
 
 fun Activity.hideProgress() {
     progressDialog.hideProgressDialog()
-}*/
+}
+
 
 
 
 
 //check network
-/*fun Activity.isNetConnected(showStatus: Boolean = true): Boolean {
+fun Activity.isNetConnected(showStatus: Boolean = true): Boolean {
     if (CheckConnection.with(this).isConnected) {
 //        hideStatus()
         return true
@@ -52,7 +57,7 @@ fun Activity.hideProgress() {
     }
 }
 
-fun Context.isNetConnected() = CheckConnection.with(this).isConnected*/
+fun Context.isNetConnected() = CheckConnection.with(this).isConnected
 
 //snack bar
 fun Activity.snackBar(view: View, message: String?, duration: Int = Snackbar.LENGTH_LONG) {
@@ -84,10 +89,24 @@ val Activity.isExternalStorageWritable: Boolean
 
 private fun isExternalStorageAvail() = Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()
 
-//val showDialog = ShowDialog()
+val showDialog = ShowDialog()
 //fun Activity.showDialog(activity: Activity, title: String, message: String){
 //    showDialog.dialog(activity, title, message)
 //}
+
+fun Activity.showDialog(context: Context,title : String,message : String){
+    AlertDialog.Builder(context).setCancelable(false).setTitle(title).setMessage(message).setPositiveButton("Ok") { dialog, which ->
+        dialog.dismiss()
+    }.show()
+}
+
+
+fun Context.showDialog(context: Context,title : String,message : String) {
+    AlertDialog.Builder(context).setTitle(title).setMessage(message).setPositiveButton("Ok") { dialog, which ->
+        dialog.dismiss()
+    }.show()
+}
+
 
 
 fun Activity.switchToFragment(newFrag: Fragment) {

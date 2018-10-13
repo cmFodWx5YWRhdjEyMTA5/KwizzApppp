@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:layout_margin="16dp"
+            android:layout_marginTop="200dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/progress_circle_dark"
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="100"
+            android:progressDrawable="@drawable/progress_circle"
+            android:rotation="-90"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.004" />
+
+        <TextView
+            android:id="@+id/textViewSeconds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="10"
+            android:textColor="@color/primaryColor"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/progressBar"
+            app:layout_constraintEnd_toEndOf="@+id/progressBar"
+            app:layout_constraintStart_toStartOf="@+id/progressBar"
+            app:layout_constraintTop_toTopOf="@+id/progressBar" />
+
+        <TextView
+            android:id="@+id/textViewLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Quiz starts in.."
+            android:textColor="@color/secondary_text"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+    </android.support.constraint.ConstraintLayout>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_marginStart="@dimen/dimen_8dp"
+        android:layout_marginEnd="@dimen/dimen_8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_16dp">
+
+                <ImageButton
+                    android:id="@+id/imageButtonPreviousAmount"
+                    android:layout_width="125dp"
+                    android:layout_height="?actionBarSize"
+                    android:layout_weight="1"
+                    android:src="@mipmap/ic_nav_left" />
+
+                <TextView
+                    android:id="@+id/textViewAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="TextView"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/dimen_18sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/imageButtonNextAmount"
+                    android:layout_width="125dp"
+                    android:layout_height="?actionBarSize"
+                    android:layout_weight="1"
+                    android:src="@mipmap/ic_nav_right" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_16dp">
+
+                <ImageButton
+                    android:id="@+id/imageButtonPreviousSubject"
+                    android:layout_width="125dp"
+                    android:layout_height="?actionBarSize"
+                    android:layout_weight="1"
+                    android:src="@mipmap/ic_nav_left" />
+
+                <TextView
+                    android:id="@+id/textViewSubject"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="TextView"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/dimen_18sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/imageButtonNextSubject"
+                    android:layout_width="125dp"
+                    android:layout_height="?actionBarSize"
+                    android:layout_weight="1"
+                    android:src="@mipmap/ic_nav_right" />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/buttonLeaveRoom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_30dp"
+                android:layout_marginBottom="@dimen/dimen_16dp"
+                android:background="@color/red"
+                android:padding="@dimen/dimen_16dp"
+                android:text="Leave Room"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

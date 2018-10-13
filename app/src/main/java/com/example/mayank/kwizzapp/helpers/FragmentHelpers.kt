@@ -17,11 +17,11 @@ import timber.log.Timber
 
 fun Fragment.toast(message: String?) = activity!!.toast("$message")
 
-//fun Fragment.showProgress() = activity?.showProgress()
+fun Fragment.showProgress() = activity?.showProgress()
 //
-//fun Fragment.hideProgress() {
-//    activity?.hideProgress()
-//}
+fun Fragment.hideProgress() {
+    activity?.hideProgress()
+}
 
 //fun Fragment.showStatus(message: String? = null) = activity!!.showStatus(message)
 
@@ -40,9 +40,9 @@ fun Fragment.logD(t: Throwable, message: String?) = Timber.d(t, message)
 
 fun Fragment.logD(message: String?) = Log.d("KwizzApp",message)
 
-/*fun Fragment.showDialog(activity: Activity, title: String, message: String){
+fun Fragment.showDialog(activity: Activity, title: String, message: String){
     activity.showDialog(activity, title, message)
-}*/
+}
 
 fun Fragment.switchToFragment(activity: Activity,newFrag: Fragment) {
     val manager = (activity as AppCompatActivity).supportFragmentManager

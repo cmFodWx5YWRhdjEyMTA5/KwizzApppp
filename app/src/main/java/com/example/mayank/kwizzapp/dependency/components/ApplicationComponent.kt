@@ -6,6 +6,8 @@ import com.example.mayank.kwizzapp.dependency.modules.DatabaseModule
 import com.example.mayank.kwizzapp.dependency.modules.NetworkApiModule
 import com.example.mayank.kwizzapp.dependency.qualifiers.ApplicationContextQualifier
 import com.example.mayank.kwizzapp.dependency.scopes.ApplicationScope
+import com.example.mayank.kwizzapp.network.IQuestion
+import com.example.mayank.kwizzapp.network.ITransaction
 import com.example.mayank.kwizzapp.network.IUser
 import dagger.Component
 import okhttp3.OkHttpClient
@@ -21,4 +23,8 @@ interface ApplicationComponent {
 //    fun getDatabase(): MfExpertLmsDatabase
 
     fun getUserService(): IUser
+
+    fun getTransactionService() : ITransaction
+
+    fun getQuestionService() : IQuestion
 }

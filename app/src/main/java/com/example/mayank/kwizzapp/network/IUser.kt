@@ -3,7 +3,6 @@ package com.example.mayank.kwizzapp.network
 import com.example.mayank.kwizzapp.viewmodels.CommonResult
 import com.example.mayank.kwizzapp.viewmodels.Users
 import io.reactivex.Observable
-import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded

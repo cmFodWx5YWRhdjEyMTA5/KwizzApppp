@@ -12,6 +12,8 @@ import android.view.ViewGroup
 
 import com.example.mayank.kwizzapp.R
 import com.example.mayank.kwizzapp.dashboard.DashboardFragment
+import com.example.mayank.kwizzapp.libgame.LibGameConstants.*
+import com.example.mayank.kwizzapp.libgame.LibPlayGame
 import com.example.mayank.kwizzapp.userInfo.UserInfoFragment
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -33,8 +35,6 @@ class LoginFragment : Fragment(), View.OnClickListener {
     private var mRealTimeMultiplayerClient: RealTimeMultiplayerClient? = null
     private var mInvitationsClient: InvitationsClient? = null
     private var mPlayerId: String? = null
-    //private var playGameLibrary: PlayGameLibrary? = null
-    //private var invitationClient: InvitationsClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +44,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_login, container, false)
+        val view = inflater.inflate(R.layout.fragment_loginn, container, false)
         loginButton = view.find(R.id.buttonSignIn)
         loginButton.setOnClickListener(this)
         return view
@@ -96,9 +96,9 @@ class LoginFragment : Fragment(), View.OnClickListener {
             activity?.putPref(SharedPrefKeys.LAST_NAME, lastName)
             val email = activity?.getPref(SharedPrefKeys.EMAIL, "")
             val mobileNumber = activity?.getPref(SharedPrefKeys.MOBILE_NUMBER, "")
-//            playGameLibrary = PlayGameLibrary(this)
-//            invitationClient = Games.getInvitationsClient(this, playGameLibrary?.getSignInAccount()!!)
-//            PlayGameLibrary.GameConstants.mInvitationClient?.registerInvitationCallback(playGameLibrary?.mInvitationCallbackHandler!!)
+            val libPlayGame = LibPlayGame(activity!!)
+            GameConstants.mInvitationClient = Games.getInvitationsClient(activity!!, libPlayGame.getSignInAccount()!!)
+            GameConstants.mInvitationClient?.registerInvitationCallback(libPlayGame.mInvitationCallbackHandler)
             if (email == "" && mobileNumber == "") {
                 val userInfoFragment = UserInfoFragment()
                 switchToFragment(userInfoFragment)
@@ -166,12 +166,4 @@ class LoginFragment : Fragment(), View.OnClickListener {
         fun onFragmentInteraction(uri: Uri)
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-                LoginFragment().apply {
-                    arguments = Bundle().apply {
-                    }
-                }
-    }
 }
