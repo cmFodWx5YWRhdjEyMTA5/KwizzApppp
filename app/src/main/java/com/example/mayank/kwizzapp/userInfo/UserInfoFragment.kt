@@ -68,10 +68,11 @@ class UserInfoFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.buttonSubmitInfo ->{
+                val playerId = activity?.getPref(SharedPrefKeys.PLAYER_ID, "")
                 dataBinding.userInfoVm
                 dataBinding.userInfoVm?.displayName = activity?.getPref(DISPLAY_NAME, "")
                 compositeDisposable.add(userService.addDetails(dataBinding.userInfoVm?.firstName?.get()!!,
-                        dataBinding.userInfoVm?.lastName?.get()!!,dataBinding.userInfoVm?.displayName!!,
+                        dataBinding.userInfoVm?.lastName?.get()!!,dataBinding.userInfoVm?.displayName!!, playerId!!,
                         dataBinding.userInfoVm?.mobileNumber!!, dataBinding.userInfoVm?.email!!).processRequest(
                         {response ->
                             if (response.isSuccess){

@@ -14,10 +14,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import com.example.mayank.kwizzapp.KwizzApp
 
 import com.example.mayank.kwizzapp.R
+import com.example.mayank.kwizzapp.dependency.components.DaggerInjectFragmentComponent
 import com.example.mayank.kwizzapp.dialog.ProgressDialog
 import com.example.mayank.kwizzapp.gameresult.adapter.ResultViewAdapter
+import com.example.mayank.kwizzapp.helpers.processRequest
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.displayName
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.imageUri
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.listResult
@@ -29,19 +32,27 @@ import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.mRoomI
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.modelList
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.resultList
 import com.example.mayank.kwizzapp.libgame.LibPlayGame
+import com.example.mayank.kwizzapp.network.ITransaction
 import com.example.mayank.kwizzapp.quiz.AMOUNT
 import com.example.mayank.kwizzapp.quiz.DROP_QUESTIONS
 import com.example.mayank.kwizzapp.quiz.RIGHT_ANSWERS
 import com.example.mayank.kwizzapp.quiz.WRONG_ANSWERS
 import com.example.mayank.kwizzapp.viewmodels.ResultViewModel
 import com.google.android.gms.games.multiplayer.Participant
+import io.reactivex.disposables.CompositeDisposable
 import net.rmitsolutions.mfexpert.lms.helpers.logD
 import net.rmitsolutions.mfexpert.lms.helpers.showDialog
 import org.jetbrains.anko.find
+import java.util.*
+import javax.inject.Inject
 
 class GameResultFragment : Fragment(), View.OnClickListener {
 
     private var listener: OnFragmentInteractionListener? = null
+
+    @Inject
+    lateinit var transactionService: ITransaction
+    private lateinit var compositeDisposable: CompositeDisposable
 
     private var rightAnswers: Int? = 0
     private var wrongAnswers: Int? = 0
@@ -66,14 +77,16 @@ class GameResultFragment : Fragment(), View.OnClickListener {
             amount = it.getDouble(AMOUNT)
         }
 
+        val depComponent = DaggerInjectFragmentComponent.builder()
+                .applicationComponent(KwizzApp.applicationComponent)
+                .build()
+        depComponent.injectGameResultFragment(this)
+        compositeDisposable = CompositeDisposable()
+
         libPlayGame = LibPlayGame(activity!!)
         resultList = mutableListOf<ResultViewModel>()
         showResultProgress = ProgressDialog()
         list = mutableListOf<ResultViewModel>()
-
-        logD("Right Answers - $rightAnswers")
-        logD("Wrong Answers - $wrongAnswers")
-        logD("Drop Questions - $dropQuestions")
 
         context?.registerReceiver(resultBroadcastReceiver, syncIntentFilter);
     }
@@ -102,14 +115,12 @@ class GameResultFragment : Fragment(), View.OnClickListener {
 
     private fun setItem() {
         modelList.clear()
-        logD("Own Image uri - ${imageUri}")
         modelList.add(ResultViewModel(displayName!!, rightAnswers!!, imageUri))
 
         for (p in mParticipants!!) {
             if (mRoomId != null) {
                 val pid = p.participantId
                 if (pid == mMyId) {
-                    logD("Adding sender in fragment")
                     mFinishedParticipants.add(pid)
                 }
             }
@@ -119,13 +130,13 @@ class GameResultFragment : Fragment(), View.OnClickListener {
 
     private val resultBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            logD("Receiving broadcast...")
-            logD("${intent.action}")
             if (GameResultFragment.ACTION_RESULT_RECEIVED == intent.action) {
                 updateScore()
             }
         }
     }
+
+    private var show: Boolean = false
 
     private fun updateScore() {
         if (mRoomId != null) {
@@ -143,11 +154,10 @@ class GameResultFragment : Fragment(), View.OnClickListener {
                 }
 
                 val score = if (mParticipantScore.containsKey(pid)) mParticipantScore[pid] else 0
-                logD("Participants size = ${mParticipants?.size} Finished Participants size - ${mFinishedParticipants.size}")
 
                 if (mParticipants?.size == mFinishedParticipants.size) {
                     if (p.displayName != displayName) {
-                        if (!listResult.containsKey(p.displayName)){
+                        if (!listResult.containsKey(p.displayName)) {
                             listResult[p.displayName] = ResultViewModel(p.displayName, score!!, p.iconImageUri)
                             val resultViewModel = listResult[p.displayName]
                             modelList.add(resultViewModel!!)
@@ -156,12 +166,7 @@ class GameResultFragment : Fragment(), View.OnClickListener {
                             it.rightAnswers
                         }.toMutableList()
 
-                        if (resultList!![0].playerName == displayName) {
-                            showDialog(activity!!, "Result", "Congrats! You Win!")
-                        } else {
-                            showDialog(activity!!, "Result", "Sorry! You Loose")
-                            logD("${resultList!![0].playerName} wins and you loose")
-                        }
+                        showResultDialog(resultList)
 
                     } else {
                         logD("Display name are same")
@@ -173,6 +178,52 @@ class GameResultFragment : Fragment(), View.OnClickListener {
             }
             setRecyclerViewAdapter(resultList!!)
         }
+    }
+
+    private fun showResultDialog(resultList: MutableList<ResultViewModel>?) {
+        if (resultList!![0].playerName == displayName) {
+            if (resultList[0].rightAnswers == resultList[1].rightAnswers) {
+                if (!show) {
+                    showDialog(activity!!, "Result", "Sorry! Its a Tie!\nYour bid points will credited to your wallet.")
+                    updateBalance(displayName!!, amount!!, Calendar.getInstance().time.toString(), "Sample Message")
+                    show = true
+                }
+            } else {
+                if (!show) {
+                    showDialog(activity!!, "Result", "Congrats! You Win!\nYour winning points will credited to your wallet.")
+                    val totalAmount = (amount?.times(mFinishedParticipants.size))?.times(80)?.div(100)
+                    updateBalance(displayName!!, totalAmount!!, Calendar.getInstance().time.toString(), "Sample Message")
+                    show = true
+                }
+            }
+        } else {
+            if (!show) {
+                showDialog(activity!!, "Result", "Sorry! You Loose")
+                show = true
+            }
+        }
+    }
+
+
+    private fun updateBalance(displayName: String, amount: Double, timeStamp: String, message: String) {
+        compositeDisposable.add(transactionService.updateResultBalance(displayName, amount, timeStamp)
+                .processRequest(
+                        { response ->
+                            if (response.isSuccess) {
+                                logD("Message = ${response.message}")
+                                logD("Response balance = ${response.balance}")
+                            } else {
+                                logD("Message - ${response.message}")
+                            }
+                        },
+                        { error ->
+                            logD("$error")
+                        }
+                ))
+    }
+
+    private fun updateGameStatus() {
+
     }
 
     private fun setRecyclerViewAdapter(list: List<ResultViewModel>) {

@@ -10,9 +10,19 @@ class Transactions {
         val balance : Double = 0.0
     }
 
-    class SubtractBalance : CommonResult(){
-
+    class GetBalance : CommonResult(){
+        val mobileNumber : String? = null
+        val balance : Double? = null
     }
+
+    class AddPoints  {
+        var amount : String? =null
+        var firstName : String? =null
+        var mobileNumber : String? = null
+        var email : String? = null
+        var product :String? = null
+    }
+
 
     @SerializedName("firstName")
     var firstName: String? = null

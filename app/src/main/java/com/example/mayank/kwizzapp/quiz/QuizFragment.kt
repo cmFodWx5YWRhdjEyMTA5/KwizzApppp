@@ -64,6 +64,7 @@ class QuizFragment : Fragment(), View.OnClickListener {
     private var timeCountInMilliSeconds = (1 * 10000).toLong()
     private var textViewSeconds: TextView? = null
     private lateinit var compositeDisposable: CompositeDisposable
+    private var show : Boolean = false
 
     private enum class TimerStatus {
         STARTED,
@@ -177,6 +178,7 @@ class QuizFragment : Fragment(), View.OnClickListener {
 
 
     private fun getQuestionFromServer() {
+        show = false
         if (q < 10) {
             compositeDisposable.add(questionService.getQuestion(randomNumbers[q].toString(), subjectCode!!)
                     .processRequest(
@@ -187,10 +189,10 @@ class QuizFragment : Fragment(), View.OnClickListener {
                                     reset()
                                 }else{
                                     stopCountdown()
-                                    showDialog(activity!!, "Error", response.message)
+                                    showDialog(response.message)
+
                                 }
-                            }, { err ->
-                        showDialog(activity!!, "Error", err.toString())
+                            }, { err -> showDialog(err.toString())
                     }
                     ))
         }else {
@@ -199,6 +201,13 @@ class QuizFragment : Fragment(), View.OnClickListener {
             changeToResultScreen()
         }
 
+    }
+
+    private fun showDialog(message : String){
+        if (!show){
+            showDialog(activity!!, "Error", message)
+            show = true
+        }
     }
 
     private fun stopCountdown(){

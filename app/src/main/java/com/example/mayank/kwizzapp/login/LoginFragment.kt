@@ -83,6 +83,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
         val playersClient = Games.getPlayersClient(activity!!, signInAccount)
         playersClient.currentPlayer.addOnSuccessListener { player ->
             mPlayerId = player.playerId
+            logD("Player Id - $mPlayerId")
             activity?.putPref(SharedPrefKeys.PLAYER_ID, mPlayerId!!)
             activity?.putPref(SharedPrefKeys.DISPLAY_NAME, player.displayName)
             var nameArray: List<String>? = null
@@ -91,9 +92,10 @@ class LoginFragment : Fragment(), View.OnClickListener {
             }
             val firstName = nameArray?.get(0)
             val lastName = nameArray?.get(1)
-
-            activity?.putPref(SharedPrefKeys.FIRST_NAME, firstName)
-            activity?.putPref(SharedPrefKeys.LAST_NAME, lastName)
+            if (firstName != null && lastName!=null){
+                activity?.putPref(SharedPrefKeys.FIRST_NAME, firstName)
+                activity?.putPref(SharedPrefKeys.LAST_NAME, lastName)
+            }
             val email = activity?.getPref(SharedPrefKeys.EMAIL, "")
             val mobileNumber = activity?.getPref(SharedPrefKeys.MOBILE_NUMBER, "")
             val libPlayGame = LibPlayGame(activity!!)

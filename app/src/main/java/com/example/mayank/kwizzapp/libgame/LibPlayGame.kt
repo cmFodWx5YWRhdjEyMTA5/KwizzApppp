@@ -21,6 +21,7 @@ import com.example.mayank.kwizzapp.gamedetail.GameDetailFragment
 import com.example.mayank.kwizzapp.gameresult.GameResultFragment
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.*
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.RC_INVITATION_INBOX
+import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.mFinishedParticipants
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.mInvitationClient
 import com.example.mayank.kwizzapp.viewmodels.FinalResultViewModel
 import com.example.mayank.kwizzapp.viewmodels.ResultViewModel
@@ -251,13 +252,15 @@ class LibPlayGame(private val activity: Activity) {
             Log.d(TAG, "On disconnected from room")
             GameConstants.mRoomId = null
             GameConstants.mRoomConfig = null
-            AlertDialog.Builder(activity).setTitle("Disconnected").setMessage("User left the game")
-                    .setPositiveButton("Ok") { dialog, which ->
-                        clearData()
-                        val intent = Intent(activity, MainActivity::class.java)
-                        activity.startActivity(intent)
-                        dialog.dismiss()
-                    }.show()
+            if (mFinishedParticipants.size != room?.participants?.size) {
+                AlertDialog.Builder(activity).setTitle("Disconnected").setMessage("All players left the game")
+                        .setPositiveButton("Ok") { dialog, which ->
+                            clearData()
+                            val intent = Intent(activity, MainActivity::class.java)
+                            activity.startActivity(intent)
+                            dialog.dismiss()
+                        }.show()
+            }
         }
 
 
@@ -561,17 +564,16 @@ class LibPlayGame(private val activity: Activity) {
                         GameConstants.mRoomId = null
                         GameConstants.mRoomConfig = null
                     }
-            //switchToScreen(R.id.screen_wait)
             Log.d(TAG, "Room left successfully")
             clearData()
-//            val gameMenuFragment = GameMenuFragment()
-//            switchToFragment(gameMenuFragment)
             val intent = Intent(activity, MainActivity::class.java)
             activity.startActivity(intent)
 
         } else {
-//            switchToMainScreen()
             Log.d(TAG, "Room is null")
+            val intent = Intent(activity, MainActivity::class.java)
+            activity.startActivity(intent)
+            clearData()
         }
     }
 

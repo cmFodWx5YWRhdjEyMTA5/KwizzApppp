@@ -3,8 +3,13 @@ package com.example.mayank.kwizzapp.dependency.components
 import com.example.mayank.kwizzapp.dependency.scopes.ActivityScope
 import com.example.mayank.kwizzapp.gamedetail.GameDetailFragment
 import com.example.mayank.kwizzapp.gamemenu.GameMenuFragment
+import com.example.mayank.kwizzapp.gameresult.GameResultFragment
 import com.example.mayank.kwizzapp.quiz.QuizFragment
 import com.example.mayank.kwizzapp.userInfo.UserInfoFragment
+import com.example.mayank.kwizzapp.wallet.AddPointsFragment
+import com.example.mayank.kwizzapp.wallet.TransferPointsFragment
+import com.example.mayank.kwizzapp.wallet.WalletMenuFragment
+import com.example.mayank.kwizzapp.wallet.WithdrawalPointsFragment
 import dagger.Component
 
 @ActivityScope
@@ -14,4 +19,9 @@ interface InjectFragmentComponent {
     fun injectGameMenuFragment(gameMenuFragment: GameMenuFragment)
     fun injectGameDetailFragment(gameDetailFragment: GameDetailFragment)
     fun injectQuizFragment(quizFragment: QuizFragment)
+    fun injectGameResultFragment(gameResultFragment: GameResultFragment)
+    fun injectWalletMenuFragment(walletMenuFragment: WalletMenuFragment)
+    fun injectAddPointsFragment(addPointsFragment: AddPointsFragment)
+    fun injectWithdrawalPointsFragment(withdrawalPointsFragment: WithdrawalPointsFragment)
+    fun injectTransferPointsFragment(transferPointsFragment: TransferPointsFragment)
 }

@@ -17,6 +17,7 @@ interface IUser {
             @Field("firstName") firstName: String,
             @Field("lastName") lastName: String,
             @Field("displayName") displayName: String,
+            @Field("playerId") playerId : String,
             @Field("mobileNumber") mobileNumber: String,
             @Field("email") email: String): Observable<CommonResult>
 
