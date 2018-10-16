@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +16,11 @@ import com.example.mayank.kwizzapp.dependency.components.DaggerInjectFragmentCom
 import com.example.mayank.kwizzapp.helpers.processRequest
 import com.example.mayank.kwizzapp.libgame.LibPlayGame
 import com.example.mayank.kwizzapp.network.ITransaction
+import com.example.mayank.kwizzapp.wallet.WalletActivity
 import io.reactivex.disposables.CompositeDisposable
 import net.rmitsolutions.mfexpert.lms.helpers.*
 import org.jetbrains.anko.find
+import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject
 
 class GameMenuFragment : Fragment(), View.OnClickListener {
@@ -54,10 +57,10 @@ class GameMenuFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.singlePlayerButton -> {
-
+                showDialog(activity!!, "Message", "Single Player Game will update soon.")
             }
             R.id.quickGameButton -> {
-                //showProgress()
+                showProgress()
                 check = 0
                 checkBalance()
 
@@ -89,7 +92,17 @@ class GameMenuFragment : Fragment(), View.OnClickListener {
                                 }
                                 check = -1
                             }else{
-                                showDialog(activity!!, "Message", activity?.getString(R.string.insufficient_balance)!!)
+                                AlertDialog.Builder(activity!!).setCancelable(false).setTitle("Message")
+                                        .setMessage(activity?.getString(R.string.insufficient_balance))
+                                        .setPositiveButton("Add Points") { dialog, which ->
+                                            hideProgress()
+                                            startActivity<WalletActivity>()
+                                            activity?.finish()
+                                            dialog.dismiss()
+                                        }.setNegativeButton("Cancel") { dialog, which ->
+                                            hideProgress()
+                                            dialog.dismiss()
+                                        }.show()
                             }
                         }
                     }, { err ->

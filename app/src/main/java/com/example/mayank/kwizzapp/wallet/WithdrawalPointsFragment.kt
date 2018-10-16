@@ -18,10 +18,8 @@ import com.example.mayank.kwizzapp.dependency.components.DaggerInjectFragmentCom
 import com.example.mayank.kwizzapp.helpers.processRequest
 import com.example.mayank.kwizzapp.network.ITransaction
 import io.reactivex.disposables.CompositeDisposable
-import net.rmitsolutions.mfexpert.lms.helpers.SharedPrefKeys
-import net.rmitsolutions.mfexpert.lms.helpers.getPref
-import net.rmitsolutions.mfexpert.lms.helpers.logD
-import net.rmitsolutions.mfexpert.lms.helpers.showDialog
+import kotlinx.android.synthetic.main.withdrawal_points_layout.*
+import net.rmitsolutions.mfexpert.lms.helpers.*
 import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject
@@ -36,6 +34,8 @@ class WithdrawalPointsFragment : Fragment(), View.OnClickListener {
     private lateinit var compositeDisposable: CompositeDisposable
     private lateinit var dataBinding : WithdrawalPointsBinding
     private lateinit var withdrawalPoints : Transactions.WithdrawalPoints
+    private var accountNumber : String? = null
+    private var ifscCode : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,9 +54,14 @@ class WithdrawalPointsFragment : Fragment(), View.OnClickListener {
         withdrawalPoints = Transactions.WithdrawalPoints()
         dataBinding.withdrawalPointsVm = withdrawalPoints
         view.find<Button>(R.id.buttonWithdrawalPoints).setOnClickListener(this)
-        val accountNumber = activity?.getPref(SharedPrefKeys.ACCOUNT_NUMBER, "")
-        if (accountNumber!=""){
-            disableBankDetail(true)
+        accountNumber = activity?.getPref(SharedPrefKeys.ACCOUNT_NUMBER, "")
+        ifscCode = activity?.getPref(SharedPrefKeys.IFSC_CODE, "")
+        when {
+            accountNumber!="" -> disableBankDetail(true)
+            else -> {
+                logD("inside else false")
+                disableBankDetail(false)
+            }
         }
         return view
     }
@@ -77,29 +82,69 @@ class WithdrawalPointsFragment : Fragment(), View.OnClickListener {
         val lastName = activity?.getPref(SharedPrefKeys.LAST_NAME, "")
         val mobileNumber = activity?.getPref(SharedPrefKeys.MOBILE_NUMBER, "")
         val email = activity?.getPref(SharedPrefKeys.EMAIL, "")
-        val accountNumber = dataBinding.withdrawalPointsVm?.accountNumber
-        val ifsc = dataBinding.withdrawalPointsVm?.ifscCode
         val displayName = activity?.getPref(SharedPrefKeys.DISPLAY_NAME, "")
         val txnId = displayName+System.currentTimeMillis()
+        when {
+            dataBinding.disableBankDetails!=null -> when {
+                !dataBinding.disableBankDetails!! -> {
+                    accountNumber = dataBinding.withdrawalPointsVm?.accountNumber
+                    ifscCode = dataBinding.withdrawalPointsVm?.ifscCode
+                }
+            }
+        }
 
-        compositeDisposable.add(transactionService.withdrawalPoints(firstName!!, lastName!!,displayName!!,mobileNumber!!,"",
-                "",email!!,"Withdrawal Payments",amount!!,txnId,"",System.currentTimeMillis().toString(),
-                "","","","Debited",accountNumber!!,ifsc!!,"Processed")
-                .processRequest(
-                        { response ->
-                            if (response.isSuccess){
-                                logD("Mobile Number - ${response.mobileNumber}\nBalance - ${response.balance}")
-                                startActivity<WalletActivity>()
-                            }else{
-                                showDialog(activity!!,"Error",response.message)
-                            }
-                        },
-                        { err ->
-                            showDialog(activity!!, "Error", err.toString())
-                        }
-                ))
+        when {
+            validate() -> {
+                activity?.putPref(SharedPrefKeys.ACCOUNT_NUMBER, accountNumber)
+                activity?.putPref(SharedPrefKeys.IFSC_CODE, ifscCode)
+                compositeDisposable.add(transactionService.withdrawalPoints(firstName!!, lastName!!,displayName!!,mobileNumber!!,"",
+                        "",email!!,"Withdrawal Payments",amount!!,txnId,"",System.currentTimeMillis().toString(),
+                        "","","","Debited",accountNumber!!,ifscCode!!,"Processed")
+                        .processRequest(
+                                { response ->
+                                    if (response.isSuccess){
+                                        startActivity<WalletActivity>()
+                                    }else{
+                                        showDialog(activity!!,"Error",response.message)
+                                    }
+                                },
+                                { err ->
+                                    showDialog(activity!!, "Error", err.toString())
+                                }
+                        ))
+            }
+        }
+    }
 
+    private fun validate(): Boolean {
+        when {
+            dataBinding.withdrawalPointsVm?.amount.isNullOrBlank() -> {
+                inputLayoutAmount.error = "Enter valid Amount"
+                return false
+            }
+            else -> inputLayoutAmount.error = null
+        }
 
+        when {
+            !dataBinding.disableBankDetails!! -> {
+                when {
+                    dataBinding.withdrawalPointsVm?.accountNumber.isNullOrBlank() -> {
+                        inputLayoutAccountNumber.error = "Enter valid Account Number"
+                        return false
+                    }
+                    else -> inputLayoutAccountNumber.error = null
+                }
+
+                when {
+                    dataBinding.withdrawalPointsVm?.ifscCode.isNullOrBlank() -> {
+                        inputLayoutIfscCode.error = "Enter valid IFSC Code"
+                        return false
+                    }
+                    else -> inputLayoutIfscCode.error = null
+                }
+            }
+        }
+        return true
     }
 
     fun onButtonPressed(uri: Uri) {

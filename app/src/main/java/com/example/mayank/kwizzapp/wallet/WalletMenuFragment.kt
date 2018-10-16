@@ -45,10 +45,7 @@ class WalletMenuFragment : Fragment(), View.OnClickListener {
         val view = inflater.inflate(R.layout.fragment_wallet_menu, container, false)
         // Getting balance from server
         checkBalance()
-
-        for (id in CLICKABLES){
-            view.find<Button>(id).setOnClickListener(this)
-        }
+        for (id in CLICKABLES) view.find<Button>(id).setOnClickListener(this)
         return view
     }
 
@@ -77,20 +74,19 @@ class WalletMenuFragment : Fragment(), View.OnClickListener {
 
     private fun checkBalance(){
         val mobileNumber = activity?.getPref(SharedPrefKeys.MOBILE_NUMBER, "")
-        if (mobileNumber!=""){
-            compositeDisposable.add(transactionService.checkBalance(mobileNumber!!)
+        when {
+            mobileNumber!="" -> compositeDisposable.add(transactionService.checkBalance(mobileNumber!!)
                     .processRequest(
                             { response ->
-                                if (response.isSuccess){
-                                    balanceTextView.text ="${activity?.getString(R.string.rupeeSymbol)} - ${response.balance}"
+                                when {
+                                    response.isSuccess -> balanceTextView.text ="${activity?.getString(R.string.rupeeSymbol)} - ${response.balance}"
                                 }
                             },
                             { err->
                                 showDialog(activity!!, "Error", err.toString())
                             }
                     ))
-        }else {
-            balanceTextView.visibility = View.GONE
+            else -> balanceTextView.visibility = View.GONE
         }
 
     }

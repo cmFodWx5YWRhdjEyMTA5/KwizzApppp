@@ -63,7 +63,6 @@ class GameResultFragment : Fragment(), View.OnClickListener {
     private var libPlayGame: LibPlayGame? = null
     private lateinit var buttonBack: Button
     private lateinit var list: MutableList<ResultViewModel>
-//    private lateinit var resultList : MutableList<ResultViewModel>
 
     private lateinit var showResultProgress: ProgressDialog
     private val syncIntentFilter = IntentFilter(ACTION_RESULT_RECEIVED)

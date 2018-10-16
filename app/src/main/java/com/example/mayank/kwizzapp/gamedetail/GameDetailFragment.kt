@@ -96,7 +96,6 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
         when (v?.id) {
             R.id.imageButtonNextAmount -> {
                 nextAmount()
-//                playGameLib?.broadcastScore(true)
                 libPlayGame.broadcastMessage('A', 0)
                 reset()
             }
@@ -138,7 +137,6 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
                     } else if (value == 1) {
                         previousAmount()
                     }
-                    //resetCountdownTimer(10000, 1000)
                     reset()
                 } else if (state == 'S') {
                     if (value == 0) {
@@ -146,7 +144,6 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
                     } else if (value == 1) {
                         previousSubject()
                     }
-                    //resetCountdownTimer(10000, 1000)
                     reset()
                 }
             }
@@ -182,7 +179,6 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
     private fun nextSubject() {
         if (i < 6) {
             i++
-            logD("value of i : $i")
             j = i
             subject = subjectList[i]
             subCode = subjectCode[i]

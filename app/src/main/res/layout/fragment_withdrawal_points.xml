@@ -17,7 +17,8 @@
         tools:context=".wallet.WithdrawalPointsFragment">
 
         <include layout="@layout/withdrawal_points_layout"
-            bind:WithdrawalPointsVm="@{WithdrawalPointsVm}"/>
+            bind:WithdrawalPointsVm="@{WithdrawalPointsVm}"
+            bind:DisableBankDetails="@{DisableBankDetails}"/>
 
     </FrameLayout>
 </layout>

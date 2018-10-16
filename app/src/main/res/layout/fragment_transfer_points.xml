@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".wallet.TransferPointsFragment">
+<layout xmlns:bind="http://schemas.android.com/apk/res-auto">
+    <data class="TransferPointsBinding">
+        <variable
+            name="TransferPointsVm"
+            type="com.example.mayank.googleplaygame.network.wallet.Transactions.TransferPoints"/>
+    </data>
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".wallet.TransferPointsFragment">
 
-    <include layout="@layout/transfer_points_layout"/>
+        <include layout="@layout/transfer_points_layout"
+            bind:TransferPointsVm="@{TransferPointsVm}"/>
 
-</FrameLayout>
+    </FrameLayout>
+</layout>

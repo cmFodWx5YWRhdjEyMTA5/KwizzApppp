@@ -26,4 +26,21 @@
     <color name="secondaryTextColor">#000000</color>
     <color name="lightGrey">#f5f5f5</color>
 
+    <color name="window_background">#fbfbfb</color>
+    <color name="app_body_text_light">#8a000000</color>
+    <color name="app_body_text_dark">#de000000</color>
+    <color name="black_overlay">#66000000</color>
+
+    <color name="white">#fff</color>
+    <color name="error_red">#e2211d</color>
+    <color name="thick_brown">#f9dda2</color>
+    <color name="cyan">#00BCD4</color>
+    <color name="light_black">#2c2c2c</color>
+    <color name="brown_pink">#6F3954</color>
+    <color name="orange">#FF9800</color>
+    <color name="deep_orange">#FF5722</color>
+    <color name="light_red_shade">#fdecea</color>
+    <color name="very_light_red_shade">#fdf3f2</color>
+    <color name="very_light_green_shade">#f2fdf3</color>
+
 </resources>

@@ -19,7 +19,7 @@ import java.net.MalformedURLException
 import java.net.ProtocolException
 import java.net.URL
 
-internal class PayUMoney(private val activity: Activity) {
+internal class PayUMoney(val activity: Activity) {
 
     private lateinit var paymentParam: PayUmoneySdkInitializer.PaymentParam
 

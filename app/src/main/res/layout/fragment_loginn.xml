@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="login.LoginFragment"
-    android:animateLayoutChanges="true">
+    android:animateLayoutChanges="true"
+    android:background="@color/primaryColor">
 
 
     <android.support.v7.widget.CardView
@@ -31,6 +32,8 @@
 
 
     <TextView
+        android:textColor="@color/white"
+        style="@style/TitleText"
         android:id="@+id/textViewAppName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,7 +41,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="88dp"
         android:text="AppName"
-        android:textColor="@color/primary"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/buttonSignIn"

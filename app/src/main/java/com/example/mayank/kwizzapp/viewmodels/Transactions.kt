@@ -5,28 +5,33 @@ import com.google.gson.annotations.SerializedName
 
 class Transactions {
 
-    class CheckBalance : CommonResult(){
-        val mobileNumber : String? = null
-        val balance : Double = 0.0
+    class CheckBalance : CommonResult() {
+        val mobileNumber: String? = null
+        val balance: Double = 0.0
     }
 
-    class GetBalance : CommonResult(){
-        val mobileNumber : String? = null
-        val balance : Double? = null
+    class GetBalance : CommonResult() {
+        val mobileNumber: String? = null
+        val balance: Double? = null
     }
 
-    class AddPoints  {
-        var amount : String? =null
-        var firstName : String? =null
-        var mobileNumber : String? = null
-        var email : String? = null
-        var product :String? = null
+    class AddPoints {
+        var amount: String? = null
+        var firstName: String? = null
+        var mobileNumber: String? = null
+        var email: String? = null
+        var product: String? = null
     }
 
     class WithdrawalPoints {
         var amount : String? = null
         var accountNumber : String? = null
         var ifscCode : String? = null
+    }
+
+    class TransferPoints{
+        var amount: String? = null
+        var transferTo : String? = null
     }
 
 

@@ -19,6 +19,7 @@ import com.example.mayank.kwizzapp.helpers.processRequest
 import com.example.mayank.kwizzapp.network.IUser
 import com.example.mayank.kwizzapp.viewmodels.Users
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.fragment_user_info.*
 import net.rmitsolutions.mfexpert.lms.helpers.*
 import net.rmitsolutions.mfexpert.lms.helpers.SharedPrefKeys.DISPLAY_NAME
 import org.jetbrains.anko.find
@@ -28,11 +29,11 @@ import javax.inject.Inject
 class UserInfoFragment : Fragment(), View.OnClickListener {
 
     @Inject
-    lateinit var userService : IUser
+    lateinit var userService: IUser
     private var listener: OnFragmentInteractionListener? = null
-    private lateinit var dataBinding : UserInfoBinding
-    private lateinit var userInfoVm : Users.UserInfo
-    private lateinit var submitData : Button
+    private lateinit var dataBinding: UserInfoBinding
+    private lateinit var userInfoVm: Users.UserInfo
+    private lateinit var submitData: Button
     private lateinit var compositeDisposable: CompositeDisposable
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,14 +49,14 @@ class UserInfoFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_info, container,false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_info, container, false)
         val view = dataBinding.root
         userInfoVm = Users.UserInfo()
         dataBinding.userInfoVm = userInfoVm
         val firstName = activity?.getPref(SharedPrefKeys.FIRST_NAME, "")
         val lastName = activity?.getPref(SharedPrefKeys.LAST_NAME, "")
         when {
-            firstName!="" || lastName != "" -> {
+            firstName != "" || lastName != "" -> {
                 dataBinding.userInfoVm!!.firstName.set(firstName)
                 dataBinding.userInfoVm!!.lastName.set(lastName)
             }
@@ -66,26 +67,61 @@ class UserInfoFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        when(v?.id){
-            R.id.buttonSubmitInfo ->{
+        when (v?.id) {
+            R.id.buttonSubmitInfo -> {
                 val playerId = activity?.getPref(SharedPrefKeys.PLAYER_ID, "")
                 dataBinding.userInfoVm
                 dataBinding.userInfoVm?.displayName = activity?.getPref(DISPLAY_NAME, "")
-                compositeDisposable.add(userService.addDetails(dataBinding.userInfoVm?.firstName?.get()!!,
-                        dataBinding.userInfoVm?.lastName?.get()!!,dataBinding.userInfoVm?.displayName!!, playerId!!,
-                        dataBinding.userInfoVm?.mobileNumber!!, dataBinding.userInfoVm?.email!!).processRequest(
-                        {response ->
-                            if (response.isSuccess){
-                                toast(response.message)
-                                switchToDashboard(dataBinding.userInfoVm!!)
-                            }else{
-                                toast(response.message)
-                            }
-                },{ err ->
-                    logD("Error - ${err.toString()}")
-                }))
+                if (validate()) {
+                    compositeDisposable.add(userService.addDetails(dataBinding.userInfoVm?.firstName?.get()!!,
+                            dataBinding.userInfoVm?.lastName?.get()!!, dataBinding.userInfoVm?.displayName!!, playerId!!,
+                            dataBinding.userInfoVm?.mobileNumber!!, dataBinding.userInfoVm?.email!!).processRequest(
+                            { response ->
+                                if (response.isSuccess) {
+                                    toast(response.message)
+                                    switchToDashboard(dataBinding.userInfoVm!!)
+                                } else {
+                                    toast(response.message)
+                                }
+                            }, { err ->
+                        logD("Error - ${err.toString()}")
+                    }))
+                }
             }
         }
+    }
+
+    private fun validate(): Boolean {
+        when {
+            dataBinding.userInfoVm?.firstName?.get().isNullOrBlank() -> {
+                textInputLayoutFirstName.error = "Enter First Name."
+                return false
+            }
+            else -> textInputLayoutFirstName.error = null
+        }
+
+        when {
+            dataBinding.userInfoVm?.lastName?.get().isNullOrBlank() -> {
+                textInputLayoutLastName.error = "Enter Last Name."
+                return false
+            }
+            else -> textInputLayoutLastName.error = null
+        }
+        when {
+            dataBinding.userInfoVm?.mobileNumber.isNullOrBlank() -> {
+                textInputLayoutMobileNumber.error = "Enter Mobile Number."
+                return false
+            }
+            else -> textInputLayoutMobileNumber.error = null
+        }
+        when {
+            dataBinding.userInfoVm?.email.isNullOrBlank() -> {
+                textInputLayoutEmail.error = "Enter email.."
+                return false
+            }
+            else -> textInputLayoutEmail.error = null
+        }
+        return true
     }
 
     private fun switchToDashboard(userInfoVm: Users.UserInfo) {
@@ -115,16 +151,9 @@ class UserInfoFragment : Fragment(), View.OnClickListener {
     }
 
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
     }
 
     companion object {
-        @JvmStatic
-        fun newInstance() =
-                UserInfoFragment().apply {
-                    arguments = Bundle().apply {
-                    }
-                }
     }
 }
