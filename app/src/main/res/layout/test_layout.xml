@@ -1,144 +1,254 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".dashboard.DashboardFragment">
+    android:layout_height="match_parent">
 
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:cardCornerRadius="@dimen/dimen_15dp"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/window_background"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen_10dp"
+        tools:context=".dashboard.DashboardFragment">
 
         <LinearLayout
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="start"
-                android:background="@drawable/round_corner_button">
-                <ImageView
-                    android:layout_margin="@dimen/dimen_16dp"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/games_controller_white"/>
-                <TextView
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/dimen_16dp"
-                    android:textStyle="bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/TitleText"
-                    android:text="Play"
-                    android:textColor="@color/white"/>
-            </LinearLayout>
+            android:clipToPadding="false"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:background="@drawable/round_corner_button"
-                android:layout_marginTop="@dimen/dimen_16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="start">
-                <ImageView
-                    android:layout_gravity="start|center"
-                    android:layout_margin="@dimen/dimen_16dp"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/games_achievements_white"/>
-                <TextView
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/dimen_16dp"
-                    android:textStyle="bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/TitleText"
-                    android:text="Achievements"
-                    android:textColor="@color/white"/>
-            </LinearLayout>
+            <android.support.v7.widget.CardView
+                android:layout_width="160dp"
+                android:layout_height="190dp"
+                android:layout_margin="@dimen/dimen_10dp">
 
-            <LinearLayout
-                android:background="@drawable/round_corner_button"
-                android:layout_marginTop="@dimen/dimen_16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="start">
-                <ImageView
-                    android:layout_gravity="start|center"
-                    android:layout_margin="@dimen/dimen_16dp"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/games_leaderboards_white"/>
-                <TextView
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/dimen_16dp"
-                    android:textStyle="bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/TitleText"
-                    android:text="Leaderboards"
-                    android:textColor="@color/white"/>
-            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-            <LinearLayout
-                android:background="@drawable/round_corner_button"
-                android:layout_marginTop="@dimen/dimen_16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="start">
-                <ImageView
-                    android:layout_gravity="start|center"
-                    android:layout_margin="@dimen/dimen_16dp"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@mipmap/ic_wallet"/>
-                <TextView
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/dimen_16dp"
-                    android:textStyle="bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/TitleText"
-                    android:text="Wallet"
-                    android:textColor="@color/white"/>
-            </LinearLayout>
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="@drawable/circle_background_green"
+                        android:padding="@dimen/dimen_10dp"
+                        android:src="@drawable/games_controller_white" />
 
-            <LinearLayout
-                android:background="@drawable/round_corner_button"
-                android:layout_marginTop="@dimen/dimen_16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="start">
-                <ImageView
-                    android:layout_gravity="start|center"
-                    android:layout_margin="@dimen/dimen_16dp"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_logout_variant"/>
-                <TextView
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/dimen_16dp"
-                    android:textStyle="bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/TitleText"
-                    android:text="Sign Out"
-                    android:textColor="@color/white"/>
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:text="Play"
+                        android:textStyle="bold" />
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:background="@color/lightGrey"></View>
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:gravity="center"
+                        android:padding="@dimen/dimen_5dp"
+                        android:text="Start Play Here"
+                        android:textColor="@color/secondary_text" />
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="160dp"
+                android:layout_height="190dp"
+                android:layout_margin="@dimen/dimen_10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="@drawable/circle_background_pink"
+                        android:padding="@dimen/dimen_10dp"
+                        android:src="@drawable/games_achievements_white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:text="Achievements"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:background="@color/lightGrey"></View>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:gravity="center"
+                        android:padding="@dimen/dimen_5dp"
+                        android:text="See your Achievements here."
+                        android:textColor="@color/secondary_text" />
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="160dp"
+                android:layout_height="190dp"
+                android:layout_margin="@dimen/dimen_10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="@drawable/circle_background_orange"
+                        android:padding="@dimen/dimen_10dp"
+                        android:src="@drawable/games_leaderboards_white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:text="Leaderboards"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:background="@color/lightGrey"></View>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:gravity="center"
+                        android:padding="@dimen/dimen_5dp"
+                        android:text="See your rank here."
+                        android:textColor="@color/secondary_text" />
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="160dp"
+                android:layout_height="190dp"
+                android:layout_margin="@dimen/dimen_10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="@drawable/circle_background"
+                        android:padding="@dimen/dimen_10dp"
+                        android:src="@mipmap/ic_wallet" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:text="Wallet"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:background="@color/lightGrey"></View>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:gravity="center"
+                        android:padding="@dimen/dimen_5dp"
+                        android:text="Add Points Here"
+                        android:textColor="@color/secondary_text" />
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="340dp"
+                android:layout_height="180dp"
+                android:layout_margin="@dimen/dimen_10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="@drawable/circle_background_red"
+                        android:padding="@dimen/dimen_10dp"
+                        android:src="@drawable/ic_logout_variant" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:text="Logout"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:background="@color/lightGrey"></View>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:gravity="center"
+                        android:padding="@dimen/dimen_5dp"
+                        android:text="Logout here."
+                        android:textColor="@color/secondary_text" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

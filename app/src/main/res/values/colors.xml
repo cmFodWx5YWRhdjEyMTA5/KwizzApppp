@@ -9,7 +9,7 @@
     <color name="primary">#673AB7</color>
     <color name="primary_dark">#512DA8</color>
     <color name="primary_light">#D1C4E9</color>
-    <color name="accent">#009688</color>
+    <color name="accent">#FF4081</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
     <color name="icons">#FFFFFF</color>
@@ -24,7 +24,7 @@
     <color name="secondaryDarkColor">#00cbcc</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#000000</color>
-    <color name="lightGrey">#f5f5f5</color>
+    <color name="lightGrey">#ededed</color>
 
     <color name="window_background">#fbfbfb</color>
     <color name="app_body_text_light">#8a000000</color>
@@ -42,5 +42,6 @@
     <color name="light_red_shade">#fdecea</color>
     <color name="very_light_red_shade">#fdf3f2</color>
     <color name="very_light_green_shade">#f2fdf3</color>
+    <color name="colorGreen">#006600</color>
 
 </resources>
