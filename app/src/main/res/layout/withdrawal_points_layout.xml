@@ -1,95 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".wallet.WithdrawalPointsFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_margin="16dp"
-        android:id="@+id/inputLayoutAmount"
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="DisableBankDetails"
+            type="java.lang.Boolean" />
+
+        <variable
+            name="WithdrawalPointsVm"
+            type="com.example.mayank.googleplaygame.network.wallet.Transactions.WithdrawalPoints" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/inputLayoutAccountNumber"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.981">
+        android:layout_height="match_parent"
+        tools:context=".wallet.WithdrawalPointsFragment">
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/editTextAmount"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/inputLayoutAmount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Amount" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_margin="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/inputLayoutAccountNumber"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.981">
 
-    <android.support.design.widget.TextInputLayout
-        android:visibility="gone"
-        android:layout_margin="16dp"
-        android:id="@+id/inputLayoutAccountNumber"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/inputLayoutIfscCode"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+            <android.support.design.widget.TextInputEditText
+                android:text="@={WithdrawalPointsVm.amount}"
+                android:id="@+id/editTextAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Amount" />
+        </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/editTextAccountNumber"
+        <android.support.design.widget.TextInputLayout
+            android:visibility="@{DisableBankDetails ? View.GONE : View.VISIBLE}"
+            android:id="@+id/inputLayoutAccountNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Account Number" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_margin="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/inputLayoutIfscCode"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-    <android.support.design.widget.TextInputLayout
-        android:visibility="gone"
-        android:layout_margin="16dp"
-        android:id="@+id/inputLayoutIfscCode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="36dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonWithdrawalPoints"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+            <android.support.design.widget.TextInputEditText
+                android:text="@={WithdrawalPointsVm.accountNumber}"
+                android:id="@+id/editTextAccountNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Account Number" />
+        </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/editTextIfscCode"
+        <android.support.design.widget.TextInputLayout
+            android:visibility="@{DisableBankDetails ? View.GONE : View.VISIBLE}"
+            android:id="@+id/inputLayoutIfscCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ifsc Code" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_margin="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="36dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonWithdrawalPoints"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-    <Button
-        android:textColor="@color/white"
-        android:background="@color/primaryColor"
-        android:id="@+id/buttonWithdrawalPoints"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="224dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:padding="8dp"
-        android:rotationY="30"
-        android:text="Withdrawal"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-</android.support.constraint.ConstraintLayout>
+            <android.support.design.widget.TextInputEditText
+                android:text="@={WithdrawalPointsVm.ifscCode}"
+                android:id="@+id/editTextIfscCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ifsc Code" />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/buttonWithdrawalPoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="224dp"
+            android:background="@color/primaryColor"
+            android:padding="8dp"
+            android:rotationY="30"
+            android:text="Withdrawal"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+</layout>

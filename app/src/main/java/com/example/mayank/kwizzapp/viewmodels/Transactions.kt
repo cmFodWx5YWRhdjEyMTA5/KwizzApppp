@@ -23,6 +23,12 @@ class Transactions {
         var product :String? = null
     }
 
+    class WithdrawalPoints {
+        var amount : String? = null
+        var accountNumber : String? = null
+        var ifscCode : String? = null
+    }
+
 
     @SerializedName("firstName")
     var firstName: String? = null
