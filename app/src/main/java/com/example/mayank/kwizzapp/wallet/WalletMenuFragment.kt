@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.CardView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +29,7 @@ class WalletMenuFragment : Fragment(), View.OnClickListener {
     lateinit var transactionService: ITransaction
     private lateinit var compositeDisposable: CompositeDisposable
     private var listener: OnFragmentInteractionListener? = null
-    private val CLICKABLES = intArrayOf(R.id.buttonAddPoints, R.id.buttonWithdrawalPoints, R.id.buttonTransferPoints, R.id.buttonTransactions)
+    private val CLICKABLES = intArrayOf(R.id.addPointsLayout, R.id.withdrawalLayout, R.id.transferLayout, R.id.transactionLayout)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,29 +45,29 @@ class WalletMenuFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_wallet_menu, container, false)
         // Getting balance from server
-        checkBalance()
-        for (id in CLICKABLES) view.find<Button>(id).setOnClickListener(this)
+        //checkBalance()
+        for (id in CLICKABLES) view.find<CardView>(id).setOnClickListener(this)
         return view
     }
 
     override fun onClick(v: View?) {
         when(v?.id){
-            R.id.buttonAddPoints ->{
+            R.id.addPointsLayout ->{
                 val addPointsFragment = AddPointsFragment()
                 switchToFragment(addPointsFragment)
             }
 
-            R.id.buttonWithdrawalPoints ->{
+            R.id.withdrawalLayout->{
                 val withdrawalPointsFragment = WithdrawalPointsFragment()
                 switchToFragment(withdrawalPointsFragment)
             }
 
-            R.id.buttonTransferPoints ->{
+            R.id.transferLayout->{
                 val transferPointsFragment = TransferPointsFragment()
                 switchToFragment(transferPointsFragment)
             }
 
-            R.id.buttonTransactions ->{
+            R.id.transactionLayout ->{
                 showDialog(activity!!, "Transactions", "Coming soon !")
             }
         }
@@ -79,14 +80,14 @@ class WalletMenuFragment : Fragment(), View.OnClickListener {
                     .processRequest(
                             { response ->
                                 when {
-                                    response.isSuccess -> balanceTextView.text ="${activity?.getString(R.string.rupeeSymbol)} - ${response.balance}"
+                                    //response.isSuccess -> balanceTextView.text ="${activity?.getString(R.string.rupeeSymbol)} - ${response.balance}"
                                 }
                             },
                             { err->
                                 showDialog(activity!!, "Error", err.toString())
                             }
                     ))
-            else -> balanceTextView.visibility = View.GONE
+            else -> {}//balanceTextView.visibility = View.GONE
         }
 
     }

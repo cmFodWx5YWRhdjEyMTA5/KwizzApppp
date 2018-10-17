@@ -8,8 +8,8 @@
 
     <string name="preference_file_key">kwizzapp_pref_file_key</string>
 
-    <string name="rupeeText">u20A8</string>
-    <string name="rupeeSymbol">u20B9</string>
+    <string name="rupeeText">\u20A8</string>
+    <string name="rupeeSymbol">\u20B9</string>
 
     //Leaderboards
     <string name="leaderboard_global_rank" translatable="false">CgkIq-WL_r4dEAIQAQ</string>

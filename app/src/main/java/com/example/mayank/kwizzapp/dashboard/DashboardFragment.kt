@@ -4,6 +4,8 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.CardView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +27,7 @@ import org.jetbrains.anko.support.v4.startActivity
 class DashboardFragment : Fragment(), View.OnClickListener {
 
     private var listener: OnFragmentInteractionListener? = null
-    private val CLICKABLES = intArrayOf(R.id.buttonPlay, R.id.buttonAchievements, R.id.buttonLeaderboards, R.id.buttonWallet, R.id.buttonSignOut)
+    private val CLICKABLES = intArrayOf(R.id.playLayout, R.id.achievemnetLayout, R.id.leaderboardLayout, R.id.walletLayout, R.id.logoutLayout)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,18 +40,18 @@ class DashboardFragment : Fragment(), View.OnClickListener {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
         for (id in CLICKABLES) {
-            view.find<Button>(id).setOnClickListener(this)
+            view.find<CardView>(id).setOnClickListener(this)
         }
         return view
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.buttonSignOut -> signOut()
-            R.id.buttonAchievements -> showAchievements()
-            R.id.buttonLeaderboards -> showLeaderBoards()
-            R.id.buttonWallet -> startActivity<WalletActivity>()
-            R.id.buttonPlay -> openGameMenuFragment()
+            R.id.logoutLayout -> signOut()
+            R.id.achievemnetLayout -> showAchievements()
+            R.id.leaderboardLayout -> showLeaderBoards()
+            R.id.walletLayout -> startActivity<WalletActivity>()
+            R.id.playLayout -> openGameMenuFragment()
         }
     }
 
@@ -92,6 +94,15 @@ class DashboardFragment : Fragment(), View.OnClickListener {
         return GoogleSignIn.getLastSignedInAccount(activity) != null
     }
 
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity).supportActionBar?.hide()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity as AppCompatActivity).supportActionBar?.show()
+    }
 
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)

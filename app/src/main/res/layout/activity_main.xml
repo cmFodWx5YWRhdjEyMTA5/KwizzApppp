@@ -7,4 +7,6 @@
     android:id="@+id/main_content"
     tools:context=".MainActivity">
 
+    <include layout="@layout/toolbar"/>
+
 </android.support.constraint.ConstraintLayout>

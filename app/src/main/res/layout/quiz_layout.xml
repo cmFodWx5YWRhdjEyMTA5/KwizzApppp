@@ -1,150 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:background="@color/window_background"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen_10dp">
 
-            <android.support.constraint.ConstraintLayout
+            <android.support.v7.widget.CardView
+                android:id="@+id/quesLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_centerInParent="true"
-                    android:layout_margin="16dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/quiz_progress_circle_dark"
-                    android:indeterminate="false"
-                    android:max="100"
-                    android:progress="100"
-                    android:progressDrawable="@drawable/quiz_progress_circle"
-                    android:rotation="-90"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.004" />
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_10dp">
 
                 <TextView
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:id="@+id/textViewSeconds"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/text_view_question"
+                    style="@style/TitleText"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="10"
-                    app:layout_constraintBottom_toBottomOf="@+id/progressBar"
-                    app:layout_constraintEnd_toEndOf="@+id/progressBar"
-                    app:layout_constraintStart_toStartOf="@+id/progressBar"
-                    app:layout_constraintTop_toTopOf="@+id/progressBar" />
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:lineSpacingExtra="@dimen/dimen_5dp"
+                    android:padding="@dimen/dimen_10dp"
+                    android:text="Q. This is a Sample Question ?" />
+            </android.support.v7.widget.CardView>
 
-            </android.support.constraint.ConstraintLayout>
-
-            <!--<TextSwitcher-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:background="@drawable/text_view_question_background"-->
-            <!--android:gravity="center"-->
-            <!--android:layout_gravity="center_horizontal"-->
-            <!--android:textColor="@color/colorBlack"-->
-            <!--android:id="@+id/textSwitcherCountdown"-->
-            <!--android:text="Quiz Start in "-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_width="match_parent"/>-->
-
-            <TextView
-                android:textAlignment="textStart"
-                android:layout_marginLeft="5dp"
-                android:background="@drawable/text_view_question_background"
-                android:textSize="18sp"
-                android:id="@+id/text_view_question"
-                android:layout_marginTop="10dp"
+            <android.support.v7.widget.CardView
+                android:id="@+id/layoutOptionA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Q. This is a sample Question ?"
-                android:textColor="@color/primary_text"/>
+                android:layout_margin="@dimen/dimen_10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
 
-            <!--<View style="@style/ques_divider"/>-->
-            <TextView
-                android:layout_marginLeft="15dp"
-                android:background="@drawable/text_view_question_background"
-                android:textSize="16sp"
-                android:id="@+id/textViewOptionA"
-                android:layout_marginTop="5dp"
+                <TextView
+                    android:id="@+id/textViewOptionA"
+                    style="@style/SmallTitleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:lineSpacingExtra="@dimen/dimen_5dp"
+                    android:padding="@dimen/dimen_10dp"
+                    android:text="1. Option A" />
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/layoutOptionB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1. Option A"
-                android:textColor="@color/secondary_text"/>
+                android:layout_margin="@dimen/dimen_10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
 
-            <!--<View style="@style/divider"/>-->
+                <TextView
+                    android:id="@+id/textViewOptionB"
+                    style="@style/SmallTitleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:lineSpacingExtra="@dimen/dimen_5dp"
+                    android:padding="@dimen/dimen_10dp"
+                    android:text="2. Option B" />
+            </android.support.v7.widget.CardView>
 
-            <TextView
-                android:layout_marginLeft="15dp"
-                android:background="@drawable/text_view_question_background"
-                android:textSize="16sp"
-                android:id="@+id/textViewOptionB"
-                android:layout_marginTop="5dp"
+            <android.support.v7.widget.CardView
+                android:id="@+id/layoutOptionC"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="2. Option B"
-                android:textColor="@color/secondary_text"/>
+                android:layout_margin="@dimen/dimen_10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
 
-            <!--<View style="@style/divider"/>-->
+                <TextView
+                    android:id="@+id/textViewOptionC"
+                    style="@style/SmallTitleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:lineSpacingExtra="@dimen/dimen_5dp"
+                    android:padding="@dimen/dimen_10dp"
+                    android:text="3. Option C" />
+            </android.support.v7.widget.CardView>
 
-            <TextView
-                android:layout_marginLeft="15dp"
-                android:background="@drawable/text_view_question_background"
-                android:textSize="16sp"
-                android:id="@+id/textViewOptionC"
-                android:layout_marginTop="5dp"
+            <android.support.v7.widget.CardView
+                android:id="@+id/layoutOptionD"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="3. Option C"
-                android:textColor="@color/secondary_text"/>
+                android:layout_margin="@dimen/dimen_10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
 
-            <!--<View style="@style/divider"/>-->
+                <TextView
+                    android:id="@+id/textViewOptionD"
+                    style="@style/SmallTitleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:lineSpacingExtra="@dimen/dimen_5dp"
+                    android:padding="@dimen/dimen_10dp"
+                    android:text="4. Option D" />
+            </android.support.v7.widget.CardView>
 
-            <TextView
-                android:layout_marginLeft="15dp"
-                android:background="@drawable/text_view_question_background"
-                android:textSize="16sp"
-                android:id="@+id/textViewOptionD"
-                android:layout_marginTop="5dp"
+            <android.support.v7.widget.CardView
+                android:id="@+id/layoutOptionE"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="4. Option D"
-                android:textColor="@color/secondary_text"/>
+                android:layout_margin="@dimen/dimen_10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
 
-            <!--<View style="@style/divider"/>-->
-
-            <TextView
-                android:layout_marginLeft="15dp"
-                android:background="@drawable/text_view_question_background"
-                android:textSize="16sp"
-                android:id="@+id/textViewOptionE"
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="5. Option E"
-                android:textColor="@color/secondary_text"/>
-
-
+                <TextView
+                    android:id="@+id/textViewOptionE"
+                    style="@style/SmallTitleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:lineSpacingExtra="@dimen/dimen_5dp"
+                    android:padding="@dimen/dimen_10dp"
+                    android:text="5. Option E" />
+            </android.support.v7.widget.CardView>
         </LinearLayout>
     </ScrollView>
 
-</LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="@dimen/dimen_60dp"
+        android:layout_height="60dp"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="160dp"
+        android:background="@drawable/quiz_progress_circle_dark"
+        android:indeterminate="false"
+        android:max="100"
+        android:progress="100"
+        android:progressDrawable="@drawable/quiz_progress_circle"
+        android:rotation="-90"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView"
+        app:layout_constraintEnd_toEndOf="@+id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textViewSeconds"
+        style="@style/TitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/progressBar"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar"
+        app:layout_constraintStart_toStartOf="@+id/progressBar"
+        app:layout_constraintTop_toTopOf="@+id/progressBar" />
+</android.support.constraint.ConstraintLayout>

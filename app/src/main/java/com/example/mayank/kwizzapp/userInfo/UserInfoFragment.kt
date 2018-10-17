@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -131,6 +132,16 @@ class UserInfoFragment : Fragment(), View.OnClickListener {
         activity?.putPref(SharedPrefKeys.EMAIL, userInfoVm.email)
         val dashboardFrag = DashboardFragment()
         switchToFragment(dashboardFrag)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity).supportActionBar?.hide()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity as AppCompatActivity).supportActionBar?.show()
     }
 
     fun onButtonPressed(uri: Uri) {

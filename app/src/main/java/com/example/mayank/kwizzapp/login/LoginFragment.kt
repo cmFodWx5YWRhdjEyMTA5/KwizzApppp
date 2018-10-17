@@ -25,6 +25,9 @@ import com.google.android.gms.games.InvitationsClient
 import com.google.android.gms.games.RealTimeMultiplayerClient
 import net.rmitsolutions.mfexpert.lms.helpers.*
 import org.jetbrains.anko.find
+import android.support.v7.app.AppCompatActivity
+
+
 
 
 class LoginFragment : Fragment(), View.OnClickListener {
@@ -53,7 +56,13 @@ class LoginFragment : Fragment(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
+        (activity as AppCompatActivity).supportActionBar?.hide()
         signInSilently()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity as AppCompatActivity).supportActionBar?.show()
     }
 
     private fun signInSilently() {

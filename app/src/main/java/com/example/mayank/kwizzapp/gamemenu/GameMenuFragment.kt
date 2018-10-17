@@ -5,6 +5,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.CardView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +30,7 @@ class GameMenuFragment : Fragment(), View.OnClickListener {
     @Inject
     lateinit var transactionService: ITransaction
     private var listener: OnFragmentInteractionListener? = null
-    private val CLICKABLES = intArrayOf(R.id.singlePlayerButton, R.id.quickGameButton, R.id.multiplayerButton, R.id.invitationButton)
+    private val CLICKABLES = intArrayOf(R.id.singlePlayerLayout, R.id.quickGameLayout, R.id.multiplayerLayout, R.id.invitationLayout)
     private var check: Int = -1
     private lateinit var libPlayGame: LibPlayGame
     private lateinit var compositeDisposable: CompositeDisposable
@@ -49,28 +51,28 @@ class GameMenuFragment : Fragment(), View.OnClickListener {
         val view = inflater.inflate(R.layout.fragment_game_menu, container, false)
 
         for (id in CLICKABLES) {
-            view.find<Button>(id).setOnClickListener(this)
+            view.find<CardView>(id).setOnClickListener(this)
         }
         return view
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.singlePlayerButton -> {
+            R.id.singlePlayerLayout -> {
                 showDialog(activity!!, "Message", "Single Player Game will update soon.")
             }
-            R.id.quickGameButton -> {
+            R.id.quickGameLayout -> {
                 showProgress()
                 check = 0
                 checkBalance()
 
             }
-            R.id.multiplayerButton -> {
+            R.id.multiplayerLayout -> {
                 showProgress()
                 check = 1
                 checkBalance()
             }
-            R.id.invitationButton -> {
+            R.id.invitationLayout -> {
                 showProgress()
                 libPlayGame.showInvitationInbox()
             }
@@ -111,6 +113,16 @@ class GameMenuFragment : Fragment(), View.OnClickListener {
         }else{
             showDialog(activity!!,"Error", "Update mobile number to continue!")
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity).supportActionBar?.hide()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity as AppCompatActivity).supportActionBar?.show()
     }
 
 

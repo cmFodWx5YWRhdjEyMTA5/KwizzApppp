@@ -4,6 +4,9 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.net.Uri
+import android.support.v7.widget.Toolbar
+import android.view.Menu
+import android.view.MenuItem
 import com.example.mayank.kwizzapp.dashboard.DashboardFragment
 import com.example.mayank.kwizzapp.gamedetail.GameDetailFragment
 import com.example.mayank.kwizzapp.gamemenu.GameMenuFragment
@@ -13,6 +16,8 @@ import com.example.mayank.kwizzapp.login.LoginFragment
 import com.example.mayank.kwizzapp.quiz.QuizFragment
 import com.example.mayank.kwizzapp.userInfo.UserInfoFragment
 import net.rmitsolutions.mfexpert.lms.helpers.switchToFragment
+import org.jetbrains.anko.find
+import org.jetbrains.anko.toast
 
 
 class MainActivity : AppCompatActivity(), LoginFragment.OnFragmentInteractionListener,
@@ -21,10 +26,15 @@ GameMenuFragment.OnFragmentInteractionListener, GameDetailFragment.OnFragmentInt
 QuizFragment.OnFragmentInteractionListener, GameResultFragment.OnFragmentInteractionListener{
 
     private lateinit var libPlayGame : LibPlayGame
+    private lateinit var toolBar : Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        toolBar = find(R.id.toolbar)
+        setSupportActionBar(toolBar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         val loginFragment = LoginFragment()
         switchToFragment(loginFragment)

@@ -5,9 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ProgressBar
 import android.widget.TextSwitcher
 import android.widget.TextView
@@ -64,7 +62,7 @@ class QuizFragment : Fragment(), View.OnClickListener {
     private var timeCountInMilliSeconds = (1 * 10000).toLong()
     private var textViewSeconds: TextView? = null
     private lateinit var compositeDisposable: CompositeDisposable
-    private var show : Boolean = false
+    private var show: Boolean = false
 
     private enum class TimerStatus {
         STARTED,
@@ -76,6 +74,7 @@ class QuizFragment : Fragment(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         arguments?.let {
             amount = it.getDouble(AMOUNT)
             subjectCode = it.getString(SUBJECT_CODE)
@@ -98,18 +97,18 @@ class QuizFragment : Fragment(), View.OnClickListener {
         val view = inflater.inflate(R.layout.fragment_quiz, container, false)
         progressBar = view.find(R.id.progressBar)
         textViewSeconds = view.find(R.id.textViewSeconds)
-        for (id in CLICKABLES){
+        for (id in CLICKABLES) {
             view.find<TextView>(id).setOnClickListener(this)
         }
         return view
     }
 
     override fun onClick(view: View?) {
-        when(view?.id){
-            R.id.textViewOptionA ->{
-                if (view.find<TextView>(R.id.textViewOptionA).text == answer){
+        when (view?.id) {
+            R.id.textViewOptionA -> {
+                if (view.find<TextView>(R.id.textViewOptionA).text == answer) {
                     rightAnswers++
-                }else {
+                } else {
                     wrongAnswers++
                 }
 
@@ -117,10 +116,10 @@ class QuizFragment : Fragment(), View.OnClickListener {
 
             }
 
-            R.id.textViewOptionB ->{
-                if (view.find<TextView>(R.id.textViewOptionB).text == answer){
+            R.id.textViewOptionB -> {
+                if (view.find<TextView>(R.id.textViewOptionB).text == answer) {
                     rightAnswers++
-                }else {
+                } else {
                     wrongAnswers++
                 }
 
@@ -128,30 +127,30 @@ class QuizFragment : Fragment(), View.OnClickListener {
 
             }
 
-            R.id.textViewOptionC ->{
-                if (view.find<TextView>(R.id.textViewOptionC).text == answer){
+            R.id.textViewOptionC -> {
+                if (view.find<TextView>(R.id.textViewOptionC).text == answer) {
                     rightAnswers++
-                }else {
+                } else {
                     wrongAnswers++
                 }
 
                 getQuestionFromServer()
             }
 
-            R.id.textViewOptionD ->{
-                if (view.find<TextView>(R.id.textViewOptionD).text == answer){
+            R.id.textViewOptionD -> {
+                if (view.find<TextView>(R.id.textViewOptionD).text == answer) {
                     rightAnswers++
-                }else {
+                } else {
                     wrongAnswers++
                 }
 
                 getQuestionFromServer()
             }
 
-            R.id.textViewOptionE ->{
-                if (view.find<TextView>(R.id.textViewOptionE).text == answer){
+            R.id.textViewOptionE -> {
+                if (view.find<TextView>(R.id.textViewOptionE).text == answer) {
                     rightAnswers++
-                }else {
+                } else {
                     wrongAnswers++
                 }
 
@@ -183,19 +182,20 @@ class QuizFragment : Fragment(), View.OnClickListener {
             compositeDisposable.add(questionService.getQuestion(randomNumbers[q].toString(), subjectCode!!)
                     .processRequest(
                             { response ->
-                                if (response.isSuccess){
+                                if (response.isSuccess) {
                                     q++
                                     setQuestionTextViews(response)
                                     reset()
-                                }else{
+                                } else {
                                     stopCountdown()
                                     showDialog(response.message)
 
                                 }
-                            }, { err -> showDialog(err.toString())
+                            }, { err ->
+                        showDialog(err.toString())
                     }
                     ))
-        }else {
+        } else {
             logD("Question Finished!")
             stopCountdown()
             changeToResultScreen()
@@ -203,21 +203,21 @@ class QuizFragment : Fragment(), View.OnClickListener {
 
     }
 
-    private fun showDialog(message : String){
-        if (!show){
+    private fun showDialog(message: String) {
+        if (!show) {
             showDialog(activity!!, "Error", message)
             show = true
         }
     }
 
-    private fun stopCountdown(){
-        if (countDownTimer!=null){
+    private fun stopCountdown() {
+        if (countDownTimer != null) {
             countDownTimer?.cancel()
         }
     }
 
     private fun changeToResultScreen() {
-        if (countDownTimer!=null){
+        if (countDownTimer != null) {
             countDownTimer?.cancel()
         }
         libPlayGame?.broadcastResult('R', rightAnswers, wrongAnswers, dropQuestions)
@@ -234,12 +234,12 @@ class QuizFragment : Fragment(), View.OnClickListener {
 
     private fun setQuestionTextViews(response: Questions.Question) {
         answer = response.answer!!
-        view?.find<TextView>(R.id.text_view_question)?.text = "${response.question}"
-        view?.find<TextView>(R.id.textViewOptionA)?.text =  "${response.optionA}"
-        view?.find<TextView>(R.id.textViewOptionB)?.text = "${response.optionB}"
-        view?.find<TextView>(R.id.textViewOptionC)?.text = "${response.optionC}"
-        view?.find<TextView>(R.id.textViewOptionD)?.text = "${response.optionD}"
-        view?.find<TextView>(R.id.textViewOptionE)?.text = "${response.optionE}"
+        view?.find<TextView>(R.id.text_view_question)?.text = "Q. ${response.question}"
+        view?.find<TextView>(R.id.textViewOptionA)?.text = "1. ${response.optionA}"
+        view?.find<TextView>(R.id.textViewOptionB)?.text = "2. ${response.optionB}"
+        view?.find<TextView>(R.id.textViewOptionC)?.text = "3. ${response.optionC}"
+        view?.find<TextView>(R.id.textViewOptionD)?.text = "4. ${response.optionD}"
+        view?.find<TextView>(R.id.textViewOptionE)?.text = "5. ${response.optionE}"
     }
 
     private fun getRandomNonRepeatingIntegers(size: Int, min: Int,
@@ -282,9 +282,9 @@ class QuizFragment : Fragment(), View.OnClickListener {
 
     private fun setTimerValues() {
         var time = -1
-        time = if (subjectCode == "aptitude"){
+        time = if (subjectCode == "aptitude") {
             6
-        }else{
+        } else {
             1
         }
         timeCountInMilliSeconds = (time * 10 * 1000).toLong()
@@ -306,10 +306,10 @@ class QuizFragment : Fragment(), View.OnClickListener {
 
             override fun onFinish() {
                 timerStatus = TimerStatus.STOPPED
-                if(q<10){
+                if (q < 10) {
                     dropQuestions++
                     getQuestionFromServer()
-                }else {
+                } else {
                     dropQuestions++
                     changeToResultScreen()
                     // Broadcast score here
@@ -322,6 +322,27 @@ class QuizFragment : Fragment(), View.OnClickListener {
 
     private fun secondsFormatter(milliSeconds: Long): String {
         return String.format("%02d", TimeUnit.MILLISECONDS.toSeconds(milliSeconds) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(milliSeconds)))
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        activity?.menuInflater?.inflate(R.menu.quiz_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.skip -> {
+                if (q < 10) {
+                    dropQuestions++
+                    getQuestionFromServer()
+                } else {
+                    dropQuestions++
+                    changeToResultScreen()
+                }
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+
     }
 
     fun onButtonPressed(uri: Uri) {
