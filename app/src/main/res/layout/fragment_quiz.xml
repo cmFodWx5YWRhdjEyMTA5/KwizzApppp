@@ -5,5 +5,5 @@
     android:layout_height="match_parent"
     tools:context=".quiz.QuizFragment">
 
-    <include layout="@layout/quiz_layout"/>
+    <include layout="@layout/test_layout"/>
 </FrameLayout>

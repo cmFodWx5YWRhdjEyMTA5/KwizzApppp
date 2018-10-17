@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v4.app.Fragment
+import android.support.v7.widget.CardView
 import android.view.*
 import android.widget.ProgressBar
 import android.widget.TextSwitcher
@@ -69,7 +70,7 @@ class QuizFragment : Fragment(), View.OnClickListener {
         STOPPED
     }
 
-    private val CLICKABLES = intArrayOf(R.id.textViewOptionA, R.id.textViewOptionB, R.id.textViewOptionC, R.id.textViewOptionD, R.id.textViewOptionE)
+    private val CLICKABLES = intArrayOf(R.id.layoutOptionA, R.id.layoutOptionB, R.id.layoutOptionC, R.id.layoutOptionD, R.id.layoutOptionE)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,14 +99,14 @@ class QuizFragment : Fragment(), View.OnClickListener {
         progressBar = view.find(R.id.progressBar)
         textViewSeconds = view.find(R.id.textViewSeconds)
         for (id in CLICKABLES) {
-            view.find<TextView>(id).setOnClickListener(this)
+            view.find<CardView>(id).setOnClickListener(this)
         }
         return view
     }
 
     override fun onClick(view: View?) {
         when (view?.id) {
-            R.id.textViewOptionA -> {
+            R.id.layoutOptionA -> {
                 if (view.find<TextView>(R.id.textViewOptionA).text == answer) {
                     rightAnswers++
                 } else {
@@ -116,7 +117,7 @@ class QuizFragment : Fragment(), View.OnClickListener {
 
             }
 
-            R.id.textViewOptionB -> {
+            R.id.layoutOptionB -> {
                 if (view.find<TextView>(R.id.textViewOptionB).text == answer) {
                     rightAnswers++
                 } else {
@@ -127,7 +128,7 @@ class QuizFragment : Fragment(), View.OnClickListener {
 
             }
 
-            R.id.textViewOptionC -> {
+            R.id.layoutOptionC -> {
                 if (view.find<TextView>(R.id.textViewOptionC).text == answer) {
                     rightAnswers++
                 } else {
@@ -137,7 +138,7 @@ class QuizFragment : Fragment(), View.OnClickListener {
                 getQuestionFromServer()
             }
 
-            R.id.textViewOptionD -> {
+            R.id.layoutOptionD -> {
                 if (view.find<TextView>(R.id.textViewOptionD).text == answer) {
                     rightAnswers++
                 } else {
@@ -147,7 +148,7 @@ class QuizFragment : Fragment(), View.OnClickListener {
                 getQuestionFromServer()
             }
 
-            R.id.textViewOptionE -> {
+            R.id.layoutOptionE -> {
                 if (view.find<TextView>(R.id.textViewOptionE).text == answer) {
                     rightAnswers++
                 } else {
