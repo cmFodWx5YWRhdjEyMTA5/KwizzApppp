@@ -14,6 +14,7 @@ import com.example.mayank.googleplaygame.network.wallet.Transactions
 import com.example.mayank.kwizzapp.R
 import com.example.mayank.kwizzapp.databinding.AddPointsFragmentBinding
 import com.technoholicdeveloper.kwizzapp.gateway.PayUMoney
+import kotlinx.android.synthetic.main.add_points_layout.*
 import net.rmitsolutions.mfexpert.lms.helpers.*
 import org.jetbrains.anko.find
 
@@ -42,8 +43,20 @@ class AddPointsFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.buttonPay -> addPoints()
+            R.id.buttonPay -> {
+                if (validate()) addPoints()
+            }
         }
+    }
+
+    private fun validate(): Boolean {
+        if (dataBinding.addPointsVm?.amount.isNullOrBlank()){
+            inputLayoutAmount.error = " Enter valid Amount"
+            return false
+        }else {
+            inputLayoutAmount.error = null
+        }
+        return true
     }
 
     private fun addPoints() {

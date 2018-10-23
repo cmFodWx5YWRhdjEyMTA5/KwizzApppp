@@ -8,12 +8,28 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:background="@color/window_background"
             android:orientation="vertical"
             android:padding="@dimen/dimen_10dp">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_10dp">
+
+                <TextView
+                    android:id="@+id/walletPoints"
+                    style="@style/SmallTitleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/space10dp"
+                    android:padding="@dimen/space10dp"
+                    android:text="Points - Loading..."
+                    android:textColor="@color/primaryDarkColor" />
+            </android.support.v7.widget.CardView>
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -8,7 +8,6 @@ import android.support.v7.widget.CardView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import com.example.mayank.kwizzapp.KwizzApp
 
 import com.example.mayank.kwizzapp.R
@@ -17,10 +16,7 @@ import com.example.mayank.kwizzapp.helpers.processRequest
 import com.example.mayank.kwizzapp.network.ITransaction
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.wallet_menu_layout.*
-import net.rmitsolutions.mfexpert.lms.helpers.SharedPrefKeys
-import net.rmitsolutions.mfexpert.lms.helpers.getPref
-import net.rmitsolutions.mfexpert.lms.helpers.showDialog
-import net.rmitsolutions.mfexpert.lms.helpers.switchToFragment
+import net.rmitsolutions.mfexpert.lms.helpers.*
 import org.jetbrains.anko.find
 import javax.inject.Inject
 
@@ -45,7 +41,13 @@ class WalletMenuFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_wallet_menu, container, false)
         // Getting balance from server
-        //checkBalance()
+        when {
+            activity?.isNetConnected()!! -> checkBalance()
+            else -> {
+                toast("No Internet")
+                walletPoints.text = "Error - No Internet !"
+            }
+        }
         for (id in CLICKABLES) view.find<CardView>(id).setOnClickListener(this)
         return view
     }
@@ -80,10 +82,12 @@ class WalletMenuFragment : Fragment(), View.OnClickListener {
                     .processRequest(
                             { response ->
                                 when {
-                                    //response.isSuccess -> balanceTextView.text ="${activity?.getString(R.string.rupeeSymbol)} - ${response.balance}"
+                                    response.isSuccess -> walletPoints.text ="Points - ${response.balance} ${activity?.getString(R.string.rupeeSymbol)}"
+                                    else -> walletPoints.text = "Failed !"
                                 }
                             },
                             { err->
+                                walletPoints.text = "Failed !"
                                 showDialog(activity!!, "Error", err.toString())
                             }
                     ))

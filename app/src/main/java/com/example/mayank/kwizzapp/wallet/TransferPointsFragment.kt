@@ -19,9 +19,7 @@ import com.example.mayank.kwizzapp.helpers.processRequest
 import com.example.mayank.kwizzapp.network.ITransaction
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.transfer_points_layout.*
-import net.rmitsolutions.mfexpert.lms.helpers.SharedPrefKeys
-import net.rmitsolutions.mfexpert.lms.helpers.getPref
-import net.rmitsolutions.mfexpert.lms.helpers.showDialog
+import net.rmitsolutions.mfexpert.lms.helpers.*
 import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject
@@ -33,8 +31,8 @@ class TransferPointsFragment : Fragment(), View.OnClickListener {
     @Inject
     lateinit var transactionService: ITransaction
     private lateinit var compositeDisposable: CompositeDisposable
-    private lateinit var dataBinding : TransferPointsBinding
-    private lateinit var transferPoints : Transactions.TransferPoints
+    private lateinit var dataBinding: TransferPointsBinding
+    private lateinit var transferPoints: Transactions.TransferPoints
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,8 +45,8 @@ class TransferPointsFragment : Fragment(), View.OnClickListener {
         compositeDisposable = CompositeDisposable()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
-        dataBinding=DataBindingUtil.inflate(inflater,R.layout.fragment_transfer_points, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_transfer_points, container, false)
         val view = dataBinding.root
         transferPoints = Transactions.TransferPoints()
         dataBinding.transferPointsVm = transferPoints
@@ -57,7 +55,7 @@ class TransferPointsFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        when(v?.id){
+        when (v?.id) {
             R.id.buttonTransferPoints -> transferPoint()
         }
     }
@@ -69,20 +67,30 @@ class TransferPointsFragment : Fragment(), View.OnClickListener {
         val mobileNumber = activity?.getPref(SharedPrefKeys.MOBILE_NUMBER, "")
         val email = activity?.getPref(SharedPrefKeys.EMAIL, "")
         val displayName = activity?.getPref(SharedPrefKeys.DISPLAY_NAME, "")
-        val txnId = displayName+System.currentTimeMillis()
+        val txnId = displayName + System.currentTimeMillis()
         val transferTo = dataBinding.transferPointsVm?.transferTo
 
-        if (validate()){
-            compositeDisposable.add(transactionService.transferPoints(firstName!!, lastName!!, displayName!!,mobileNumber!!, transferTo!!,
-                    "",email!!,"Transfer Points",amount!!,txnId,"",System.currentTimeMillis().toString(),System.currentTimeMillis().toString(),"","","Debited","success")
+        if (validate()) {
+            showProgress()
+            compositeDisposable.add(transactionService.transferPoints(firstName!!, lastName!!, displayName!!, mobileNumber!!, transferTo!!,
+                    "", email!!, "Transfer Points", amount!!, txnId, "", System.currentTimeMillis().toString(), System.currentTimeMillis().toString(), "", "", "Debited", "success")
                     .processRequest(
                             { response ->
                                 when {
-                                    response.isSuccess -> startActivity<WalletActivity>()
-                                    else -> showDialog(activity!!, "Error", response.message)
+                                    response.isSuccess -> {
+                                        hideProgress()
+                                        toast(response.message)
+                                        startActivity<WalletActivity>()
+                                        activity?.finish()
+                                    }
+                                    else ->{
+                                        hideProgress()
+                                        showDialog(activity!!, "Error", response.message)
+                                    }
                                 }
                             },
-                            { err->
+                            { err ->
+                                hideProgress()
                                 showDialog(activity!!, "Error", err.toString())
                             }
                     ))
@@ -115,10 +123,10 @@ class TransferPointsFragment : Fragment(), View.OnClickListener {
 
         val mobileNumber = activity?.getPref(SharedPrefKeys.MOBILE_NUMBER, "")
         when {
-            mobileNumber!="" -> if (dataBinding.transferPointsVm?.transferTo == mobileNumber){
+            mobileNumber != "" -> if (dataBinding.transferPointsVm?.transferTo == mobileNumber) {
                 inputLayoutMobileNumber.error = "Mobile number must be different from your number"
                 return false
-            }else{
+            } else {
                 inputLayoutMobileNumber.error = null
             }
         }

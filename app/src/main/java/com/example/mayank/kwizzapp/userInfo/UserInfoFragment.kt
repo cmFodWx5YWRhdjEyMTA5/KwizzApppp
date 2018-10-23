@@ -39,9 +39,6 @@ class UserInfoFragment : Fragment(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
         compositeDisposable = CompositeDisposable()
         val depComponent = DaggerInjectFragmentComponent.builder()
                 .applicationComponent(KwizzApp.applicationComponent)

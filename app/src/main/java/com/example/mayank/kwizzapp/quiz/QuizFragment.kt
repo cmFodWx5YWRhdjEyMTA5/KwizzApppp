@@ -23,6 +23,7 @@ import io.reactivex.disposables.CompositeDisposable
 import net.rmitsolutions.mfexpert.lms.helpers.logD
 import net.rmitsolutions.mfexpert.lms.helpers.showDialog
 import net.rmitsolutions.mfexpert.lms.helpers.switchToFragment
+import net.rmitsolutions.mfexpert.lms.helpers.toast
 import org.jetbrains.anko.find
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -154,7 +155,6 @@ class QuizFragment : Fragment(), View.OnClickListener {
                 } else {
                     wrongAnswers++
                 }
-
                 getQuestionFromServer()
             }
         }

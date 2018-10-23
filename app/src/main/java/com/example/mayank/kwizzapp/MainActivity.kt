@@ -1,5 +1,6 @@
 package com.example.mayank.kwizzapp
 
+import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -15,6 +16,7 @@ import com.example.mayank.kwizzapp.libgame.LibPlayGame
 import com.example.mayank.kwizzapp.login.LoginFragment
 import com.example.mayank.kwizzapp.quiz.QuizFragment
 import com.example.mayank.kwizzapp.userInfo.UserInfoFragment
+import net.rmitsolutions.mfexpert.lms.helpers.showDialog
 import net.rmitsolutions.mfexpert.lms.helpers.switchToFragment
 import org.jetbrains.anko.find
 import org.jetbrains.anko.toast
@@ -48,8 +50,10 @@ QuizFragment.OnFragmentInteractionListener, GameResultFragment.OnFragmentInterac
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        libPlayGame = LibPlayGame(this)
-        libPlayGame.onActivityResult(requestCode, resultCode, data)
+        if (resultCode== Activity.RESULT_OK){
+            libPlayGame = LibPlayGame(this)
+            libPlayGame.onActivityResult(requestCode, resultCode, data)
+        }
     }
 
 }

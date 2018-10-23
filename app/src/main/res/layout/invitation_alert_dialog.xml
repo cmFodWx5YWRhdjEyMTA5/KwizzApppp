@@ -2,31 +2,31 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/invititation_dialog_background"
     android:gravity="center"
-    android:orientation="vertical"
-    android:background="@drawable/invititation_dialog_background">
+    android:orientation="vertical">
 
 
     <TextView
-        android:textColor="@color/primary_text"
         android:id="@+id/textViewTitle"
+        style="@style/TitleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:padding="8dp"
         android:text="Label Text"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textColor="@color/primary_text"
+        android:textSize="16sp" />
 
     <TextView
-        android:textColor="@color/secondary_text"
         android:id="@+id/textViewMessage"
+        style="@style/DescriptionText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
         android:layout_marginTop="8dp"
+        android:layout_marginRight="4dp"
         android:padding="8dp"
         android:text="Message Text"
         android:textSize="14sp" />
@@ -40,22 +40,22 @@
         android:padding="@dimen/dimen_16dp">
 
         <android.support.v7.widget.AppCompatButton
-            android:textColor="@color/white"
-            android:background="@color/primaryColor"
             android:id="@+id/buttonAccept"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/round_corner_button"
             android:text="Accept"
+            android:textColor="@color/white"
             android:textStyle="bold" />
 
         <android.support.v7.widget.AppCompatButton
-            android:textColor="@color/white"
-            android:background="@color/red"
             android:id="@+id/buttonReject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dimen_8dp"
+            android:background="@drawable/leave_room"
             android:text="Reject"
+            android:textColor="@color/white"
             android:textStyle="bold" />
 
     </LinearLayout>

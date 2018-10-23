@@ -95,6 +95,7 @@ class WithdrawalPointsFragment : Fragment(), View.OnClickListener {
 
         when {
             validate() -> {
+                showProgress()
                 activity?.putPref(SharedPrefKeys.ACCOUNT_NUMBER, accountNumber)
                 activity?.putPref(SharedPrefKeys.IFSC_CODE, ifscCode)
                 compositeDisposable.add(transactionService.withdrawalPoints(firstName!!, lastName!!,displayName!!,mobileNumber!!,"",
@@ -103,13 +104,18 @@ class WithdrawalPointsFragment : Fragment(), View.OnClickListener {
                         .processRequest(
                                 { response ->
                                     if (response.isSuccess){
+                                        toast("Withdrawal request register successfully")
+                                        hideProgress()
                                         startActivity<WalletActivity>()
+                                        activity?.finish()
                                     }else{
                                         showDialog(activity!!,"Error",response.message)
+                                        hideProgress()
                                     }
                                 },
                                 { err ->
                                     showDialog(activity!!, "Error", err.toString())
+                                    hideProgress()
                                 }
                         ))
             }

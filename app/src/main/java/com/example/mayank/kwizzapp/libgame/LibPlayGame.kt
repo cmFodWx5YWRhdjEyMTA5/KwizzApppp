@@ -9,6 +9,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Window
 import android.view.WindowManager
@@ -568,12 +570,14 @@ class LibPlayGame(private val activity: Activity) {
             clearData()
             val intent = Intent(activity, MainActivity::class.java)
             activity.startActivity(intent)
+            activity.finish()
 
         } else {
             Log.d(TAG, "Room is null")
             val intent = Intent(activity, MainActivity::class.java)
             activity.startActivity(intent)
             clearData()
+            activity.finish()
         }
     }
 
@@ -628,6 +632,9 @@ class LibPlayGame(private val activity: Activity) {
             sendReliableMessage(p, mResultBuf)
         }
     }
+
+    // Switch UI to the given fragment
+
 
 
 }

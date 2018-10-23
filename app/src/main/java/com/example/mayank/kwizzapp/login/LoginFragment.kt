@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,9 +26,6 @@ import net.rmitsolutions.mfexpert.lms.helpers.*
 import org.jetbrains.anko.find
 import android.support.v7.app.AppCompatActivity
 
-
-
-
 class LoginFragment : Fragment(), View.OnClickListener {
 
     private var listener: OnFragmentInteractionListener? = null
@@ -41,8 +37,6 @@ class LoginFragment : Fragment(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -123,7 +117,11 @@ class LoginFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.buttonSignIn -> {
-                startSignInIntent()
+                if (activity?.isNetConnected()!!){
+                    startSignInIntent()
+                }else{
+                    toast("No Internet !")
+                }
             }
         }
     }
@@ -149,8 +147,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
                 if (message == null || message.isEmpty()) {
                     message = getString(R.string.signin_other_error)
                 }
-                AlertDialog.Builder(activity!!).setMessage(message)
-                        .setNeutralButton(android.R.string.ok, null).show()
+                showDialog(activity!!, " Error", message)
             }
         }
     }

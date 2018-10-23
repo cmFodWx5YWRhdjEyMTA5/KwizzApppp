@@ -88,7 +88,7 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
         textLabel = view.find(R.id.textViewLabel)
         view.find<Button>(R.id.buttonLeaveRoom).setOnClickListener(this)
         for (id in CLICKABLES) {
-            view.findViewById<ImageButton>(id).setOnClickListener(this)
+            view.findViewById<ImageView>(id).setOnClickListener(this)
         }
         return view
     }

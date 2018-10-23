@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.CardView
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -19,6 +20,7 @@ import com.example.mayank.kwizzapp.KwizzApp
 import com.example.mayank.kwizzapp.R
 import com.example.mayank.kwizzapp.dependency.components.DaggerInjectFragmentComponent
 import com.example.mayank.kwizzapp.dialog.ProgressDialog
+import com.example.mayank.kwizzapp.dialog.ShowDialog
 import com.example.mayank.kwizzapp.gameresult.adapter.ResultViewAdapter
 import com.example.mayank.kwizzapp.helpers.processRequest
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.displayName
@@ -43,6 +45,7 @@ import io.reactivex.disposables.CompositeDisposable
 import net.rmitsolutions.mfexpert.lms.helpers.logD
 import net.rmitsolutions.mfexpert.lms.helpers.showDialog
 import org.jetbrains.anko.find
+import org.jetbrains.anko.support.v4.find
 import java.util.*
 import javax.inject.Inject
 
@@ -63,9 +66,11 @@ class GameResultFragment : Fragment(), View.OnClickListener {
     private var libPlayGame: LibPlayGame? = null
     private lateinit var buttonBack: Button
     private lateinit var list: MutableList<ResultViewModel>
+    private lateinit var showDialog: ShowDialog
 
     private lateinit var showResultProgress: ProgressDialog
     private val syncIntentFilter = IntentFilter(ACTION_RESULT_RECEIVED)
+    private lateinit var resultLayout : CardView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,6 +92,8 @@ class GameResultFragment : Fragment(), View.OnClickListener {
         showResultProgress = ProgressDialog()
         list = mutableListOf<ResultViewModel>()
 
+        showDialog = ShowDialog()
+
         context?.registerReceiver(resultBroadcastReceiver, syncIntentFilter);
     }
 
@@ -97,6 +104,8 @@ class GameResultFragment : Fragment(), View.OnClickListener {
         resultRecyclerView.setHasFixedSize(true)
         resultRecyclerView.addItemDecoration(DividerItemDecoration(activity, LinearLayoutManager.VERTICAL))
         buttonBack = view.find(R.id.buttonBack)
+        resultLayout = view.find(R.id.result_layout)
+        resultLayout.visibility = View.GONE
         buttonBack.setOnClickListener(this)
         resultRecyclerView.adapter = adapter
         showResultProgress.showResultProgress(activity!!)
@@ -183,22 +192,25 @@ class GameResultFragment : Fragment(), View.OnClickListener {
         if (resultList!![0].playerName == displayName) {
             if (resultList[0].rightAnswers == resultList[1].rightAnswers) {
                 if (!show) {
-                    showDialog(activity!!, "Result", "Sorry! Its a Tie!\nYour bid points will credited to your wallet.")
+                    showDialog.showResultDialog(activity!!, "Sorry", "It's a Tie","Your bid points will credited to your wallet", R.mipmap.ic_loose)
                     updateBalance(displayName!!, amount!!, Calendar.getInstance().time.toString(), "Sample Message")
                     show = true
+                    resultLayout.visibility = View.VISIBLE
                 }
             } else {
                 if (!show) {
-                    showDialog(activity!!, "Result", "Congrats! You Win!\nYour winning points will credited to your wallet.")
+                    showDialog.showResultDialog(activity!!,"Congrats", "You Win !", "Your winning points will credited to your wallet", R.mipmap.ic_done)
                     val totalAmount = (amount?.times(mFinishedParticipants.size))?.times(80)?.div(100)
                     updateBalance(displayName!!, totalAmount!!, Calendar.getInstance().time.toString(), "Sample Message")
                     show = true
+                    resultLayout.visibility = View.VISIBLE
                 }
             }
         } else {
             if (!show) {
-                showDialog(activity!!, "Result", "Sorry! You Loose")
+                showDialog.showResultDialog(activity!!, "Sorry", "You Loose !", "Better luck next time", R.mipmap.ic_loose)
                 show = true
+                resultLayout.visibility = View.VISIBLE
             }
         }
     }
