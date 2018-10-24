@@ -20,6 +20,9 @@ import net.rmitsolutions.mfexpert.lms.helpers.showDialog
 import net.rmitsolutions.mfexpert.lms.helpers.switchToFragment
 import org.jetbrains.anko.find
 import org.jetbrains.anko.toast
+import android.support.v7.app.AppCompatDelegate
+
+
 
 
 class MainActivity : AppCompatActivity(), LoginFragment.OnFragmentInteractionListener,
@@ -40,8 +43,6 @@ QuizFragment.OnFragmentInteractionListener, GameResultFragment.OnFragmentInterac
 
         val loginFragment = LoginFragment()
         switchToFragment(loginFragment)
-
-
     }
 
     override fun onFragmentInteraction(uri: Uri) {

@@ -51,6 +51,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         (activity as AppCompatActivity).supportActionBar?.hide()
+        showProgress()
         signInSilently()
     }
 
@@ -69,6 +70,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
                 val signedInAccount = task.result
                 onConnected(signedInAccount!!)
             } else {
+                hideProgress()
                 logD("Task is not successful")
                 // Player will need to sign-in explicitly using via UI
             }
@@ -104,6 +106,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
             val libPlayGame = LibPlayGame(activity!!)
             GameConstants.mInvitationClient = Games.getInvitationsClient(activity!!, libPlayGame.getSignInAccount()!!)
             GameConstants.mInvitationClient?.registerInvitationCallback(libPlayGame.mInvitationCallbackHandler)
+            hideProgress()
             if (email == "" && mobileNumber == "") {
                 val userInfoFragment = UserInfoFragment()
                 switchToFragment(userInfoFragment)

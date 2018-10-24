@@ -8,6 +8,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -101,11 +102,13 @@ class LibPlayGame(private val activity: Activity) {
     }
 
     fun showInvitationInbox() {
+        activity.hideProgress()
         mInvitationClient?.invitationInboxIntent
                 ?.addOnSuccessListener { intent -> activity.startActivityForResult(intent, RC_INVITATION_INBOX) }
     }
 
     fun invitePlayers() {
+        activity.hideProgress()
         Log.d(TAG, "Multiplayer clicked")
         GameConstants.mRealTimeMultiplayerClient?.getSelectOpponentsIntent(1, 7)?.addOnSuccessListener { intent ->
             activity.startActivityForResult(intent, GameConstants.RC_SELECT_PLAYERS)
@@ -312,6 +315,7 @@ class LibPlayGame(private val activity: Activity) {
     }
 
     private fun showWaitingRoom(room: Room) {
+        activity.hideProgress()
         val MIN_PLAYERS = Integer.MAX_VALUE
         GameConstants.mRealTimeMultiplayerClient?.getWaitingRoomIntent(room, MIN_PLAYERS)
                 ?.addOnSuccessListener { intent ->
@@ -406,7 +410,20 @@ class LibPlayGame(private val activity: Activity) {
             val inviter = invitation.inviter
             val name = inviter.displayName
             Log.d(TAG, "Inviter Name - $name Inviter - $inviter")
-            dialog(activity, "Invitation Received", "${invitation.inviter.displayName} is challenging you to a game!", invitation.invitationId)
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
+                dialog(activity, "Invitation Received", "${invitation.inviter.displayName} is challenging you to a game!", invitation.invitationId)
+            } else {
+                AlertDialog.Builder(activity).setTitle("Invitation Received").setMessage("${invitation.inviter.displayName} is challenging you to a game!")
+                        .setPositiveButton("Accept") { dialog, which ->
+                            activity.showProgress()
+                            acceptInviteToRoom(invitation.invitationId)
+                            dialog?.dismiss()
+                        }.setNegativeButton("Reject") { dialog, which ->
+                            declineInvitation(invitation.invitationId)
+                            dialog?.dismiss()
+                        }.show()
+            }
+
             keepScreenOn()
         }
 
@@ -479,6 +496,7 @@ class LibPlayGame(private val activity: Activity) {
                     if (intent != null) {
                         handleSelectPlayersResult(resultCode, intent)
                     } else {
+                        activity.hideProgress()
                         activity.showDialog(activity, "Error", "Some error occurred please try again...")
                     }
                 }
@@ -499,9 +517,9 @@ class LibPlayGame(private val activity: Activity) {
             }
         } else if (requestCode == GameConstants.RC_INVITATION_INBOX) {
 
+            activity.hideProgress()
             if (resultCode != Activity.RESULT_OK) {
                 // Canceled or some error.
-                activity.hideProgress()
                 return;
             }
 
@@ -560,6 +578,7 @@ class LibPlayGame(private val activity: Activity) {
         Log.d(TAG, "Leaving room.")
         //mSecondsLeft = 0
         stopKeepingScreenOn()
+        activity.hideProgress()
         if (GameConstants.mRoomId != null) {
             GameConstants.mRealTimeMultiplayerClient?.leave(GameConstants.mRoomConfig!!, GameConstants.mRoomId!!)
                     ?.addOnCompleteListener {
@@ -614,13 +633,13 @@ class LibPlayGame(private val activity: Activity) {
 
     private var mResultBuf = ByteArray(5)
 
-    fun broadcastResult(state :Char, right : Int, wrong: Int, drop : Int){
+    fun broadcastResult(state: Char, right: Int, wrong: Int, drop: Int) {
         mResultBuf[0] = state.toByte()
         mResultBuf[1] = right.toByte()
         mResultBuf[2] = wrong.toByte()
         mResultBuf[3] = drop.toByte()
 
-        for (p in GameConstants.mParticipants!!){
+        for (p in GameConstants.mParticipants!!) {
             if (p.participantId == GameConstants.mMyId) {
                 continue
             }
@@ -634,7 +653,6 @@ class LibPlayGame(private val activity: Activity) {
     }
 
     // Switch UI to the given fragment
-
 
 
 }

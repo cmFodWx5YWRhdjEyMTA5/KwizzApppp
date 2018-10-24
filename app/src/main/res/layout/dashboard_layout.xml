@@ -57,9 +57,11 @@
                             android:background="@color/lightGrey" />
 
                         <TextView
+                            android:layout_marginStart="@dimen/dimen_5dp"
+                            android:layout_marginEnd="@dimen/dimen_5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimen_10dp"
+                            android:layout_marginTop="@dimen/space10dp"
                             android:gravity="center"
                             android:padding="@dimen/dimen_5dp"
                             android:text="Start Play Here"
@@ -104,6 +106,8 @@
                             android:background="@color/lightGrey" />
 
                         <TextView
+                            android:layout_marginStart="@dimen/dimen_5dp"
+                            android:layout_marginEnd="@dimen/dimen_5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_10dp"
@@ -161,6 +165,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_10dp"
+                            android:layout_marginStart="@dimen/dimen_5dp"
+                            android:layout_marginEnd="@dimen/dimen_5dp"
                             android:gravity="center"
                             android:padding="@dimen/dimen_5dp"
                             android:text="See your Achievements here"
@@ -205,6 +211,8 @@
                             android:background="@color/lightGrey" />
 
                         <TextView
+                            android:layout_marginStart="@dimen/dimen_5dp"
+                            android:layout_marginEnd="@dimen/dimen_5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_10dp"
@@ -259,6 +267,8 @@
                             android:background="@color/lightGrey" />
 
                         <TextView
+                            android:layout_marginStart="@dimen/dimen_5dp"
+                            android:layout_marginEnd="@dimen/dimen_5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_10dp"
@@ -306,6 +316,8 @@
                             android:background="@color/lightGrey" />
 
                         <TextView
+                            android:layout_marginStart="@dimen/dimen_5dp"
+                            android:layout_marginEnd="@dimen/dimen_5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_10dp"

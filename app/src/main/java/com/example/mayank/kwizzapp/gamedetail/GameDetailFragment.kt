@@ -78,7 +78,12 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
         subjectList = resources.getStringArray(R.array.subjectList)
         subjectCode = resources.getStringArray(R.array.subject_code)
         amountList = resources.getStringArray(R.array.amount)
-        activity?.registerReceiver(messageBroadcastReceiver, syncIntentFilter);
+        activity?.registerReceiver(messageBroadcastReceiver, syncIntentFilter)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        activity?.registerReceiver(messageBroadcastReceiver, syncIntentFilter)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

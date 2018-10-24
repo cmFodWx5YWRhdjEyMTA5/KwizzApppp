@@ -20,10 +20,7 @@ import com.example.mayank.kwizzapp.libgame.LibPlayGame
 import com.example.mayank.kwizzapp.network.IQuestion
 import com.example.mayank.kwizzapp.viewmodels.Questions
 import io.reactivex.disposables.CompositeDisposable
-import net.rmitsolutions.mfexpert.lms.helpers.logD
-import net.rmitsolutions.mfexpert.lms.helpers.showDialog
-import net.rmitsolutions.mfexpert.lms.helpers.switchToFragment
-import net.rmitsolutions.mfexpert.lms.helpers.toast
+import net.rmitsolutions.mfexpert.lms.helpers.*
 import org.jetbrains.anko.find
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -162,16 +159,20 @@ class QuizFragment : Fragment(), View.OnClickListener {
 
 
     private fun getRowCountFromTable() {
+        showProgress()
         compositeDisposable.add(questionService.getNumberOfRows(subjectCode!!)
                 .processRequest(
                         { response ->
                             if (response.isSuccess) {
                                 getRandomNonRepeatingIntegers(response.rowCount!!, 1, response.rowCount)
+                                hideProgress()
                                 getQuestionFromServer()
                             } else {
+                                hideProgress()
                                 showDialog(activity!!, "Error", response.message)
                             }
                         }, { err ->
+                    hideProgress()
                     showDialog(activity!!, "Error", err.toString())
                 }))
     }
@@ -180,6 +181,7 @@ class QuizFragment : Fragment(), View.OnClickListener {
     private fun getQuestionFromServer() {
         show = false
         if (q < 10) {
+            showProgress()
             compositeDisposable.add(questionService.getQuestion(randomNumbers[q].toString(), subjectCode!!)
                     .processRequest(
                             { response ->
@@ -188,16 +190,19 @@ class QuizFragment : Fragment(), View.OnClickListener {
                                     setQuestionTextViews(response)
                                     reset()
                                 } else {
+                                    hideProgress()
                                     stopCountdown()
                                     showDialog(response.message)
 
                                 }
                             }, { err ->
+                        hideProgress()
                         showDialog(err.toString())
                     }
                     ))
         } else {
             logD("Question Finished!")
+            hideProgress()
             stopCountdown()
             changeToResultScreen()
         }
@@ -234,13 +239,14 @@ class QuizFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setQuestionTextViews(response: Questions.Question) {
+        hideProgress()
         answer = response.answer!!
-        view?.find<TextView>(R.id.text_view_question)?.text = "Q. ${response.question}"
-        view?.find<TextView>(R.id.textViewOptionA)?.text = "1. ${response.optionA}"
-        view?.find<TextView>(R.id.textViewOptionB)?.text = "2. ${response.optionB}"
-        view?.find<TextView>(R.id.textViewOptionC)?.text = "3. ${response.optionC}"
-        view?.find<TextView>(R.id.textViewOptionD)?.text = "4. ${response.optionD}"
-        view?.find<TextView>(R.id.textViewOptionE)?.text = "5. ${response.optionE}"
+        view?.find<TextView>(R.id.text_view_question)?.text = "${response.question}"
+        view?.find<TextView>(R.id.textViewOptionA)?.text = "${response.optionA}"
+        view?.find<TextView>(R.id.textViewOptionB)?.text = "${response.optionB}"
+        view?.find<TextView>(R.id.textViewOptionC)?.text = "${response.optionC}"
+        view?.find<TextView>(R.id.textViewOptionD)?.text = "${response.optionD}"
+        view?.find<TextView>(R.id.textViewOptionE)?.text = "${response.optionE}"
     }
 
     private fun getRandomNonRepeatingIntegers(size: Int, min: Int,
@@ -307,6 +313,7 @@ class QuizFragment : Fragment(), View.OnClickListener {
 
             override fun onFinish() {
                 timerStatus = TimerStatus.STOPPED
+                hideProgress()
                 if (q < 10) {
                     dropQuestions++
                     getQuestionFromServer()
@@ -343,7 +350,6 @@ class QuizFragment : Fragment(), View.OnClickListener {
             }
             else -> super.onOptionsItemSelected(item)
         }
-
     }
 
     fun onButtonPressed(uri: Uri) {

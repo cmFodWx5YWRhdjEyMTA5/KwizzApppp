@@ -22,7 +22,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".SampleActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".wallet.WalletActivity" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".SampleActivity"></activity>
     </application>
 
 </manifest>

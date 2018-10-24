@@ -1,10 +1,12 @@
 package com.example.mayank.kwizzapp.gameresult
 
+import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.CardView
@@ -18,6 +20,7 @@ import android.widget.Button
 import com.example.mayank.kwizzapp.KwizzApp
 
 import com.example.mayank.kwizzapp.R
+import com.example.mayank.kwizzapp.SampleActivity
 import com.example.mayank.kwizzapp.dependency.components.DaggerInjectFragmentComponent
 import com.example.mayank.kwizzapp.dialog.ProgressDialog
 import com.example.mayank.kwizzapp.dialog.ShowDialog
@@ -116,6 +119,7 @@ class GameResultFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.buttonBack -> {
+                context?.unregisterReceiver(resultBroadcastReceiver)
                 libPlayGame?.leaveRoom()
             }
         }
@@ -173,33 +177,38 @@ class GameResultFragment : Fragment(), View.OnClickListener {
                         resultList = modelList.sortedByDescending {
                             it.rightAnswers
                         }.toMutableList()
-
-                        showResultDialog(resultList)
-
                     } else {
                         logD("Display name are same")
                     }
+                    showResultDialog(resultList)
                 } else {
                 }
                 showResultProgress.hideProgressDialog()
                 buttonBack.visibility = View.VISIBLE
             }
             setRecyclerViewAdapter(resultList!!)
+            // Check this where to write coz of this also will be a problem
         }
     }
 
     private fun showResultDialog(resultList: MutableList<ResultViewModel>?) {
+
+//        logD("Result list size = ${resultList?.size}")
+//        for (data in resultList!!){
+//            logD("${data.playerName}    ${data.rightAnswers}    ${data.imageUri}")
+//        }
         if (resultList!![0].playerName == displayName) {
+            logD("List 0 score - ${resultList[0].rightAnswers} List 1 score - ${resultList[1].rightAnswers}")
             if (resultList[0].rightAnswers == resultList[1].rightAnswers) {
                 if (!show) {
-                    showDialog.showResultDialog(activity!!, "Sorry", "It's a Tie","Your bid points will credited to your wallet", R.mipmap.ic_loose)
+                    showDialogResult(activity!!, "Sorry", "It's a Tie","Your bid points will credited to your wallet", R.mipmap.ic_loose)
                     updateBalance(displayName!!, amount!!, Calendar.getInstance().time.toString(), "Sample Message")
                     show = true
                     resultLayout.visibility = View.VISIBLE
                 }
             } else {
                 if (!show) {
-                    showDialog.showResultDialog(activity!!,"Congrats", "You Win !", "Your winning points will credited to your wallet", R.mipmap.ic_done)
+                    showDialogResult(activity!!,"Congrats", "You Win !", "Your winning points will credited to your wallet", R.mipmap.ic_done)
                     val totalAmount = (amount?.times(mFinishedParticipants.size))?.times(80)?.div(100)
                     updateBalance(displayName!!, totalAmount!!, Calendar.getInstance().time.toString(), "Sample Message")
                     show = true
@@ -208,10 +217,18 @@ class GameResultFragment : Fragment(), View.OnClickListener {
             }
         } else {
             if (!show) {
-                showDialog.showResultDialog(activity!!, "Sorry", "You Loose !", "Better luck next time", R.mipmap.ic_loose)
+                showDialogResult(activity!!, "Sorry", "You Loose !", "Better luck next time", R.mipmap.ic_loose)
                 show = true
                 resultLayout.visibility = View.VISIBLE
             }
+        }
+    }
+
+    private fun showDialogResult(activity: Activity, bigTitle: String, smallTitle : String, message: String, imageResource : Int){
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1){
+            showDialog.showResultDialog(activity, bigTitle,smallTitle,message,imageResource)
+        }else{
+            showDialog(activity, bigTitle, "$smallTitle\n\n$message")
         }
     }
 
