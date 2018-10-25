@@ -6,8 +6,6 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.net.Uri
 import android.support.v7.widget.Toolbar
-import android.view.Menu
-import android.view.MenuItem
 import com.example.mayank.kwizzapp.dashboard.DashboardFragment
 import com.example.mayank.kwizzapp.gamedetail.GameDetailFragment
 import com.example.mayank.kwizzapp.gamemenu.GameMenuFragment
@@ -16,19 +14,19 @@ import com.example.mayank.kwizzapp.libgame.LibPlayGame
 import com.example.mayank.kwizzapp.login.LoginFragment
 import com.example.mayank.kwizzapp.quiz.QuizFragment
 import com.example.mayank.kwizzapp.userInfo.UserInfoFragment
-import net.rmitsolutions.mfexpert.lms.helpers.showDialog
 import net.rmitsolutions.mfexpert.lms.helpers.switchToFragment
 import org.jetbrains.anko.find
-import org.jetbrains.anko.toast
-import android.support.v7.app.AppCompatDelegate
-
-
+import com.example.mayank.kwizzapp.singleplay.SinglePlayDetails
+import com.example.mayank.kwizzapp.singleplay.SinglePlayQuizFragment
+import com.example.mayank.kwizzapp.singleplay.SinglePlayResultFragment
 
 
 class MainActivity : AppCompatActivity(), LoginFragment.OnFragmentInteractionListener,
 UserInfoFragment.OnFragmentInteractionListener, DashboardFragment.OnFragmentInteractionListener,
 GameMenuFragment.OnFragmentInteractionListener, GameDetailFragment.OnFragmentInteractionListener,
-QuizFragment.OnFragmentInteractionListener, GameResultFragment.OnFragmentInteractionListener{
+QuizFragment.OnFragmentInteractionListener, GameResultFragment.OnFragmentInteractionListener,
+SinglePlayDetails.OnFragmentInteractionListener, SinglePlayQuizFragment.OnFragmentInteractionListener ,
+SinglePlayResultFragment.OnFragmentInteractionListener{
 
     private lateinit var libPlayGame : LibPlayGame
     private lateinit var toolBar : Toolbar

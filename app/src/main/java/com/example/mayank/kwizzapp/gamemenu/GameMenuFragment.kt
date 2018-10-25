@@ -18,8 +18,10 @@ import com.example.mayank.kwizzapp.dependency.components.DaggerInjectFragmentCom
 import com.example.mayank.kwizzapp.helpers.processRequest
 import com.example.mayank.kwizzapp.libgame.LibPlayGame
 import com.example.mayank.kwizzapp.network.ITransaction
+import com.example.mayank.kwizzapp.singleplay.SinglePlayDetails
 import com.example.mayank.kwizzapp.wallet.WalletActivity
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.game_menu_layout.*
 import net.rmitsolutions.mfexpert.lms.helpers.*
 import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.startActivity
@@ -59,7 +61,8 @@ class GameMenuFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.singlePlayerLayout -> {
-                showDialog(activity!!, "Message", "Single Player Game will update soon.")
+                val singlePlayDetails = SinglePlayDetails()
+                switchToFragment(singlePlayDetails)
             }
             R.id.quickGameLayout -> {
                 showProgress()
@@ -85,15 +88,15 @@ class GameMenuFragment : Fragment(), View.OnClickListener {
         if (mobileNumber != "") {
             compositeDisposable.add(transactionService.checkBalance(mobileNumber!!)
                     .processRequest({ response ->
-                        if (response.isSuccess){
-                            if (response.balance >= 10.00){
-                                if (check == 0){
+                        if (response.isSuccess) {
+                            if (response.balance >= 10.00) {
+                                if (check == 0) {
                                     libPlayGame.startQuickGame()
-                                }else {
+                                } else {
                                     libPlayGame.invitePlayers()
                                 }
                                 check = -1
-                            }else{
+                            } else {
                                 AlertDialog.Builder(activity!!).setCancelable(false).setTitle("Message")
                                         .setMessage(activity?.getString(R.string.insufficient_balance))
                                         .setPositiveButton("Add Points") { dialog, which ->
@@ -110,8 +113,8 @@ class GameMenuFragment : Fragment(), View.OnClickListener {
                     }, { err ->
                         logD("Message - $err")
                     }))
-        }else{
-            showDialog(activity!!,"Error", "Update mobile number to continue!")
+        } else {
+            showDialog(activity!!, "Error", "Update mobile number to continue!")
         }
     }
 

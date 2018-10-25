@@ -1,4 +1,4 @@
-package com.example.mayank.kwizzapp.quiz
+package com.example.mayank.kwizzapp.singleplay
 
 import android.content.Context
 import android.net.Uri
@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.CardView
 import android.view.*
 import android.widget.ProgressBar
-import android.widget.TextSwitcher
 import android.widget.TextView
 import com.example.mayank.kwizzapp.Constants.DROP_QUESTIONS
 import com.example.mayank.kwizzapp.Constants.RIGHT_ANSWERS
@@ -17,7 +16,6 @@ import com.example.mayank.kwizzapp.KwizzApp
 
 import com.example.mayank.kwizzapp.R
 import com.example.mayank.kwizzapp.dependency.components.DaggerInjectFragmentComponent
-import com.example.mayank.kwizzapp.gameresult.GameResultFragment
 import com.example.mayank.kwizzapp.helpers.processRequest
 import com.example.mayank.kwizzapp.libgame.LibPlayGame
 import com.example.mayank.kwizzapp.network.IQuestion
@@ -29,71 +27,60 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-const val AMOUNT = "Amount"
+const val NO_OF_QUES = "NoOfQues"
 
-class QuizFragment : Fragment(), View.OnClickListener {
-
-    private var listener: OnFragmentInteractionListener? = null
-
-    private val SUBJECT_CODE = "SubjectCode"
-    private val SUBJECT = "Subject"
+class SinglePlayQuizFragment : Fragment(), View.OnClickListener {
 
     @Inject
     lateinit var questionService: IQuestion
+    private var listener: OnFragmentInteractionListener? = null
+    private val SUBJECT_CODE = "SubjectCode"
+    private val SUBJECT = "Subject"
 
-    private var amount: Double? = null
+    private var noOfQues: Int? = null
     private var subjectCode: String? = null
     private var subject: String? = null
-
     lateinit var randomNumbers: ArrayList<Int>
     private var q = 0
     private var answer = ""
     private var rightAnswers = 0
     private var wrongAnswers = 0
     private var dropQuestions = 0
-    private lateinit var textSwitcherCountdown: TextSwitcher
     private var countDownTimer: CountDownTimer? = null
-    private lateinit var textViewCount: TextView
     private var libPlayGame: LibPlayGame? = null
-    private var numberOfRows: Int? = null
     private var progressBar: ProgressBar? = null
     private var timerStatus = TimerStatus.STOPPED
     private var timeCountInMilliSeconds = (1 * 10000).toLong()
     private var textViewSeconds: TextView? = null
     private lateinit var compositeDisposable: CompositeDisposable
     private var show: Boolean = false
+    private val CLICKABLES = intArrayOf(R.id.layoutOptionA, R.id.layoutOptionB, R.id.layoutOptionC, R.id.layoutOptionD, R.id.layoutOptionE)
 
     private enum class TimerStatus {
         STARTED,
         STOPPED
     }
 
-    private val CLICKABLES = intArrayOf(R.id.layoutOptionA, R.id.layoutOptionB, R.id.layoutOptionC, R.id.layoutOptionD, R.id.layoutOptionE)
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         arguments?.let {
-            amount = it.getDouble(AMOUNT)
+            noOfQues = it.getString(NO_OF_QUES).toInt()
             subjectCode = it.getString(SUBJECT_CODE)
             subject = it.getString(SUBJECT)
         }
-
-        logD("Amount - $amount : SubjectCode - $subjectCode : Subject : $subject")
         val depComponent = DaggerInjectFragmentComponent.builder()
                 .applicationComponent(KwizzApp.applicationComponent)
                 .build()
-        depComponent.injectQuizFragment(this)
+        depComponent.injectSinglePlayQuizFragment(this)
         libPlayGame = LibPlayGame(activity!!)
         compositeDisposable = CompositeDisposable()
-
         getRowCountFromTable()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_quiz, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_single_play_quiz, container, false)
         progressBar = view.find(R.id.progressBar)
         textViewSeconds = view.find(R.id.textViewSeconds)
         for (id in CLICKABLES) {
@@ -110,9 +97,7 @@ class QuizFragment : Fragment(), View.OnClickListener {
                 } else {
                     wrongAnswers++
                 }
-
                 getQuestionFromServer()
-
             }
 
             R.id.layoutOptionB -> {
@@ -121,9 +106,7 @@ class QuizFragment : Fragment(), View.OnClickListener {
                 } else {
                     wrongAnswers++
                 }
-
                 getQuestionFromServer()
-
             }
 
             R.id.layoutOptionC -> {
@@ -132,7 +115,6 @@ class QuizFragment : Fragment(), View.OnClickListener {
                 } else {
                     wrongAnswers++
                 }
-
                 getQuestionFromServer()
             }
 
@@ -142,7 +124,6 @@ class QuizFragment : Fragment(), View.OnClickListener {
                 } else {
                     wrongAnswers++
                 }
-
                 getQuestionFromServer()
             }
 
@@ -157,12 +138,13 @@ class QuizFragment : Fragment(), View.OnClickListener {
         }
     }
 
-
     private fun getRowCountFromTable() {
+        showProgress()
         compositeDisposable.add(questionService.getNumberOfRows(subjectCode!!)
                 .processRequest(
                         { response ->
                             if (response.isSuccess) {
+                                hideProgress()
                                 getRandomNonRepeatingIntegers(response.rowCount!!, 1, response.rowCount)
                                 getQuestionFromServer()
                             } else {
@@ -173,11 +155,10 @@ class QuizFragment : Fragment(), View.OnClickListener {
                 }))
     }
 
-
     private fun getQuestionFromServer() {
         showProgress()
         show = false
-        if (q < 10) {
+        if (q < noOfQues!!) {
             compositeDisposable.add(questionService.getQuestion(randomNumbers[q].toString(), subjectCode!!)
                     .processRequest(
                             { response ->
@@ -205,35 +186,6 @@ class QuizFragment : Fragment(), View.OnClickListener {
 
     }
 
-    private fun showDialog(message: String) {
-        if (!show) {
-            showDialog(activity!!, "Error", message)
-            show = true
-        }
-    }
-
-    private fun stopCountdown() {
-        if (countDownTimer != null) {
-            countDownTimer?.cancel()
-        }
-    }
-
-    private fun changeToResultScreen() {
-        if (countDownTimer != null) {
-            countDownTimer?.cancel()
-        }
-        libPlayGame?.broadcastResult('R', rightAnswers, wrongAnswers, dropQuestions)
-        val bundle = Bundle()
-        bundle.putDouble(AMOUNT, amount!!)
-        bundle.putInt(RIGHT_ANSWERS, rightAnswers)
-        bundle.putInt(WRONG_ANSWERS, wrongAnswers)
-        bundle.putInt(DROP_QUESTIONS, dropQuestions)
-        val resultFragment = GameResultFragment()
-        resultFragment.arguments = bundle
-        switchToFragment(resultFragment)
-
-    }
-
     private fun setQuestionTextViews(response: Questions.Question) {
         hideProgress()
         answer = response.answer!!
@@ -243,26 +195,6 @@ class QuizFragment : Fragment(), View.OnClickListener {
         view?.find<TextView>(R.id.textViewOptionC)?.text = "${response.optionC}"
         view?.find<TextView>(R.id.textViewOptionD)?.text = "${response.optionD}"
         view?.find<TextView>(R.id.textViewOptionE)?.text = "${response.optionE}"
-    }
-
-    private fun getRandomNonRepeatingIntegers(size: Int, min: Int,
-                                              max: Int): ArrayList<Int> {
-        randomNumbers = ArrayList()
-
-        while (randomNumbers.size < size) {
-            val random = getRandomInt(min, max)
-
-            if (!randomNumbers.contains(random)) {
-                randomNumbers.add(random)
-            }
-        }
-        return randomNumbers
-    }
-
-    private fun getRandomInt(min: Int, max: Int): Int {
-        val random = Random()
-
-        return random.nextInt(max - min + 1) + min
     }
 
     private fun reset() {
@@ -277,12 +209,6 @@ class QuizFragment : Fragment(), View.OnClickListener {
         startCountdownTimer()
     }
 
-    private fun stopCountdownTimer() {
-        if (timerStatus == TimerStatus.STARTED) {
-            countDownTimer?.cancel()
-        }
-    }
-
     private fun setTimerValues() {
         var time = -1
         time = if (subjectCode == "aptitude") {
@@ -294,8 +220,8 @@ class QuizFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setProgressBarValue() {
-        progressBar!!.max = timeCountInMilliSeconds.toInt() / 1000
-        progressBar!!.progress = timeCountInMilliSeconds.toInt() * 1000
+        progressBar?.max = timeCountInMilliSeconds.toInt() / 1000
+        progressBar?.progress = timeCountInMilliSeconds.toInt() * 1000
     }
 
     private fun startCountdownTimer() {
@@ -328,6 +254,46 @@ class QuizFragment : Fragment(), View.OnClickListener {
         return String.format("%02d", TimeUnit.MILLISECONDS.toSeconds(milliSeconds) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(milliSeconds)))
     }
 
+    private fun stopCountdownTimer() {
+        if (timerStatus == TimerStatus.STARTED) {
+            countDownTimer?.cancel()
+        }
+    }
+
+    private fun stopCountdown() {
+        if (countDownTimer != null) {
+            countDownTimer?.cancel()
+        }
+    }
+
+
+    private fun showDialog(message: String) {
+        if (!show) {
+            showDialog(activity!!, "Error", message)
+            show = true
+        }
+    }
+
+    private fun getRandomNonRepeatingIntegers(size: Int, min: Int,
+                                              max: Int): ArrayList<Int> {
+        randomNumbers = ArrayList()
+
+        while (randomNumbers.size < size) {
+            val random = getRandomInt(min, max)
+
+            if (!randomNumbers.contains(random)) {
+                randomNumbers.add(random)
+            }
+        }
+        return randomNumbers
+    }
+
+    private fun getRandomInt(min: Int, max: Int): Int {
+        val random = Random()
+
+        return random.nextInt(max - min + 1) + min
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         activity?.menuInflater?.inflate(R.menu.quiz_menu, menu)
     }
@@ -346,6 +312,20 @@ class QuizFragment : Fragment(), View.OnClickListener {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun changeToResultScreen() {
+        if (countDownTimer != null) {
+            countDownTimer?.cancel()
+        }
+        val bundle = Bundle()
+        bundle.putInt(NO_OF_QUES, noOfQues!!)
+        bundle.putInt(RIGHT_ANSWERS, rightAnswers)
+        bundle.putInt(WRONG_ANSWERS, wrongAnswers)
+        bundle.putInt(DROP_QUESTIONS, dropQuestions)
+        val resultFragment = SinglePlayResultFragment()
+        resultFragment.arguments = bundle
+        switchToFragment(resultFragment)
     }
 
     fun onButtonPressed(uri: Uri) {
@@ -371,6 +351,5 @@ class QuizFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
-
     }
 }

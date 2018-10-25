@@ -17,10 +17,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import com.example.mayank.kwizzapp.Constants.DROP_QUESTIONS
+import com.example.mayank.kwizzapp.Constants.RIGHT_ANSWERS
+import com.example.mayank.kwizzapp.Constants.WRONG_ANSWERS
 import com.example.mayank.kwizzapp.KwizzApp
 
 import com.example.mayank.kwizzapp.R
-import com.example.mayank.kwizzapp.SampleActivity
 import com.example.mayank.kwizzapp.dependency.components.DaggerInjectFragmentComponent
 import com.example.mayank.kwizzapp.dialog.ProgressDialog
 import com.example.mayank.kwizzapp.dialog.ShowDialog
@@ -39,20 +41,16 @@ import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.result
 import com.example.mayank.kwizzapp.libgame.LibPlayGame
 import com.example.mayank.kwizzapp.network.ITransaction
 import com.example.mayank.kwizzapp.quiz.AMOUNT
-import com.example.mayank.kwizzapp.quiz.DROP_QUESTIONS
-import com.example.mayank.kwizzapp.quiz.RIGHT_ANSWERS
-import com.example.mayank.kwizzapp.quiz.WRONG_ANSWERS
 import com.example.mayank.kwizzapp.viewmodels.ResultViewModel
 import com.google.android.gms.games.multiplayer.Participant
 import io.reactivex.disposables.CompositeDisposable
 import net.rmitsolutions.mfexpert.lms.helpers.logD
 import net.rmitsolutions.mfexpert.lms.helpers.showDialog
 import org.jetbrains.anko.find
-import org.jetbrains.anko.support.v4.find
 import java.util.*
 import javax.inject.Inject
 
-class GameResultFragment : Fragment(), View.OnClickListener {
+class GameResultFragment : Fragment(), View.OnClickListener{
 
     private var listener: OnFragmentInteractionListener? = null
 
@@ -83,7 +81,6 @@ class GameResultFragment : Fragment(), View.OnClickListener {
             dropQuestions = it.getInt(DROP_QUESTIONS)
             amount = it.getDouble(AMOUNT)
         }
-
         val depComponent = DaggerInjectFragmentComponent.builder()
                 .applicationComponent(KwizzApp.applicationComponent)
                 .build()
@@ -174,17 +171,21 @@ class GameResultFragment : Fragment(), View.OnClickListener {
                             val resultViewModel = listResult[p.displayName]
                             modelList.add(resultViewModel!!)
                         }
-                        resultList = modelList.sortedByDescending {
-                            it.rightAnswers
-                        }.toMutableList()
+                        // If model list is equals finishedParticipants size then arrange list in descending order
+                        if (modelList.size == mFinishedParticipants.size){
+                            resultList = modelList.sortedByDescending {
+                                it.rightAnswers
+                            }.toMutableList()
+                            showResultDialog(resultList)
+                            showResultProgress.hideProgressDialog()
+                            buttonBack.visibility = View.VISIBLE
+                        }
+
                     } else {
                         logD("Display name are same")
                     }
-                    showResultDialog(resultList)
                 } else {
                 }
-                showResultProgress.hideProgressDialog()
-                buttonBack.visibility = View.VISIBLE
             }
             setRecyclerViewAdapter(resultList!!)
             // Check this where to write coz of this also will be a problem
@@ -192,11 +193,6 @@ class GameResultFragment : Fragment(), View.OnClickListener {
     }
 
     private fun showResultDialog(resultList: MutableList<ResultViewModel>?) {
-
-//        logD("Result list size = ${resultList?.size}")
-//        for (data in resultList!!){
-//            logD("${data.playerName}    ${data.rightAnswers}    ${data.imageUri}")
-//        }
         if (resultList!![0].playerName == displayName) {
             logD("List 0 score - ${resultList[0].rightAnswers} List 1 score - ${resultList[1].rightAnswers}")
             if (resultList[0].rightAnswers == resultList[1].rightAnswers) {

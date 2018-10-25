@@ -81,10 +81,6 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
         activity?.registerReceiver(messageBroadcastReceiver, syncIntentFilter)
     }
 
-    override fun onPause() {
-        super.onPause()
-        activity?.registerReceiver(messageBroadcastReceiver, syncIntentFilter)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_game_detail, container, false)
@@ -261,7 +257,9 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
                 } else if (subject == null) {
                     Toast.makeText(activity, "Select a valid subject!", Toast.LENGTH_SHORT).show()
                 } else {
-                    checkBalance()
+                    if (!subtract) {
+                        subtractBalance(displayName!!, amount?.toDouble(), Calendar.getInstance().time.toString())
+                    }
                 }
             }
 
@@ -275,7 +273,7 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
             compositeDisposable.add(transactionService.checkBalance(mobileNumber!!)
                     .processRequest({ response ->
                         if (response.isSuccess) {
-                            if (amount?.toDouble()!! <=response.balance && response.balance > 10) {
+                            if (amount?.toDouble()!! <= response.balance && response.balance > 10) {
                                 if (!subtract) {
                                     subtractBalance(displayName!!, amount?.toDouble(), Calendar.getInstance().time.toString())
                                     subtract = true
@@ -287,7 +285,7 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
                                             dialog.dismiss()
                                         }
                             }
-                        }else{
+                        } else {
 
                             AlertDialog.Builder(activity!!).setTitle("Warning").setMessage(response.message)
                                     .setPositiveButton("Ok") { dialog, which ->
@@ -311,6 +309,7 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
                                 if (countDownTimer != null) {
                                     countDownTimer?.cancel()
                                 }
+                                subtract = true
                                 val bundle = Bundle()
                                 bundle.putString("Subject", subject)
                                 bundle.putString("SubjectCode", subCode)
@@ -319,11 +318,13 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
                                 quizFragment.arguments = bundle
                                 switchToFragment(quizFragment)
                                 unRegisterBroadcastReceiver()
-                            }else{
-                                showDialog(activity!!,"Error", response.message)
+                            } else {
+                                subtract = false
+                                showDialog(activity!!, "Error", response.message)
                             }
 
                         }, { err ->
+                    subtract = false
                     showDialog(activity!!, "Error", err.toString())
 
                 }))

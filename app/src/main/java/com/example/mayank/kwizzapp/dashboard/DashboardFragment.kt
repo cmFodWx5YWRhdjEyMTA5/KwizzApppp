@@ -64,7 +64,7 @@ class DashboardFragment : Fragment(), View.OnClickListener {
 
     private fun showLeaderBoards() {
         Games.getLeaderboardsClient(activity!!, GoogleSignIn.getLastSignedInAccount(activity)!!)
-                .getLeaderboardIntent(getString(R.string.leaderboard_global_rank))
+                .getLeaderboardIntent(getString(R.string.leaderboard_kwizz_toppers))
                 .addOnSuccessListener { intent -> startActivityForResult(intent, Constants.RC_LEADERBOARD_UI) }
     }
 

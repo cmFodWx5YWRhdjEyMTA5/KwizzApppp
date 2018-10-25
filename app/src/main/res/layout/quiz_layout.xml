@@ -386,11 +386,10 @@
     </ScrollView>
 
 
-
-    <!--android:background="@drawable/quiz_progress_circle_dark"
-    android:progressDrawable="@drawable/quiz_progress_circle"-->
-
     <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:background="@drawable/quiz_progress_circle_dark"
+        android:progressDrawable="@drawable/quiz_progress_circle"
         android:id="@+id/progressBar"
         android:layout_width="@dimen/dimen_60dp"
         android:layout_height="60dp"

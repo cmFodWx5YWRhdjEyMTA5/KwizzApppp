@@ -22,4 +22,8 @@ object Constants {
     const val CONNECTION_TIMEOUT: Long = 60
     const val READ_TIMEOUT: Long = 60
 
+    const val RIGHT_ANSWERS = "RightAnswers"
+    const val WRONG_ANSWERS = "WrongAnswers"
+    const val DROP_QUESTIONS = "DropQuestions"
+
 }

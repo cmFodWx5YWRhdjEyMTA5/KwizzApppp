@@ -25,6 +25,10 @@ import net.rmitsolutions.mfexpert.lms.helpers.*
 import net.rmitsolutions.mfexpert.lms.helpers.SharedPrefKeys.DISPLAY_NAME
 import org.jetbrains.anko.find
 import javax.inject.Inject
+import android.util.Patterns
+import android.text.TextUtils
+
+
 
 
 class UserInfoFragment : Fragment(), View.OnClickListener {
@@ -114,12 +118,25 @@ class UserInfoFragment : Fragment(), View.OnClickListener {
         }
         when {
             dataBinding.userInfoVm?.email.isNullOrBlank() -> {
-                textInputLayoutEmail.error = "Enter email.."
+                textInputLayoutEmail.error = "Enter Email"
                 return false
             }
             else -> textInputLayoutEmail.error = null
         }
+
+        when {
+            !isValidEmail(dataBinding.userInfoVm?.email!!) -> {
+                textInputLayoutEmail.error = "Enter valid Email Address"
+                return false
+            }
+            else -> textInputLayoutEmail.error = null
+        }
+
         return true
+    }
+
+    fun isValidEmail(target: CharSequence): Boolean {
+        return !TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches()
     }
 
     private fun switchToDashboard(userInfoVm: Users.UserInfo) {

@@ -3,6 +3,28 @@
     <string name="app_id">1013339845291</string>
     <string name="signin_other_error">SignIn Unknown Error !</string>
 
+
+    <!-- package_name -->
+    <string name="package_name" translatable="false">com.example.mayank.kwizzapp</string>
+    <!-- achievement Kwizz Novice -->
+    <string name="achievement_kwizz_novice" translatable="false">CgkIq-WL_r4dEAIQAw</string>
+    <!-- achievement Kwizz Beginner -->
+    <string name="achievement_kwizz_beginner" translatable="false">CgkIq-WL_r4dEAIQBA</string>
+    <!-- achievement Kwizz Lone Wolf -->
+    <string name="achievement_kwizz_lone_wolf" translatable="false">CgkIq-WL_r4dEAIQBQ</string>
+    <!-- achievement Kwizz Full League -->
+    <string name="achievement_kwizz_full_league" translatable="false">CgkIq-WL_r4dEAIQBg</string>
+    <!-- achievement Kwizz Fortune -->
+    <string name="achievement_kwizz_fortune" translatable="false">CgkIq-WL_r4dEAIQBw</string>
+    <!-- achievement On a Roll -->
+    <string name="achievement_on_a_roll" translatable="false">CgkIq-WL_r4dEAIQCA</string>
+    <!-- achievement Great Luck -->
+    <string name="achievement_great_luck" translatable="false">CgkIq-WL_r4dEAIQCQ</string>
+    <!-- achievement 10 Rounds Back to Back -->
+    <string name="achievement_10_rounds_back_to_back" translatable="false">CgkIq-WL_r4dEAIQCg</string>
+    <!-- leaderboard Kwizz Topper's -->
+    <string name="leaderboard_kwizz_toppers" translatable="false">CgkIq-WL_r4dEAIQAQ</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -11,8 +33,6 @@
     <string name="rupeeText">\u20A8</string>
     <string name="rupeeSymbol">\u20B9</string>
 
-    //Leaderboards
-    <string name="leaderboard_global_rank" translatable="false">CgkIq-WL_r4dEAIQAQ</string>
 
     // Game
     <string name="insufficient_balance">Insufficient balance!\n\Add balance to proceed.</string>
@@ -32,22 +52,31 @@
     <string-array name="subjectList">
         <item>Aptitude</item>
         <item>Reasoning</item>
-        <item>General Awareness</item>
         <item>Computer</item>
         <item>English</item>
         <item>General Knowledge</item>
+        <item>Geography</item>
         <item>History</item>
     </string-array>
 
 
     <string-array name="subject_code">
-        <item>apt_ques</item>
+        <item>aptitude</item>
         <item>reasoning</item>
-        <item>gawareness</item>
         <item>computer</item>
         <item>english</item>
         <item>gknowledge</item>
+        <item>geography</item>
         <item>history</item>
+    </string-array>
+
+
+    <string-array name="no_of_ques">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
     </string-array>
 
 
