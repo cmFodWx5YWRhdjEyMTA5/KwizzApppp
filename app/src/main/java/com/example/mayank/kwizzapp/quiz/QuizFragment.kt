@@ -181,8 +181,8 @@ class QuizFragment : Fragment(), View.OnClickListener {
             compositeDisposable.add(questionService.getQuestion(randomNumbers[q].toString(), subjectCode!!)
                     .processRequest(
                             { response ->
+                                q++
                                 if (response.isSuccess) {
-                                    q++
                                     setQuestionTextViews(response)
                                     reset()
                                 } else {

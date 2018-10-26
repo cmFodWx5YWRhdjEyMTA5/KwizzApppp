@@ -49,6 +49,7 @@ class SinglePlayDetails : Fragment(), View.OnClickListener {
         return view
     }
 
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.buttonStart -> startSinglePlayGame()

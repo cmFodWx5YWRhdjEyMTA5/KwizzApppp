@@ -57,3 +57,7 @@ fun Fragment.switchToFragment(activity: Activity, newFrag: Fragment) {
 fun Fragment.switchToFragment(newFrag: Fragment) {
     activity?.switchToFragment(newFrag)
 }
+
+fun Fragment.switchToFragmentBackStack(newFrag: Fragment) {
+    activity?.switchToFragmentBackStack(newFrag)
+}

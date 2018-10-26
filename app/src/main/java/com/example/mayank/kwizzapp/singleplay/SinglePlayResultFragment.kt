@@ -1,16 +1,22 @@
 package com.example.mayank.kwizzapp.singleplay
 
 import android.content.Context
+import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import com.example.mayank.kwizzapp.Constants
-
+import com.example.mayank.kwizzapp.MainActivity
 import com.example.mayank.kwizzapp.R
-import net.rmitsolutions.mfexpert.lms.helpers.logD
+import com.example.mayank.kwizzapp.databinding.SinglePlayResultBinding
+import com.example.mayank.kwizzapp.viewmodels.SinglePlayResultVm
+import org.jetbrains.anko.find
+import org.jetbrains.anko.support.v4.startActivity
 
 class SinglePlayResultFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
@@ -18,6 +24,8 @@ class SinglePlayResultFragment : Fragment() {
     private var wrongAnswers: Int? = 0
     private var dropQuestions: Int? = 0
     private var noOfQues: Int? = 0
+    private lateinit var dataBinding: SinglePlayResultBinding
+    private lateinit var singlePlayResultVm: SinglePlayResultVm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,14 +36,28 @@ class SinglePlayResultFragment : Fragment() {
             noOfQues = it.getInt(NO_OF_QUES)
         }
 
-        logD("Total Ques - $noOfQues\n" +
-                "Right Answer - $rightAnswers\n" +
-                "Wrong Answer - $wrongAnswers\n" +
-                "Drop Ques - $dropQuestions")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_single_play_result, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_single_play_result, container, false)
+        val view = dataBinding.root
+        singlePlayResultVm = SinglePlayResultVm("", "", "", "")
+        val resultImage = view.find<ImageView>(R.id.quiz_result_image)
+        if (rightAnswers!! > wrongAnswers!! && rightAnswers!! > dropQuestions!!) {
+            resultImage.setImageResource(R.mipmap.result_thumbs_up)
+        } else {
+            resultImage.setImageResource(R.mipmap.result_thumbs_down)
+        }
+        dataBinding.singlePlayResultVm = singlePlayResultVm
+        dataBinding.singlePlayResultVm?.totalQues = noOfQues.toString()
+        dataBinding.singlePlayResultVm?.trueQues = rightAnswers.toString()
+        dataBinding.singlePlayResultVm?.falseQues = wrongAnswers.toString()
+        dataBinding.singlePlayResultVm?.dropQues = dropQuestions.toString()
+
+        view.find<Button>(R.id.buttonSinglePlayBack).setOnClickListener{
+            startActivity<MainActivity>()
+            activity?.finish()
+        }
         return view
     }
 

@@ -2,7 +2,6 @@
 <layout>
 
     <data>
-
         <variable
             name="SinglePlayResultVm"
             type="com.example.mayank.kwizzapp.viewmodels.SinglePlayResultVm" />
@@ -35,8 +34,7 @@
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_gravity="center"
-                        android:layout_margin="@dimen/dimen_10dp"
-                        android:src="@mipmap/result_thumbs_up" />
+                        android:layout_margin="@dimen/dimen_10dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"

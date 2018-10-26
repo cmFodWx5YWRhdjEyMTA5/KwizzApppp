@@ -112,9 +112,18 @@ fun Context.showDialog(context: Context,title : String,message : String) {
 fun Activity.switchToFragment(newFrag: Fragment) {
     val manager = (this as AppCompatActivity).supportFragmentManager
     if (this.isFinishing){
-        manager.beginTransaction().replace(R.id.main_content, newFrag).addToBackStack(null).commit()
+        manager.beginTransaction().replace(R.id.main_content, newFrag).commit()
     }else{
         manager.beginTransaction().replace(R.id.main_content, newFrag).commitAllowingStateLoss()
+    }
+}
+
+fun Activity.switchToFragmentBackStack(newFrag: Fragment) {
+    val manager = (this as AppCompatActivity).supportFragmentManager
+    if (this.isFinishing){
+        manager.beginTransaction().replace(R.id.main_content, newFrag).addToBackStack(null).commit()
+    }else{
+        manager.beginTransaction().replace(R.id.main_content, newFrag).addToBackStack(null).commitAllowingStateLoss()
     }
 }
 

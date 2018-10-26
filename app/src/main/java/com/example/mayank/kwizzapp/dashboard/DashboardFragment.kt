@@ -14,6 +14,7 @@ import com.example.mayank.kwizzapp.Constants
 import com.example.mayank.kwizzapp.R
 import com.example.mayank.kwizzapp.gamemenu.GameMenuFragment
 import com.example.mayank.kwizzapp.login.LoginFragment
+import com.example.mayank.kwizzapp.settings.SettingsActivity
 import com.example.mayank.kwizzapp.wallet.WalletActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -26,7 +27,7 @@ import org.jetbrains.anko.support.v4.startActivity
 class DashboardFragment : Fragment(), View.OnClickListener {
 
     private var listener: OnFragmentInteractionListener? = null
-    private val CLICKABLES = intArrayOf(R.id.playLayout, R.id.achievemnetLayout, R.id.leaderboardLayout, R.id.walletLayout, R.id.logoutLayout)
+    private val CLICKABLES = intArrayOf(R.id.playLayout, R.id.achievemnetLayout, R.id.leaderboardLayout, R.id.walletLayout, R.id.logoutLayout, R.id.settingLayout)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +48,7 @@ class DashboardFragment : Fragment(), View.OnClickListener {
             R.id.leaderboardLayout -> showLeaderBoards()
             R.id.walletLayout -> startActivity<WalletActivity>()
             R.id.playLayout -> openGameMenuFragment()
+            R.id.settingLayout -> startActivity<SettingsActivity>()
         }
     }
 

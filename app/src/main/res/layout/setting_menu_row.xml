@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data class= "SettingMenuBinding">
+        <variable
+            name="SettingMenuVm"
+            type="com.example.mayank.kwizzapp.viewmodels.SettingVm.SettingMenuVm"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <android.support.v7.widget.CardView
+            android:layout_margin="@dimen/space10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/dimen_2dp"
+            app:cardElevation="@dimen/dimen_2dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space10dp">
+
+                <ImageView
+                    android:id="@+id/setting_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/setting_header_name"
+                    android:layout_marginBottom="@dimen/space8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@mipmap/ic_profile" />
+
+                <TextView
+                    style="@style/TitleText"
+                    android:textSize="@dimen/space20dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_gravity="center"
+                    android:id="@+id/setting_header_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Profile" />
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

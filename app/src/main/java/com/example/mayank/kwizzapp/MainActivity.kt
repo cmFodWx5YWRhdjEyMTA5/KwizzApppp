@@ -1,6 +1,7 @@
 package com.example.mayank.kwizzapp
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -28,7 +29,7 @@ QuizFragment.OnFragmentInteractionListener, GameResultFragment.OnFragmentInterac
 SinglePlayDetails.OnFragmentInteractionListener, SinglePlayQuizFragment.OnFragmentInteractionListener ,
 SinglePlayResultFragment.OnFragmentInteractionListener{
 
-    private lateinit var libPlayGame : LibPlayGame
+    private  var libPlayGame : LibPlayGame ? = null
     private lateinit var toolBar : Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,8 +52,39 @@ SinglePlayResultFragment.OnFragmentInteractionListener{
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode== Activity.RESULT_OK){
             libPlayGame = LibPlayGame(this)
-            libPlayGame.onActivityResult(requestCode, resultCode, data)
+            libPlayGame?.onActivityResult(requestCode, resultCode, data)
         }
     }
+
+    override fun onBackPressed() {
+        AlertDialog.Builder(this).setMessage("Do you want to leave the game ?").setPositiveButton("Ok") { dialog, which ->
+            super.onBackPressed()
+            finish()
+            dialog.dismiss()
+        }.setNegativeButton("Cancel"){ dialog, which ->
+            dialog.dismiss()
+        }.show()
+
+    }
+
+//    override fun onBackPressed() {
+//        val count = supportFragmentManager.backStackEntryCount
+
+//        if (count < 3) {
+//            super.onBackPressed()
+//            finish()
+//            //additional code
+//        } else if (count > 4){
+//            AlertDialog.Builder(this).setMessage("Do you want to leave the game ?").setPositiveButton("Ok") { dialog, which ->
+//                libPlayGame?.leaveRoom()
+//                startActivity<MainActivity>()
+//                dialog.dismiss()
+//            }.setNegativeButton("Cancel"){ dialog, which ->
+//                dialog.dismiss()
+//            }.show()
+//        } else {
+//            supportFragmentManager.popBackStack()
+//        }
+//    }
 
 }

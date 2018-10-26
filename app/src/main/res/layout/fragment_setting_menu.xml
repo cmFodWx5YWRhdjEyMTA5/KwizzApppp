@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".settings.menusettings.SettingMenuFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_margin="@dimen/space8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/menu_setting_recycler_view"
+        android:scrollbars="vertical">
+    </androidx.recyclerview.widget.RecyclerView>
+
+</FrameLayout>
