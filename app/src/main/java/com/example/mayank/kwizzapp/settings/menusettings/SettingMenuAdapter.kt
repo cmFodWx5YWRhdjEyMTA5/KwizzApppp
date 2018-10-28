@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.mayank.kwizzapp.R
-import com.example.mayank.kwizzapp.databinding.SettingMenuBinding
 import com.example.mayank.kwizzapp.viewmodels.SettingVm
 
 class SettingMenuAdapter: RecyclerView.Adapter<SettingMenuViewHolder>() {
@@ -25,6 +24,6 @@ class SettingMenuAdapter: RecyclerView.Adapter<SettingMenuViewHolder>() {
 
     override fun onBindViewHolder(holder: SettingMenuViewHolder, position: Int) {
         val settingMenu = items[position]
-        holder.bindView(context, settingMenu)
+        holder.bindView(context, settingMenu, position)
     }
 }

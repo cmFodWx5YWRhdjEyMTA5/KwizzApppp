@@ -118,6 +118,15 @@ fun Activity.switchToFragment(newFrag: Fragment) {
     }
 }
 
+fun Context.switchToFragment(newFrag: Fragment) {
+    val manager = (this as AppCompatActivity).supportFragmentManager
+    if (this.isFinishing){
+        manager.beginTransaction().replace(R.id.main_content, newFrag).commit()
+    }else{
+        manager.beginTransaction().replace(R.id.main_content, newFrag).commitAllowingStateLoss()
+    }
+}
+
 fun Activity.switchToFragmentBackStack(newFrag: Fragment) {
     val manager = (this as AppCompatActivity).supportFragmentManager
     if (this.isFinishing){

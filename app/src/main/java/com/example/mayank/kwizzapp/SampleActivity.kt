@@ -16,7 +16,7 @@ class SampleActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.setting_menu_row)
+        setContentView(R.layout.profile_layout)
 
 //        dialog = ShowDialog()
 //
