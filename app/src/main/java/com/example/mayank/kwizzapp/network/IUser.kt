@@ -21,6 +21,16 @@ interface IUser {
             @Field("mobileNumber") mobileNumber: String,
             @Field("email") email: String): Observable<CommonResult>
 
+    @FormUrlEncoded
+    @POST("payu/updateProfileInfo.php")
+    fun updateProfileInfo(
+            @Field("firstName") firstName: String,
+            @Field("lastName") lastName: String,
+            @Field("mobileNumber") mobileNumber: String,
+            @Field("email") email: String): Observable<CommonResult>
+
+
+
     @POST("payu/insertUserInfo.php")
     fun addDetailsNew(@Body userInfo: Users.UserInfo): Observable<CommonResult>
 }

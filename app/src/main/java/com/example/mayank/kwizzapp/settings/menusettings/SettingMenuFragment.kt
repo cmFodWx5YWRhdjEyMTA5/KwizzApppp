@@ -43,7 +43,6 @@ class SettingMenuFragment : Fragment() {
         modelList.add(SettingVm.SettingMenuVm(R.mipmap.ic_profile, "Profile"))
         modelList.add(SettingVm.SettingMenuVm(R.mipmap.ic_bank_account, "Bank Account"))
         setRecyclerViewAdapter(modelList)
-
     }
 
 

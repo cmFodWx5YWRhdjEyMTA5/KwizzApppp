@@ -24,6 +24,7 @@ class Transactions {
     }
 
     class WithdrawalPoints {
+        var holderName : String? = null
         var amount : String? = null
         var accountNumber : String? = null
         var ifscCode : String? = null
@@ -32,6 +33,17 @@ class Transactions {
     class TransferPoints{
         var amount: String? = null
         var transferTo : String? = null
+    }
+
+    class TransactionDetails : CommonResult(){
+        var mobileNumber : String? = null
+        var transferTo : String? = null
+        var receivedFrom : String? =null
+        var amount : Double = 0.0
+        var txnId : String? = null
+        var createdOn : String? = null
+        var transactionType : String? = null
+        var status : String? = null
     }
 
 

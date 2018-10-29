@@ -14,6 +14,7 @@ import com.example.mayank.kwizzapp.R
 import com.example.mayank.kwizzapp.dependency.components.DaggerInjectFragmentComponent
 import com.example.mayank.kwizzapp.helpers.processRequest
 import com.example.mayank.kwizzapp.network.ITransaction
+import com.example.mayank.kwizzapp.transactions.TransactionFragment
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.wallet_menu_layout.*
 import net.rmitsolutions.mfexpert.lms.helpers.*
@@ -70,7 +71,8 @@ class WalletMenuFragment : Fragment(), View.OnClickListener {
             }
 
             R.id.transactionLayout ->{
-                showDialog(activity!!, "Transactions", "Coming soon !")
+                val transactionFragment = TransactionFragment()
+                switchToFragment(transactionFragment)
             }
         }
     }

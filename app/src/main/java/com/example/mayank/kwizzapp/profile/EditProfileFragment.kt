@@ -1,11 +1,12 @@
-package com.example.mayank.kwizzapp.userInfo
+package com.example.mayank.kwizzapp.profile
 
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
+import android.text.TextUtils
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,84 +14,91 @@ import android.widget.Button
 import com.example.mayank.kwizzapp.KwizzApp
 
 import com.example.mayank.kwizzapp.R
-import com.example.mayank.kwizzapp.dashboard.DashboardFragment
-import com.example.mayank.kwizzapp.databinding.UserInfoBinding
+import com.example.mayank.kwizzapp.databinding.EditProfileBinding
 import com.example.mayank.kwizzapp.dependency.components.DaggerInjectFragmentComponent
 import com.example.mayank.kwizzapp.helpers.processRequest
 import com.example.mayank.kwizzapp.network.IUser
+import com.example.mayank.kwizzapp.settings.SettingsActivity
 import com.example.mayank.kwizzapp.viewmodels.Users
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_user_info.*
-import net.rmitsolutions.mfexpert.lms.helpers.*
-import net.rmitsolutions.mfexpert.lms.helpers.SharedPrefKeys.DISPLAY_NAME
+import net.rmitsolutions.mfexpert.lms.helpers.SharedPrefKeys
+import net.rmitsolutions.mfexpert.lms.helpers.getPref
+import net.rmitsolutions.mfexpert.lms.helpers.showDialog
+import net.rmitsolutions.mfexpert.lms.helpers.toast
 import org.jetbrains.anko.find
+import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject
-import android.util.Patterns
-import android.text.TextUtils
 
+class EditProfileFragment : Fragment(), View.OnClickListener {
 
-
-
-class UserInfoFragment : Fragment(), View.OnClickListener {
-
+    private var listener: OnFragmentInteractionListener? = null
     @Inject
     lateinit var userService: IUser
-    private var listener: OnFragmentInteractionListener? = null
-    private lateinit var dataBinding: UserInfoBinding
+    private lateinit var dataBinding: EditProfileBinding
     private lateinit var userInfoVm: Users.UserInfo
-    private lateinit var submitData: Button
+    private lateinit var updateData: Button
     private lateinit var compositeDisposable: CompositeDisposable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        compositeDisposable = CompositeDisposable()
         val depComponent = DaggerInjectFragmentComponent.builder()
                 .applicationComponent(KwizzApp.applicationComponent)
                 .build()
-        depComponent.injectUserInfoFragment(this)
+        depComponent.injectEditProfileFragment(this)
+        compositeDisposable = CompositeDisposable()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_info, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_profile, container, false)
         val view = dataBinding.root
         userInfoVm = Users.UserInfo()
         dataBinding.userInfoVm = userInfoVm
+        dataBinding.editTextMobileNumber.keyListener = null
+        dataBinding.editTextMobileNumber.setOnClickListener {
+            toast("Sorry! Mobile number cannot be change.")
+        }
         val firstName = activity?.getPref(SharedPrefKeys.FIRST_NAME, "")
         val lastName = activity?.getPref(SharedPrefKeys.LAST_NAME, "")
+        val mobileNumber = activity?.getPref(SharedPrefKeys.MOBILE_NUMBER, "")
+        val email = activity?.getPref(SharedPrefKeys.EMAIL, "")
         when {
-            firstName != "" || lastName != "" -> {
+            firstName != "" || lastName != "" || mobileNumber != "" || email != "" -> {
                 dataBinding.userInfoVm!!.firstName.set(firstName)
                 dataBinding.userInfoVm!!.lastName.set(lastName)
+                dataBinding.userInfoVm?.mobileNumber = mobileNumber
+                dataBinding.userInfoVm?.email = email
             }
         }
-        submitData = view.find(R.id.buttonSubmitInfo)
-        submitData.setOnClickListener(this)
+
+        updateData = view.find(R.id.buttonUpdateInfo)
+        updateData.setOnClickListener(this)
         return view
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.buttonSubmitInfo -> {
-                val playerId = activity?.getPref(SharedPrefKeys.PLAYER_ID, "")
-                dataBinding.userInfoVm
-                dataBinding.userInfoVm?.displayName = activity?.getPref(DISPLAY_NAME, "")
-                if (validate()) {
-                    compositeDisposable.add(userService.addDetails(dataBinding.userInfoVm?.firstName?.get()!!,
-                            dataBinding.userInfoVm?.lastName?.get()!!, dataBinding.userInfoVm?.displayName!!, playerId!!,
-                            dataBinding.userInfoVm?.mobileNumber!!, dataBinding.userInfoVm?.email!!).processRequest(
+            R.id.buttonUpdateInfo -> updateInfo()
+        }
+    }
+
+    private fun updateInfo() {
+        if (validate()) {
+            compositeDisposable.add(userService.updateProfileInfo(dataBinding.userInfoVm?.firstName?.get()!!,
+                    dataBinding.userInfoVm?.lastName?.get()!!, dataBinding.userInfoVm?.mobileNumber!!, dataBinding.userInfoVm?.email!!)
+                    .processRequest(
                             { response ->
                                 if (response.isSuccess) {
                                     toast(response.message)
-                                    switchToDashboard(dataBinding.userInfoVm!!)
+                                    startActivity<SettingsActivity>()
                                 } else {
                                     toast(response.message)
                                 }
-                            }, { err ->
-                        showDialog(activity!!, "Error", err.toString())
-                        logD("Error - ${err.toString()}")
-                    }))
-                }
-            }
+                            },
+                            { err ->
+                                showDialog(activity!!, "Error", err.toString())
+                            }
+                    ))
         }
     }
 
@@ -136,27 +144,8 @@ class UserInfoFragment : Fragment(), View.OnClickListener {
         return true
     }
 
-    fun isValidEmail(target: CharSequence): Boolean {
+    private fun isValidEmail(target: CharSequence): Boolean {
         return !TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches()
-    }
-
-    private fun switchToDashboard(userInfoVm: Users.UserInfo) {
-        activity?.putPref(SharedPrefKeys.FIRST_NAME, userInfoVm.firstName.get())
-        activity?.putPref(SharedPrefKeys.LAST_NAME, userInfoVm.lastName.get())
-        activity?.putPref(SharedPrefKeys.MOBILE_NUMBER, userInfoVm.mobileNumber)
-        activity?.putPref(SharedPrefKeys.EMAIL, userInfoVm.email)
-        val dashboardFrag = DashboardFragment()
-        switchToFragment(dashboardFrag)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        (activity as AppCompatActivity).supportActionBar?.hide()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        (activity as AppCompatActivity).supportActionBar?.show()
     }
 
     fun onButtonPressed(uri: Uri) {
@@ -165,9 +154,10 @@ class UserInfoFragment : Fragment(), View.OnClickListener {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        when (context) {
-            is OnFragmentInteractionListener -> listener = context
-            else -> throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+        if (context is OnFragmentInteractionListener) {
+            listener = context
+        } else {
+            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
         }
     }
 
@@ -181,5 +171,6 @@ class UserInfoFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
+
     }
 }

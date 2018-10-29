@@ -10,6 +10,7 @@ import com.example.mayank.kwizzapp.R
 import com.example.mayank.kwizzapp.dependency.components.DaggerInjectActivityComponent
 import com.example.mayank.kwizzapp.helpers.processRequest
 import com.example.mayank.kwizzapp.network.ITransaction
+import com.example.mayank.kwizzapp.transactions.TransactionFragment
 import com.payumoney.core.entity.TransactionResponse
 import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager
 import com.payumoney.sdkui.ui.utils.ResultModel
@@ -22,7 +23,7 @@ import javax.inject.Inject
 
 class WalletActivity : AppCompatActivity(), WalletMenuFragment.OnFragmentInteractionListener,
         AddPointsFragment.OnFragmentInteractionListener, WithdrawalPointsFragment.OnFragmentInteractionListener,
-        TransferPointsFragment.OnFragmentInteractionListener {
+        TransferPointsFragment.OnFragmentInteractionListener, TransactionFragment.OnFragmentInteractionListener {
 
     private lateinit var compositeDisposable : CompositeDisposable
     @Inject

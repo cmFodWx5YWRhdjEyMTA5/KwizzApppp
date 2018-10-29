@@ -5,12 +5,17 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import com.example.mayank.kwizzapp.R
+import com.example.mayank.kwizzapp.bankdetail.BankDetailFragment
+import com.example.mayank.kwizzapp.bankdetail.EditBankDetailsFragment
+import com.example.mayank.kwizzapp.profile.EditProfileFragment
 import com.example.mayank.kwizzapp.profile.ProfileFragment
 import com.example.mayank.kwizzapp.settings.menusettings.SettingMenuFragment
 import net.rmitsolutions.mfexpert.lms.helpers.switchToFragment
 import org.jetbrains.anko.find
 
-class SettingsActivity : AppCompatActivity(), SettingMenuFragment.OnFragmentInteractionListener, ProfileFragment.OnFragmentInteractionListener {
+class SettingsActivity : AppCompatActivity(), SettingMenuFragment.OnFragmentInteractionListener,
+        ProfileFragment.OnFragmentInteractionListener, EditProfileFragment.OnFragmentInteractionListener,
+        BankDetailFragment.OnFragmentInteractionListener, EditBankDetailsFragment.OnFragmentInteractionListener{
 
     private lateinit var toolBar : Toolbar
 

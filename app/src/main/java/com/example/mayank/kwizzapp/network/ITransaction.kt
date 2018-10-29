@@ -1,6 +1,7 @@
 package com.example.mayank.kwizzapp.network
 
 import com.example.mayank.googleplaygame.network.wallet.Transactions
+import com.payumoney.core.response.TransactionResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -91,4 +92,9 @@ interface ITransaction {
             @Field("bankCode") bankCode: String,
             @Field("transactionType") transactionType: String,
             @Field("status") status: String): Observable<Transactions.GetBalance>
+
+
+    @FormUrlEncoded
+    @POST("payu/fetchTransactions.php")
+    fun fetchTransactions(@Field("mobileNumber") mobileNumber: String) :Observable<Transactions.TransactionDetails>
 }

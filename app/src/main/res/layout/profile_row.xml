@@ -11,25 +11,26 @@
         app:cardCornerRadius="@dimen/dimen_2dp"
         app:cardElevation="@dimen/dimen_2dp">
         <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space10dp">
 
             <TextView
-                android:padding="@dimen/dimen_10dp"
-                android:layout_weight="1"
+                android:layout_weight="1.8"
+                android:padding="@dimen/dimen_5dp"
                 android:text="Label Name"
                 android:id="@+id/textLabelProfile"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
+
             <TextView
-                android:padding="@dimen/dimen_10dp"
-                android:text="Label Data"
                 android:layout_weight="1"
-                android:layout_gravity="center"
+                android:padding="@dimen/dimen_5dp"
+                android:text="Label Data"
                 android:id="@+id/textDataProfile"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>

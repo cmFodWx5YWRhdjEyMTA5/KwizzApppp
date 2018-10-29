@@ -1,5 +1,9 @@
 package com.example.mayank.kwizzapp
 
+import android.text.format.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+
 object Constants {
 
     val ACCOUNT_NAME = "KwizzApp"
@@ -25,5 +29,17 @@ object Constants {
     const val RIGHT_ANSWERS = "RightAnswers"
     const val WRONG_ANSWERS = "WrongAnswers"
     const val DROP_QUESTIONS = "DropQuestions"
+
+    const val TRANSACTION_TYPE_DEBITED = "Debited"
+    const val TRANSACTION_TYPE_CREDITED = "Credited"
+
+    const val DISPLAY_FULL_DATE_FORMAT = "dd-MM-yyyy hh:mm:ss a"
+
+    fun getFormatDate(): String? {
+        val calendar = Calendar.getInstance()
+        val date = calendar.time
+        val formatter : java.text.DateFormat = SimpleDateFormat(DISPLAY_FULL_DATE_FORMAT)
+        return formatter.format(date)
+    }
 
 }
