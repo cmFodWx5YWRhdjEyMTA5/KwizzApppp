@@ -33,7 +33,7 @@ class TransactionFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     val adapter: TransactionAdapter by lazy { TransactionAdapter() }
     lateinit var modelList: MutableList<TransactionDetailsVm>
-    private lateinit var toolBar : Toolbar
+    private lateinit var toolBar: Toolbar
 
     @Inject
     lateinit var transactionService: ITransaction
@@ -50,7 +50,7 @@ class TransactionFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view =inflater.inflate(R.layout.fragment_transaction, container, false)
+        val view = inflater.inflate(R.layout.fragment_transaction, container, false)
 
         toolBar = view.find(R.id.toolbar)
         (activity as AppCompatActivity).setSupportActionBar(toolBar)
@@ -67,25 +67,23 @@ class TransactionFragment : Fragment() {
     private fun setTransactionsItems() {
         modelList.clear()
         val mobileNumber = activity?.getPref(SharedPrefKeys.MOBILE_NUMBER, "")
-        if (mobileNumber != ""){
+        if (mobileNumber != "") {
             compositeDisposable.add(transactionService.fetchTransactions(mobileNumber!!)
                     .processRequest(
                             { response ->
-                                if (response.isSuccess){
-                                    logD("${response.status}")
-//                                    val transactions = TransactionDetailsVm()
-//                                    if (response.transactionType!=null){
-//                                        if (response.transactionType == Constants.TRANSACTION_TYPE_DEBITED){
-//                                            transactions.textUserName = response.transferTo
-//                                        }else{
-//                                            transactions.textUserName = response.receivedFrom
-//                                        }
-//                                        transactions.textAmount = response.amount.toString()
-//                                        transactions.textTimeStamp = response.createdOn
-//                                        transactions.textDescription = response.status
-//                                        modelList.add(transactions)
-//                                    }
-                                }else{
+                                if (response.isSuccess) {
+                                    val transactions = TransactionDetailsVm()
+                                    if (response.transactionType.toString() == Constants.TRANSACTION_TYPE_DEBITED) {
+                                        transactions.textUserName = response.transferTo
+                                    } else {
+                                        transactions.textUserName = response.receivedFrom
+                                    }
+                                    transactions.textAmount = response.amount.toString()
+                                    transactions.textTimeStamp = response.createdOn
+                                    transactions.textDescription = response.status
+                                    modelList.add(transactions)
+                                    setRecyclerViewAdapter(modelList)
+                                } else {
                                     toast(response.message)
                                 }
                             },
@@ -93,12 +91,12 @@ class TransactionFragment : Fragment() {
                                 showDialog(activity!!, "Error", err.toString())
                             }
                     ))
-            setRecyclerViewAdapter(modelList)
-        }else{
+        } else {
             toast("Enter mobile number in settings")
         }
 
     }
+
     private fun setRecyclerViewAdapter(list: List<TransactionDetailsVm>) {
         adapter.items = list
         adapter.notifyDataSetChanged()
