@@ -21,6 +21,7 @@ import com.example.mayank.googleplaygame.network.wallet.Transactions
 import com.example.mayank.kwizzapp.Constants
 import com.example.mayank.kwizzapp.KwizzApp
 import com.example.mayank.kwizzapp.dependency.components.DaggerInjectFragmentComponent
+import com.example.mayank.kwizzapp.helpers.JsonHelper
 import com.example.mayank.kwizzapp.helpers.processRequest
 import com.example.mayank.kwizzapp.network.ITransaction
 import io.reactivex.disposables.CompositeDisposable
@@ -68,24 +69,31 @@ class TransactionFragment : Fragment() {
         modelList.clear()
         val mobileNumber = activity?.getPref(SharedPrefKeys.MOBILE_NUMBER, "")
         if (mobileNumber != "") {
+            logD("Mobile Number - $mobileNumber")
             compositeDisposable.add(transactionService.fetchTransactions(mobileNumber!!)
                     .processRequest(
                             { response ->
-                                if (response.isSuccess) {
-                                    val transactions = TransactionDetailsVm()
-                                    if (response.transactionType.toString() == Constants.TRANSACTION_TYPE_DEBITED) {
-                                        transactions.textUserName = response.transferTo
-                                    } else {
-                                        transactions.textUserName = response.receivedFrom
-                                    }
-                                    transactions.textAmount = response.amount.toString()
-                                    transactions.textTimeStamp = response.createdOn
-                                    transactions.textDescription = response.status
-                                    modelList.add(transactions)
-                                    setRecyclerViewAdapter(modelList)
-                                } else {
-                                    toast(response.message)
+                                if (response.isSuccess){
+                                    logD("Response is success")
+                                }else{
+                                    logD("Response failed - ${response.message}")
                                 }
+//                                logD("Response - $response")
+//                                if (response.isSuccess) {
+//                                    val transactions = TransactionDetailsVm()
+//                                    if (response.transactionType.toString() == Constants.TRANSACTION_TYPE_DEBITED) {
+//                                        transactions.textUserName = response.transferTo
+//                                    } else {
+//                                        transactions.textUserName = response.receivedFrom
+//                                    }
+//                                    transactions.textAmount = response.amount.toString()
+//                                    transactions.textTimeStamp = response.createdOn
+//                                    transactions.textDescription = response.status
+//                                    modelList.add(transactions)
+//                                    setRecyclerViewAdapter(modelList)
+//                                } else {
+//                                    toast(response.message)
+//                                }
                             },
                             { err ->
                                 showDialog(activity!!, "Error", err.toString())
