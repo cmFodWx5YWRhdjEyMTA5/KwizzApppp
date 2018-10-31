@@ -11,17 +11,14 @@ import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.mayank.kwizzapp.Constants.getFormatDate
 
 import com.example.mayank.kwizzapp.R
 import org.jetbrains.anko.find
 import java.util.*
 import android.support.v7.app.AppCompatActivity
-import com.example.mayank.googleplaygame.network.wallet.Transactions
 import com.example.mayank.kwizzapp.Constants
 import com.example.mayank.kwizzapp.KwizzApp
 import com.example.mayank.kwizzapp.dependency.components.DaggerInjectFragmentComponent
-import com.example.mayank.kwizzapp.helpers.JsonHelper
 import com.example.mayank.kwizzapp.helpers.processRequest
 import com.example.mayank.kwizzapp.network.ITransaction
 import io.reactivex.disposables.CompositeDisposable
@@ -54,6 +51,7 @@ class TransactionFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_transaction, container, false)
 
         toolBar = view.find(R.id.toolbar)
+        toolBar.title = "Transactions"
         (activity as AppCompatActivity).setSupportActionBar(toolBar)
         recyclerView = view.findViewById(R.id.transactions_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -68,41 +66,39 @@ class TransactionFragment : Fragment() {
     private fun setTransactionsItems() {
         modelList.clear()
         val mobileNumber = activity?.getPref(SharedPrefKeys.MOBILE_NUMBER, "")
-        if (mobileNumber != "") {
-            logD("Mobile Number - $mobileNumber")
-            compositeDisposable.add(transactionService.fetchTransactions(mobileNumber!!)
-                    .processRequest(
-                            { response ->
-                                if (response.isSuccess){
-                                    logD("Response is success")
-                                }else{
-                                    logD("Response failed - ${response.message}")
+        if (activity?.isNetConnected()!!) {
+            if (mobileNumber != "") {
+                compositeDisposable.add(transactionService.fetchTransactions(mobileNumber!!)
+                        .processRequest(
+                                { response ->
+                                    if (response.isSuccess) {
+                                        val transactions = response.transactions
+                                        for (data in transactions) {
+                                            val transactions = TransactionDetailsVm()
+                                            when {
+                                                data.transactionType.toString() == Constants.TRANSACTION_TYPE_DEBITED -> transactions.textUserName = data.transferTo
+                                                else -> transactions.textUserName = data.receivedFrom
+                                            }
+                                            transactions.textAmount = "${activity?.getString(R.string.rupeeSymbol)}${data.amount}"
+                                            transactions.textTimeStamp = data.createdOn
+                                            transactions.textDescription = data.transactionType
+                                            modelList.add(transactions)
+                                        }
+                                    } else {
+                                        showDialog(activity!!, "Response", response.message)
+                                    }
+                                    setRecyclerViewAdapter(modelList)
+                                },
+                                { err ->
+                                    showDialog(activity!!, "Error", err.toString())
                                 }
-//                                logD("Response - $response")
-//                                if (response.isSuccess) {
-//                                    val transactions = TransactionDetailsVm()
-//                                    if (response.transactionType.toString() == Constants.TRANSACTION_TYPE_DEBITED) {
-//                                        transactions.textUserName = response.transferTo
-//                                    } else {
-//                                        transactions.textUserName = response.receivedFrom
-//                                    }
-//                                    transactions.textAmount = response.amount.toString()
-//                                    transactions.textTimeStamp = response.createdOn
-//                                    transactions.textDescription = response.status
-//                                    modelList.add(transactions)
-//                                    setRecyclerViewAdapter(modelList)
-//                                } else {
-//                                    toast(response.message)
-//                                }
-                            },
-                            { err ->
-                                showDialog(activity!!, "Error", err.toString())
-                            }
-                    ))
+                        ))
+            } else {
+                toast("Enter mobile number in settings")
+            }
         } else {
-            toast("Enter mobile number in settings")
+            toast("Check your internet connection !")
         }
-
     }
 
     private fun setRecyclerViewAdapter(list: List<TransactionDetailsVm>) {

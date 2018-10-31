@@ -28,6 +28,7 @@ import com.example.mayank.kwizzapp.dialog.ProgressDialog
 import com.example.mayank.kwizzapp.dialog.ShowDialog
 import com.example.mayank.kwizzapp.gameresult.adapter.ResultViewAdapter
 import com.example.mayank.kwizzapp.helpers.processRequest
+import com.example.mayank.kwizzapp.libgame.LibGameConstants
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.displayName
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.imageUri
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.listResult
@@ -42,7 +43,11 @@ import com.example.mayank.kwizzapp.libgame.LibPlayGame
 import com.example.mayank.kwizzapp.network.ITransaction
 import com.example.mayank.kwizzapp.quiz.AMOUNT
 import com.example.mayank.kwizzapp.viewmodels.ResultViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.games.Games
+import com.google.android.gms.games.achievement.Achievement
 import com.google.android.gms.games.multiplayer.Participant
+import com.technoholicdeveloper.kwizzapp.achievements.Achievements
 import io.reactivex.disposables.CompositeDisposable
 import net.rmitsolutions.mfexpert.lms.helpers.logD
 import net.rmitsolutions.mfexpert.lms.helpers.showDialog
@@ -72,6 +77,8 @@ class GameResultFragment : Fragment(), View.OnClickListener{
     private lateinit var showResultProgress: ProgressDialog
     private val syncIntentFilter = IntentFilter(ACTION_RESULT_RECEIVED)
     private lateinit var resultLayout : CardView
+    private lateinit var achievements: Achievements
+    private var win : Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,6 +98,8 @@ class GameResultFragment : Fragment(), View.OnClickListener{
         resultList = mutableListOf<ResultViewModel>()
         showResultProgress = ProgressDialog()
         list = mutableListOf<ResultViewModel>()
+
+        achievements = Achievements(activity!!)
 
         showDialog = ShowDialog()
 
@@ -197,6 +206,7 @@ class GameResultFragment : Fragment(), View.OnClickListener{
             logD("List 0 score - ${resultList[0].rightAnswers} List 1 score - ${resultList[1].rightAnswers}")
             if (resultList[0].rightAnswers == resultList[1].rightAnswers) {
                 if (!show) {
+                    win = false
                     showDialogResult(activity!!, "Sorry", "It's a Tie","Your bid points will credited to your wallet", R.mipmap.ic_loose)
                     updateBalance(displayName!!, amount!!, Calendar.getInstance().time.toString(), "Sample Message")
                     show = true
@@ -204,6 +214,7 @@ class GameResultFragment : Fragment(), View.OnClickListener{
                 }
             } else {
                 if (!show) {
+                    win = true
                     showDialogResult(activity!!,"Congrats", "You Win !", "Your winning points will credited to your wallet", R.mipmap.ic_done)
                     val totalAmount = (amount?.times(mFinishedParticipants.size))?.times(80)?.div(100)
                     updateBalance(displayName!!, totalAmount!!, Calendar.getInstance().time.toString(), "Sample Message")
@@ -213,11 +224,18 @@ class GameResultFragment : Fragment(), View.OnClickListener{
             }
         } else {
             if (!show) {
+                win = false
                 showDialogResult(activity!!, "Sorry", "You Loose !", "Better luck next time", R.mipmap.ic_loose)
                 show = true
                 resultLayout.visibility = View.VISIBLE
+                achievements.checkAchievements(0, LibGameConstants.GameConstants.resultList?.size!!,win, rightAnswers!!)
             }
         }
+    }
+
+    private fun submitScoreToLeaderboards(score : Long){
+        Games.getLeaderboardsClient(activity!!, GoogleSignIn.getLastSignedInAccount(activity)!!)
+                .submitScore(getString(R.string.leaderboard_kwizz_toppers), score);
     }
 
     private fun showDialogResult(activity: Activity, bigTitle: String, smallTitle : String, message: String, imageResource : Int){
@@ -236,6 +254,8 @@ class GameResultFragment : Fragment(), View.OnClickListener{
                             if (response.isSuccess) {
                                 logD("Message = ${response.message}")
                                 logD("Response balance = ${response.balance}")
+                                submitScoreToLeaderboards(response.balance?.toLong()!!)
+                                achievements.checkAchievements(response.balance.toInt(), resultList?.size!!,win, rightAnswers!!)
                             } else {
                                 logD("Message - ${response.message}")
                             }

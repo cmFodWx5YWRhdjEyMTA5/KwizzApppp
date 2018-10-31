@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.mayank.kwizzapp.R
 import com.example.mayank.kwizzapp.bankdetail.BankDetailFragment
+import com.example.mayank.kwizzapp.policies.PoliciesFragment
 import com.example.mayank.kwizzapp.profile.ProfileFragment
 import com.example.mayank.kwizzapp.viewmodels.SettingVm
 import net.rmitsolutions.mfexpert.lms.helpers.showDialog
@@ -32,6 +33,10 @@ class SettingMenuViewHolder (itemView : View) : RecyclerView.ViewHolder(itemView
                 1 ->{
                     val bankDetailFragment = BankDetailFragment()
                     context.switchToFragment(bankDetailFragment)
+                }
+                2 ->{
+                    val policiesFragment = PoliciesFragment()
+                    context.switchToFragment(policiesFragment)
                 }
             }
         }

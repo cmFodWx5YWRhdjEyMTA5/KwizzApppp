@@ -96,5 +96,5 @@ interface ITransaction {
 
     @FormUrlEncoded
     @POST("payu/fetchTransactions.php")
-    fun fetchTransactions(@Field("mobileNumber") mobileNumber: String) :Observable<Transactions.TransactionDetails>
+    fun fetchTransactions(@Field("mobileNumber") mobileNumber: String) :Observable<Transactions.Transaction>
 }

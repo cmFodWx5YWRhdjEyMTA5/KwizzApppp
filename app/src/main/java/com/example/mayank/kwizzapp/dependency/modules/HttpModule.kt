@@ -2,8 +2,10 @@ package com.example.mayank.kwizzapp.dependency.modules
 
 import com.example.mayank.kwizzapp.Constants
 import com.example.mayank.kwizzapp.dependency.scopes.ApplicationScope
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
+import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 
 @Module
@@ -39,7 +41,7 @@ class HttpModule {
 
     @Provides
     @ApplicationScope
-    fun gson(): retrofit2.converter.gson.GsonConverterFactory = retrofit2.converter.gson.GsonConverterFactory.create(com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create())
+    fun gson(): retrofit2.converter.gson.GsonConverterFactory = retrofit2.converter.gson.GsonConverterFactory.create(com.google.gson.GsonBuilder().setLenient().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create())
 
     @Provides
     @ApplicationScope

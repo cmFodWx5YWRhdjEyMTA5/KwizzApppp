@@ -22,6 +22,6 @@ class TransactionAdapter: RecyclerView.Adapter<TransactionDetailViewHolder>() {
 
     override fun onBindViewHolder(holder: TransactionDetailViewHolder, position: Int) {
         val profileVm = items[position]
-        holder.bindView(profileVm)
+        holder.bindView(context ,profileVm)
     }
 }

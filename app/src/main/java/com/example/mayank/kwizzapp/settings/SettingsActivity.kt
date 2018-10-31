@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar
 import com.example.mayank.kwizzapp.R
 import com.example.mayank.kwizzapp.bankdetail.BankDetailFragment
 import com.example.mayank.kwizzapp.bankdetail.EditBankDetailsFragment
+import com.example.mayank.kwizzapp.policies.PoliciesFragment
 import com.example.mayank.kwizzapp.profile.EditProfileFragment
 import com.example.mayank.kwizzapp.profile.ProfileFragment
 import com.example.mayank.kwizzapp.settings.menusettings.SettingMenuFragment
@@ -15,9 +16,10 @@ import org.jetbrains.anko.find
 
 class SettingsActivity : AppCompatActivity(), SettingMenuFragment.OnFragmentInteractionListener,
         ProfileFragment.OnFragmentInteractionListener, EditProfileFragment.OnFragmentInteractionListener,
-        BankDetailFragment.OnFragmentInteractionListener, EditBankDetailsFragment.OnFragmentInteractionListener{
+        BankDetailFragment.OnFragmentInteractionListener, EditBankDetailsFragment.OnFragmentInteractionListener,
+        PoliciesFragment.OnFragmentInteractionListener {
 
-    private lateinit var toolBar : Toolbar
+    private lateinit var toolBar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

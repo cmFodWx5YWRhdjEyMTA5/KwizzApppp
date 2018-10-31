@@ -39,7 +39,7 @@ class WalletMenuFragment : Fragment(), View.OnClickListener {
         compositeDisposable = CompositeDisposable()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_wallet_menu, container, false)
         // Getting balance from server
         when {
@@ -54,46 +54,55 @@ class WalletMenuFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        when(v?.id){
-            R.id.addPointsLayout ->{
+        when (v?.id) {
+            R.id.addPointsLayout -> {
                 val addPointsFragment = AddPointsFragment()
                 switchToFragment(addPointsFragment)
             }
 
-            R.id.withdrawalLayout->{
+            R.id.withdrawalLayout -> {
                 val withdrawalPointsFragment = WithdrawalPointsFragment()
                 switchToFragment(withdrawalPointsFragment)
             }
 
-            R.id.transferLayout->{
+            R.id.transferLayout -> {
                 val transferPointsFragment = TransferPointsFragment()
                 switchToFragment(transferPointsFragment)
             }
 
-            R.id.transactionLayout ->{
+            R.id.transactionLayout -> {
                 val transactionFragment = TransactionFragment()
                 switchToFragment(transactionFragment)
             }
         }
     }
 
-    private fun checkBalance(){
+    private fun checkBalance() {
+        showProgress()
         val mobileNumber = activity?.getPref(SharedPrefKeys.MOBILE_NUMBER, "")
         when {
-            mobileNumber!="" -> compositeDisposable.add(transactionService.checkBalance(mobileNumber!!)
+            mobileNumber != "" -> compositeDisposable.add(transactionService.checkBalance(mobileNumber!!)
                     .processRequest(
                             { response ->
                                 when {
-                                    response.isSuccess -> walletPoints.text ="Points - ${response.balance} ${activity?.getString(R.string.rupeeSymbol)}"
-                                    else -> walletPoints.text = "Failed !"
+                                    response.isSuccess -> {
+                                        hideProgress()
+                                        walletPoints.text = "Points - ${response.balance} ${activity?.getString(R.string.rupeeSymbol)}"
+                                    }
+                                    else -> {
+                                        hideProgress()
+                                        walletPoints.text = "Failed !"
+                                    }
                                 }
                             },
-                            { err->
+                            { err ->
+                                hideProgress()
                                 walletPoints.text = "Failed !"
                                 showDialog(activity!!, "Error", err.toString())
                             }
                     ))
-            else -> {}//balanceTextView.visibility = View.GONE
+            else -> {
+            }
         }
 
     }

@@ -35,7 +35,11 @@ class Transactions {
         var transferTo : String? = null
     }
 
-    class TransactionDetails : CommonResult(){
+    class Transaction : CommonResult(){
+        var transactions =  mutableListOf<TransactionDetails>()
+    }
+
+    class TransactionDetails {
         var mobileNumber : String? = null
         var transferTo : String? = null
         var receivedFrom : String? =null

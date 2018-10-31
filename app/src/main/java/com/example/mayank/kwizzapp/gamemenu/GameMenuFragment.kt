@@ -61,8 +61,9 @@ class GameMenuFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.singlePlayerLayout -> {
-                val singlePlayDetails = SinglePlayDetails()
-                switchToFragment(singlePlayDetails)
+//                val singlePlayDetails = SinglePlayDetails()
+//                switchToFragment(singlePlayDetails)
+                toast("Coming soon...")
             }
             R.id.quickGameLayout -> {
                 showProgress()

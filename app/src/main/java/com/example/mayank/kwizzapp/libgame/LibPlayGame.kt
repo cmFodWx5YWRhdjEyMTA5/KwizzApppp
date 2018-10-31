@@ -26,6 +26,7 @@ import com.example.mayank.kwizzapp.libgame.LibGameConstants.*
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.RC_INVITATION_INBOX
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.mFinishedParticipants
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.mInvitationClient
+import com.example.mayank.kwizzapp.play.PlayActivity
 import com.example.mayank.kwizzapp.viewmodels.FinalResultViewModel
 import com.example.mayank.kwizzapp.viewmodels.ResultViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -40,6 +41,7 @@ import com.google.android.gms.games.multiplayer.realtime.*
 import com.google.android.gms.tasks.OnFailureListener
 import net.rmitsolutions.mfexpert.lms.helpers.*
 import org.jetbrains.anko.find
+import org.jetbrains.anko.startActivity
 
 class LibPlayGame(private val activity: Activity) {
 

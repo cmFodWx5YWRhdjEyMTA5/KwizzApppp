@@ -1,4 +1,4 @@
-package com.example.mayank.kwizzapp.settings.menusettings
+package com.example.mayank.kwizzapp.policies
 
 import android.content.Context
 import android.net.Uri
@@ -12,42 +12,40 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.example.mayank.kwizzapp.R
-import com.example.mayank.kwizzapp.viewmodels.SettingVm
 
-class SettingMenuFragment : Fragment() {
+class PoliciesFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
+
     private lateinit var recyclerView: RecyclerView
-    val adapter: SettingMenuAdapter by lazy { SettingMenuAdapter() }
-    lateinit var modelList: MutableList<SettingVm.SettingMenuVm>
+    val adapter: PoliciesAdapter by lazy { PoliciesAdapter() }
+    lateinit var modelList: MutableList<PoliciesVm>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view =inflater.inflate(R.layout.fragment_setting_menu, container, false)
-        recyclerView = view.findViewById(R.id.menu_setting_recycler_view)
+        val view =inflater.inflate(R.layout.fragment_policies, container, false)
+        recyclerView = view.findViewById(R.id.policies_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.setHasFixedSize(true)
         recyclerView.addItemDecoration(DividerItemDecoration(activity, LinearLayoutManager.VERTICAL))
         recyclerView.adapter = adapter
-        modelList = mutableListOf<SettingVm.SettingMenuVm>()
-        setSettingsItem()
+        modelList = mutableListOf<PoliciesVm>()
+        setPoliciesItem()
         return view
     }
 
-    private fun setSettingsItem() {
+    private fun setPoliciesItem() {
         modelList.clear()
-        modelList.add(SettingVm.SettingMenuVm(R.mipmap.ic_profile, "Profile"))
-        modelList.add(SettingVm.SettingMenuVm(R.mipmap.ic_bank_account, "Bank Account"))
-        modelList.add(SettingVm.SettingMenuVm(R.mipmap.ic_security, "Policies"))
+        modelList.add(PoliciesVm(R.drawable.ic_info_black_24dp, "About KwizzApp"))
+        modelList.add(PoliciesVm(R.drawable.ic_assignment_black_24dp, "Privacy Policy"))
+        modelList.add(PoliciesVm(R.drawable.ic_error_black_24dp, "Terms & Conditions"))
+        modelList.add(PoliciesVm(R.drawable.ic_perm_device_information_black_24dp, "Open Source Licenses"))
         setRecyclerViewAdapter(modelList)
     }
 
-
-    private fun setRecyclerViewAdapter(list: List<SettingVm.SettingMenuVm>) {
+    private fun setRecyclerViewAdapter(list: List<PoliciesVm>) {
         adapter.items = list
         adapter.notifyDataSetChanged()
     }

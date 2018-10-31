@@ -19,6 +19,9 @@ object SharedPrefKeys {
     const val PRODUCT_RECHARGE_POINTS = "Recharge Points"
     const val ACCOUNT_NUMBER = "AccountNumber"
     const val IFSC_CODE= "IfscCode"
+
+    const val COMPLETE_A_GAME = "CompleteAGame"
+    const val WIN_THREE_GAME = "WinThreeGame"
 }
 
 val Context.defaultSharedPreferences: SharedPreferences

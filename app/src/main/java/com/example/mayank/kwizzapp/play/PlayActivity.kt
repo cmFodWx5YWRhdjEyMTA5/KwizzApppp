@@ -1,50 +1,51 @@
-package com.example.mayank.kwizzapp
+package com.example.mayank.kwizzapp.play
 
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.net.Uri
 import android.support.v7.widget.Toolbar
-import com.example.mayank.kwizzapp.dashboard.DashboardFragment
+import com.example.mayank.kwizzapp.R
 import com.example.mayank.kwizzapp.gamedetail.GameDetailFragment
 import com.example.mayank.kwizzapp.gamemenu.GameMenuFragment
 import com.example.mayank.kwizzapp.gameresult.GameResultFragment
 import com.example.mayank.kwizzapp.libgame.LibPlayGame
-import com.example.mayank.kwizzapp.login.LoginFragment
 import com.example.mayank.kwizzapp.quiz.QuizFragment
-import com.example.mayank.kwizzapp.userInfo.UserInfoFragment
-import net.rmitsolutions.mfexpert.lms.helpers.switchToFragment
-import org.jetbrains.anko.find
 import com.example.mayank.kwizzapp.singleplay.SinglePlayDetails
 import com.example.mayank.kwizzapp.singleplay.SinglePlayQuizFragment
 import com.example.mayank.kwizzapp.singleplay.SinglePlayResultFragment
+import net.rmitsolutions.mfexpert.lms.helpers.switchToFragment
+import org.jetbrains.anko.find
 
-
-class MainActivity : AppCompatActivity(), LoginFragment.OnFragmentInteractionListener,
-        UserInfoFragment.OnFragmentInteractionListener, DashboardFragment.OnFragmentInteractionListener,
-        GameMenuFragment.OnFragmentInteractionListener,
+class PlayActivity : AppCompatActivity(), GameMenuFragment.OnFragmentInteractionListener,
         GameDetailFragment.OnFragmentInteractionListener, QuizFragment.OnFragmentInteractionListener,
         GameResultFragment.OnFragmentInteractionListener, SinglePlayDetails.OnFragmentInteractionListener,
-        SinglePlayQuizFragment.OnFragmentInteractionListener, SinglePlayResultFragment.OnFragmentInteractionListener {
+        SinglePlayQuizFragment.OnFragmentInteractionListener , SinglePlayResultFragment.OnFragmentInteractionListener {
 
-    private lateinit var toolBar: Toolbar
+    private lateinit var toolBar : Toolbar
     private lateinit var libPlayGame : LibPlayGame
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_play)
 
         toolBar = find(R.id.toolbar)
         setSupportActionBar(toolBar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        val loginFragment = LoginFragment()
-        switchToFragment(loginFragment)
+        val gameMenuFragment = GameMenuFragment()
+        switchToFragment(gameMenuFragment)
     }
 
-    override fun onFragmentInteraction(uri: Uri) {
+    override fun onBackPressed() {
+        AlertDialog.Builder(this).setMessage("Do you want to leave the game ?").setPositiveButton("Ok") { dialog, which ->
+            super.onBackPressed()
+            finish()
+            dialog.dismiss()
+        }.setNegativeButton("Cancel"){ dialog, which ->
+            dialog.dismiss()
+        }.show()
 
     }
 
@@ -56,16 +57,7 @@ class MainActivity : AppCompatActivity(), LoginFragment.OnFragmentInteractionLis
         }
     }
 
-
-    override fun onBackPressed() {
-        AlertDialog.Builder(this).setMessage("Do you really want to exit?").setPositiveButton("Ok") { dialog, which ->
-            super.onBackPressed()
-            finish()
-            dialog.dismiss()
-        }.setNegativeButton("Cancel") { dialog, which ->
-            dialog.dismiss()
-        }.show()
+    override fun onFragmentInteraction(uri: Uri) {
 
     }
-
 }
