@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v4.app.Fragment
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
@@ -93,22 +92,17 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
         when (v?.id) {
             R.id.imageButtonNextAmount -> {
                 nextAmount(k)
-                reset()
             }
 
             R.id.imageButtonPreviousAmount -> {
                 previousAmount(k)
-                reset()
-
             }
             R.id.imageButtonPreviousSubject -> {
                 previousSubject(i)
-                reset()
             }
 
             R.id.imageButtonNextSubject -> {
                 nextSubject(i)
-                reset()
             }
 
             R.id.buttonLeaveRoom -> {
@@ -156,14 +150,14 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
             amount = amountList[k]
             textViewAmount.text = amount
             logD("K = $k")
-            libPlayGame.broadcastMessage('A', k)
         } else {
             k = 0
             amount = amountList[k]
             textViewAmount.text = amount
             logD("K = $k")
-            libPlayGame.broadcastMessage('A', k)
         }
+        libPlayGame.broadcastMessage('A', k)
+        reset()
     }
 
     private fun previousAmount(value: Int) {
@@ -172,13 +166,13 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
             k--
             amount = amountList[k]
             textViewAmount.text = amount
-            libPlayGame.broadcastMessage('A', k)
         } else {
             this.k = 20
             amount = amountList[this.k]
             textViewAmount.text = amount
-            libPlayGame.broadcastMessage('A', k)
         }
+        libPlayGame.broadcastMessage('A', k)
+        reset()
     }
 
     private fun nextSubject(value: Int) {
@@ -195,6 +189,7 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
             textViewSubject.text = subject
         }
         libPlayGame.broadcastMessage('S', i)
+        reset()
     }
 
     private fun previousSubject(value: Int) {
@@ -211,6 +206,7 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
             textViewSubject.text = subject
         }
         libPlayGame.broadcastMessage('S', i)
+        reset()
     }
 
     private fun unRegisterBroadcastReceiver() {
