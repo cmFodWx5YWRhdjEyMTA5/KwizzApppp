@@ -11,7 +11,7 @@ import org.jetbrains.anko.toast
 
 class PoliciesViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
 
-    fun bindView(context : Context, policiesVm: PoliciesVm, position: Int){
+    fun bindView(context: Context, policiesVm: PoliciesVm, position: Int){
         val textLabel = itemView.find<TextView>(R.id.policies_label)
         val imageIcon = itemView.find<ImageView>(R.id.policies_icon)
 

@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.withdrawal_points_layout.*
 import net.rmitsolutions.mfexpert.lms.helpers.*
 import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.startActivity
+import java.util.*
 import javax.inject.Inject
 
 
@@ -99,8 +100,8 @@ class WithdrawalPointsFragment : Fragment(), View.OnClickListener {
                 activity?.putPref(SharedPrefKeys.ACCOUNT_NUMBER, accountNumber)
                 activity?.putPref(SharedPrefKeys.IFSC_CODE, ifscCode)
                 compositeDisposable.add(transactionService.withdrawalPoints(firstName!!, lastName!!,displayName!!,mobileNumber!!,"",
-                        "",email!!,"Withdrawal Payments",amount!!,txnId,"",System.currentTimeMillis().toString(),
-                        "","","","Debited",accountNumber!!,ifscCode!!,"Processed")
+                        "",email!!,"Withdrawn money by itself.",amount!!,txnId,"",Calendar.getInstance().time.toString(),
+                        Calendar.getInstance().time.toString(),"","","Debited",accountNumber!!,ifscCode!!,"Processed")
                         .processRequest(
                                 { response ->
                                     if (response.isSuccess){

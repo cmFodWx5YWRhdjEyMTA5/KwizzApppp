@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.mayank.kwizzapp.R
-import com.example.mayank.kwizzapp.bankdetail.BankDetailVm
 import org.jetbrains.anko.find
 
 class TransactionDetailViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
@@ -22,8 +21,7 @@ class TransactionDetailViewHolder(itemView : View) : RecyclerView.ViewHolder(ite
         textUserName.text = transactionDetailVm.textUserName
         textTimeStamp.text = transactionDetailVm.textTimeStamp
         textDescription.text = transactionDetailVm.textDescription
-
-        if (textDescription.text.toString() == "Debited"){
+        if (transactionDetailVm.transactionType.toString() == "Debited"){
             textAmount.text = "- ${transactionDetailVm.textAmount}"
             textAmount.setTextColor(Color.RED)
         }else{

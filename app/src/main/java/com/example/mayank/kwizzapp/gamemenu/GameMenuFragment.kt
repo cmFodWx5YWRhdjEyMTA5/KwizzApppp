@@ -10,7 +10,6 @@ import android.support.v7.widget.CardView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import com.example.mayank.kwizzapp.KwizzApp
 
 import com.example.mayank.kwizzapp.R
@@ -18,10 +17,8 @@ import com.example.mayank.kwizzapp.dependency.components.DaggerInjectFragmentCom
 import com.example.mayank.kwizzapp.helpers.processRequest
 import com.example.mayank.kwizzapp.libgame.LibPlayGame
 import com.example.mayank.kwizzapp.network.ITransaction
-import com.example.mayank.kwizzapp.singleplay.SinglePlayDetails
 import com.example.mayank.kwizzapp.wallet.WalletActivity
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.game_menu_layout.*
 import net.rmitsolutions.mfexpert.lms.helpers.*
 import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.startActivity

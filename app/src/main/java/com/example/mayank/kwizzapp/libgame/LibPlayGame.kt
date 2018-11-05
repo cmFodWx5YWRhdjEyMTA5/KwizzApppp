@@ -3,21 +3,17 @@ package com.example.mayank.kwizzapp.libgame
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import com.example.mayank.kwizzapp.MainActivity
 import com.example.mayank.kwizzapp.R
 import com.example.mayank.kwizzapp.gamedetail.GameDetailFragment
@@ -26,8 +22,6 @@ import com.example.mayank.kwizzapp.libgame.LibGameConstants.*
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.RC_INVITATION_INBOX
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.mFinishedParticipants
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.mInvitationClient
-import com.example.mayank.kwizzapp.play.PlayActivity
-import com.example.mayank.kwizzapp.viewmodels.FinalResultViewModel
 import com.example.mayank.kwizzapp.viewmodels.ResultViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -41,11 +35,12 @@ import com.google.android.gms.games.multiplayer.realtime.*
 import com.google.android.gms.tasks.OnFailureListener
 import net.rmitsolutions.mfexpert.lms.helpers.*
 import org.jetbrains.anko.find
-import org.jetbrains.anko.startActivity
 
-class LibPlayGame(private val activity: Activity) {
+class LibPlayGame(private var activity: Activity) {
 
     private val TAG = LibPlayGame::class.java.simpleName
+
+
 
     init {
         //GameConstants.resultList = mutableListOf<ResultViewModel>()
@@ -59,6 +54,7 @@ class LibPlayGame(private val activity: Activity) {
         GameConstants.imageUri = getImageUri()
 
         GameConstants.mInvitationClient = getInvitationClient()
+
 
     }
 
@@ -110,10 +106,10 @@ class LibPlayGame(private val activity: Activity) {
     }
 
     fun invitePlayers() {
-        activity.hideProgress()
         Log.d(TAG, "Multiplayer clicked")
         GameConstants.mRealTimeMultiplayerClient?.getSelectOpponentsIntent(1, 7)?.addOnSuccessListener { intent ->
             activity.startActivityForResult(intent, GameConstants.RC_SELECT_PLAYERS)
+            activity.hideProgress()
 
         }?.addOnFailureListener(createFailureListener("There was a problem selecting opponents."))
     }
@@ -245,7 +241,7 @@ class LibPlayGame(private val activity: Activity) {
             Log.d(TAG, "My ID ${GameConstants.mMyId}")
             Log.d(TAG, "<< CONNECTED TO ROOM>>")
             val gameDetailFragment = GameDetailFragment()
-            activity.switchToFragment(gameDetailFragment)
+            activity.switchToFragmentBackStack(gameDetailFragment)
             activity.hideProgress()
 
             for (p in GameConstants.mParticipants!!) {
@@ -490,6 +486,7 @@ class LibPlayGame(private val activity: Activity) {
         Log.d(TAG, "Request code - $requestCode")
         Log.d(TAG, "Result Code - $resultCode")
         if (requestCode == GameConstants.RC_SELECT_PLAYERS) {
+            Log.d("ResultCode", "$resultCode")
             // we got the result from the "select players" UI -- ready to create the room
             Log.d(TAG, "Inside rc select player activity result")
             when (resultCode) {
@@ -502,6 +499,8 @@ class LibPlayGame(private val activity: Activity) {
                         activity.showDialog(activity, "Error", "Some error occurred please try again...")
                     }
                 }
+
+
             }
 
         } else if (requestCode == GameConstants.RC_WAITING_ROOM) {

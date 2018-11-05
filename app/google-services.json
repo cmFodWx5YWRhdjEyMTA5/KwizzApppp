@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "862994340865",
+    "firebase_url": "https://kwizzappp-2791867.firebaseio.com",
+    "project_id": "kwizzappp-2791867",
+    "storage_bucket": "kwizzappp-2791867.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:862994340865:android:f81b60205f8dd37c",
+        "android_client_info": {
+          "package_name": "com.alchemyeducation.kwizzapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "862994340865-1f8qi31d92sb9krnkjdgqe7hc27hakju.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alchemyeducation.kwizzapp",
+            "certificate_hash": "89130bcaa87ddb812cb67995e258963e1c204f38"
+          }
+        },
+        {
+          "client_id": "862994340865-t8u0pr85ipb90d41dtjgom28njhci7a7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCo6-P00kKzNEUjYEES_bTuVArPKaha8I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "862994340865-t8u0pr85ipb90d41dtjgom28njhci7a7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -207,7 +207,7 @@ class QuizFragment : Fragment(), View.OnClickListener {
 
     private fun showDialog(message: String) {
         if (!show) {
-            showDialog(activity!!, "Error", message)
+            activity?.showDialog(activity!!, "Error", message)
             show = true
         }
     }

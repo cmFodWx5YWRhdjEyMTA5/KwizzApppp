@@ -48,6 +48,7 @@ class Transactions {
         var createdOn : String? = null
         var transactionType : String? = null
         var status : String? = null
+        var productInfo : String? = null
     }
 
 

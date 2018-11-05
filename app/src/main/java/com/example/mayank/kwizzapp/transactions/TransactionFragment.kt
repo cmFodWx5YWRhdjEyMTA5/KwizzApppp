@@ -14,7 +14,6 @@ import android.view.ViewGroup
 
 import com.example.mayank.kwizzapp.R
 import org.jetbrains.anko.find
-import java.util.*
 import android.support.v7.app.AppCompatActivity
 import com.example.mayank.kwizzapp.Constants
 import com.example.mayank.kwizzapp.KwizzApp
@@ -76,15 +75,18 @@ class TransactionFragment : Fragment() {
                                         for (data in transactions) {
                                             val transactions = TransactionDetailsVm()
                                             when {
+                                                data.transferTo == "" && data.receivedFrom == "" -> transactions.textUserName = data.mobileNumber
                                                 data.transactionType.toString() == Constants.TRANSACTION_TYPE_DEBITED -> transactions.textUserName = data.transferTo
                                                 else -> transactions.textUserName = data.receivedFrom
                                             }
+                                            transactions.transactionType = data.transactionType
                                             transactions.textAmount = "${activity?.getString(R.string.rupeeSymbol)}${data.amount}"
                                             transactions.textTimeStamp = data.createdOn
-                                            transactions.textDescription = data.transactionType
+                                            transactions.textDescription = data.productInfo
                                             modelList.add(transactions)
                                         }
                                     } else {
+                                        logD("Response message - ${response.message}")
                                         showDialog(activity!!, "Response", response.message)
                                     }
                                     setRecyclerViewAdapter(modelList)

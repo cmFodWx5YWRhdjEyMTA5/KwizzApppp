@@ -35,7 +35,7 @@ object Constants {
 
     const val DISPLAY_FULL_DATE_FORMAT = "dd-MM-yyyy hh:mm:ss a"
 
-    fun getFormatDate(): String? {
+    fun getFormatDate(date : Date): String? {
         val calendar = Calendar.getInstance()
         val date = calendar.time
         val formatter : java.text.DateFormat = SimpleDateFormat(DISPLAY_FULL_DATE_FORMAT)

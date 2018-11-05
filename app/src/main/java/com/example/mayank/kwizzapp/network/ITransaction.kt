@@ -33,7 +33,7 @@ interface ITransaction {
     fun addTransactionDetails(
             @Field("firstName") firstName: String,
             @Field("lastName") lastName: String,
-            @Field("playGameName") displayName: String,
+            @Field("displayName") displayName: String,
             @Field("mobileNumber") mobileNumber: String,
             @Field("transferTo") transferTo: String,
             @Field("receivedFrom") receivedFrom: String,
@@ -54,7 +54,7 @@ interface ITransaction {
     fun withdrawalPoints(
             @Field("firstName") firstName: String,
             @Field("lastName") lastName: String,
-            @Field("playGameName") playGameName: String,
+            @Field("displayName") playGameName: String,
             @Field("mobileNumber") mobileNumber: String,
             @Field("transferTo") transferTo: String,
             @Field("receivedFrom") receivedFrom: String,
@@ -77,7 +77,7 @@ interface ITransaction {
     fun transferPoints(
             @Field("firstName") firstName: String,
             @Field("lastName") lastName: String,
-            @Field("playGameName") displayName: String,
+            @Field("displayName") displayName: String,
             @Field("mobileNumber") mobileNumber: String,
             @Field("transferTo") transferTo: String,
             @Field("receivedFrom") receivedFrom: String,

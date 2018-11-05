@@ -24,7 +24,6 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.game_detail_layout.*
 import net.rmitsolutions.mfexpert.lms.helpers.*
 import org.jetbrains.anko.find
-import java.lang.IllegalArgumentException
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -37,17 +36,13 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
     lateinit var transactionService: ITransaction
     private lateinit var libPlayGame: LibPlayGame
     private var i = -1
-    private var j: Int = 0
     private var k = -1
-    private var l: Int = 0
     private var subject: String? = null
     private var subCode: String? = null
     private var amount: String? = null
     private lateinit var amountList: Array<String>
     private lateinit var subjectList: Array<String>
     private lateinit var subjectCode: Array<String>
-    private lateinit var textSwitcherCountdown: TextSwitcher
-    private lateinit var textViewCount: TextView
     private val syncIntentFilter = IntentFilter(ACTION_MESSAGE_RECEIVED)
     private var timerStatus = TimerStatus.STOPPED
     private var progressBar: ProgressBar? = null
@@ -97,27 +92,23 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.imageButtonNextAmount -> {
-                nextAmount()
-                libPlayGame.broadcastMessage('A', 0)
+                nextAmount(k)
                 reset()
             }
 
             R.id.imageButtonPreviousAmount -> {
-                previousAmount()
-                libPlayGame.broadcastMessage('A', 1)
+                previousAmount(k)
                 reset()
 
             }
             R.id.imageButtonPreviousSubject -> {
-                previousSubject()
-                libPlayGame.broadcastMessage('S', 1)
+                previousSubject(i)
                 reset()
             }
 
             R.id.imageButtonNextSubject -> {
-                nextSubject()
+                nextSubject(i)
                 reset()
-                libPlayGame.broadcastMessage('S', 0)
             }
 
             R.id.buttonLeaveRoom -> {
@@ -125,6 +116,7 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
             }
         }
     }
+
 
     private val messageBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -134,54 +126,65 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
                 logD("State - $state")
                 logD("Value - $value")
                 if (state == 'A') {
-                    if (value == 0) {
-                        nextAmount()
-                    } else if (value == 1) {
-                        previousAmount()
-                    }
+                    k = value
+                    setTextAmount(k)
                     reset()
                 } else if (state == 'S') {
-                    if (value == 0) {
-                        nextSubject()
-                    } else if (value == 1) {
-                        previousSubject()
-                    }
+                    i = value
+                    setTextSubject(i)
                     reset()
                 }
             }
         }
     }
 
-    private fun nextAmount() {
+    private fun setTextAmount(value : Int){
+        amount = amountList[value]
+        textViewAmount.text = amount
+    }
+
+    private fun setTextSubject(value : Int){
+        subCode = subjectCode[value]
+        subject = subjectList[value]
+        textViewSubject.text = subject
+    }
+
+    private fun nextAmount(value: Int) {
+        k = value
         if (k < 20) {
             k++
-            l = k
             amount = amountList[k]
             textViewAmount.text = amount
+            logD("K = $k")
+            libPlayGame.broadcastMessage('A', k)
         } else {
             k = 0
             amount = amountList[k]
             textViewAmount.text = amount
+            logD("K = $k")
+            libPlayGame.broadcastMessage('A', k)
         }
     }
 
-    private fun previousAmount() {
-        if (l > 0) {
-            l--
-            k = l
-            amount = amountList[l]
+    private fun previousAmount(value: Int) {
+        k = value
+        if (k > 0) {
+            k--
+            amount = amountList[k]
             textViewAmount.text = amount
+            libPlayGame.broadcastMessage('A', k)
         } else {
-            l = 20
-            amount = amountList[l]
+            this.k = 20
+            amount = amountList[this.k]
             textViewAmount.text = amount
+            libPlayGame.broadcastMessage('A', k)
         }
     }
 
-    private fun nextSubject() {
+    private fun nextSubject(value: Int) {
+        i = value
         if (i < 6) {
             i++
-            j = i
             subject = subjectList[i]
             subCode = subjectCode[i]
             textViewSubject.text = subject
@@ -191,21 +194,23 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
             subCode = subjectCode[i]
             textViewSubject.text = subject
         }
+        libPlayGame.broadcastMessage('S', i)
     }
 
-    private fun previousSubject() {
-        if (j > 0) {
-            j--
-            i = j
-            subCode = subjectCode[j]
-            subject = subjectList[j]
+    private fun previousSubject(value: Int) {
+        i = value
+        if (i > 0) {
+            i--
+            subCode = subjectCode[i]
+            subject = subjectList[i]
             textViewSubject.text = subject
         } else {
-            j = 6
-            subCode = subjectCode[j]
-            subject = subjectList[j]
+            i = 6
+            subCode = subjectCode[i]
+            subject = subjectList[i]
             textViewSubject.text = subject
         }
+        libPlayGame.broadcastMessage('S', i)
     }
 
     private fun unRegisterBroadcastReceiver() {
@@ -216,8 +221,6 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
         } catch (e: IllegalArgumentException) {
             logE("Error - $e")
         }
-
-
     }
 
     private fun reset() {
@@ -258,6 +261,7 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
                     Toast.makeText(activity, "Select a valid subject!", Toast.LENGTH_SHORT).show()
                 } else {
                     if (!subtract) {
+                        logD("Amount - $amount")
                         subtractBalance(displayName!!, amount?.toDouble(), Calendar.getInstance().time.toString())
                     }
                 }
@@ -267,41 +271,8 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
         countDownTimer!!.start()
     }
 
-    private fun checkBalance() {
-        val mobileNumber = activity?.getPref(SharedPrefKeys.MOBILE_NUMBER, "")
-        if (mobileNumber != "") {
-            compositeDisposable.add(transactionService.checkBalance(mobileNumber!!)
-                    .processRequest({ response ->
-                        if (response.isSuccess) {
-                            if (amount?.toDouble()!! <= response.balance && response.balance > 10) {
-                                if (!subtract) {
-                                    subtractBalance(displayName!!, amount?.toDouble(), Calendar.getInstance().time.toString())
-                                    subtract = true
-                                }
-                            } else {
-                                AlertDialog.Builder(activity!!).setTitle("Warning").setMessage(activity?.getString(R.string.insufficient_balance))
-                                        .setPositiveButton("Ok") { dialog, which ->
-                                            libPlayGame.leaveRoom()
-                                            dialog.dismiss()
-                                        }
-                            }
-                        } else {
-
-                            AlertDialog.Builder(activity!!).setTitle("Warning").setMessage(response.message)
-                                    .setPositiveButton("Ok") { dialog, which ->
-                                        libPlayGame.leaveRoom()
-                                        dialog.dismiss()
-                                    }
-                        }
-                    }, { err ->
-                        logD("Message - $err")
-                    }))
-        } else {
-            showDialog(activity!!, "Error", "Update mobile number to continue!")
-        }
-    }
-
     private fun subtractBalance(displayName: String, amount: Double?, time: String) {
+        logD("Amount inside subtract - $amount")
         compositeDisposable.add(transactionService.subtractResultBalance(displayName, amount!!, time)
                 .processRequest(
                         { response ->

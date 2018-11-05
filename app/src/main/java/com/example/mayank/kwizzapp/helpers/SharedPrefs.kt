@@ -16,7 +16,7 @@ object SharedPrefKeys {
     const val LAST_NAME = "LastName"
     const val EMAIL = "Email"
     const val MOBILE_NUMBER = "MobileNumber"
-    const val PRODUCT_RECHARGE_POINTS = "Recharge Points"
+    const val PRODUCT_RECHARGE_POINTS = "Points recharged by yourself"
     const val ACCOUNT_NUMBER = "AccountNumber"
     const val IFSC_CODE= "IfscCode"
 

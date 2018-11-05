@@ -14,7 +14,6 @@ import com.example.mayank.kwizzapp.Constants
 import com.example.mayank.kwizzapp.R
 import com.example.mayank.kwizzapp.gamemenu.GameMenuFragment
 import com.example.mayank.kwizzapp.login.LoginFragment
-import com.example.mayank.kwizzapp.play.PlayActivity
 import com.example.mayank.kwizzapp.settings.SettingsActivity
 import com.example.mayank.kwizzapp.wallet.WalletActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -55,8 +54,7 @@ class DashboardFragment : Fragment(), View.OnClickListener {
 
     private fun openGameMenuFragment() {
         val gameMenu = GameMenuFragment()
-        switchToFragment(gameMenu)
-//        startActivity<PlayActivity>()
+        switchToFragmentBackStack(gameMenu)
     }
 
 
@@ -68,7 +66,7 @@ class DashboardFragment : Fragment(), View.OnClickListener {
 
     private fun showLeaderBoards() {
         Games.getLeaderboardsClient(activity!!, GoogleSignIn.getLastSignedInAccount(activity)!!)
-                .getLeaderboardIntent(getString(R.string.leaderboard_kwizz_toppers))
+                .getLeaderboardIntent(getString(R.string.leaderboard_top_scores))
                 .addOnSuccessListener { intent -> startActivityForResult(intent, Constants.RC_LEADERBOARD_UI) }
     }
 

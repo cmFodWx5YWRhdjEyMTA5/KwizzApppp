@@ -235,7 +235,7 @@ class GameResultFragment : Fragment(), View.OnClickListener{
 
     private fun submitScoreToLeaderboards(score : Long){
         Games.getLeaderboardsClient(activity!!, GoogleSignIn.getLastSignedInAccount(activity)!!)
-                .submitScore(getString(R.string.leaderboard_kwizz_toppers), score);
+                .submitScore(getString(R.string.leaderboard_top_scores), score);
     }
 
     private fun showDialogResult(activity: Activity, bigTitle: String, smallTitle : String, message: String, imageResource : Int){

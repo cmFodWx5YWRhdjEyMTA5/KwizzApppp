@@ -5,9 +5,11 @@ import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.example.mayank.kwizzapp.Constants
 import com.example.mayank.kwizzapp.KwizzApp
 import com.example.mayank.kwizzapp.R
 import com.example.mayank.kwizzapp.dependency.components.DaggerInjectActivityComponent
+import com.example.mayank.kwizzapp.helpers.Converters
 import com.example.mayank.kwizzapp.helpers.processRequest
 import com.example.mayank.kwizzapp.network.ITransaction
 import com.example.mayank.kwizzapp.transactions.TransactionFragment
@@ -71,7 +73,8 @@ class WalletActivity : AppCompatActivity(), WalletMenuFragment.OnFragmentInterac
                         val txnId = result.getString("txnid")
                         val amount = result.getString("amount")
                         val addedOn = result.getString("addedon")
-                        val createdOn = result.getString("createdOn")
+                        val formatDate = Converters.fromTimestamp(result.getString("createdOn").toLong())
+                        val createdOn = Constants.getFormatDate(formatDate!!)
                         val productInfo = result.getString("productinfo")
                         val firstName = result.getString("firstname")
                         val lastName = getPref(SharedPrefKeys.LAST_NAME, "")
@@ -81,7 +84,7 @@ class WalletActivity : AppCompatActivity(), WalletMenuFragment.OnFragmentInterac
                         val bankCode = result.getString("bankcode")
                         val displayName = getPref(SharedPrefKeys.DISPLAY_NAME, "")
 
-                        updateTransactionDetails(firstName, "$lastName", "$displayName", mobileNumber, "", "", email, productInfo, amount, txnId, paymentId, addedOn, createdOn, bankRefNumber, bankCode, "Credited", status)
+                        updateTransactionDetails(firstName, "$lastName", "$displayName", mobileNumber, "", "", email, productInfo, amount, txnId, paymentId, addedOn, createdOn.toString(), bankRefNumber, bankCode, "Credited", status)
 
                     }else{
                         showDialog(this, "PayU Error", "PayU response is null.")

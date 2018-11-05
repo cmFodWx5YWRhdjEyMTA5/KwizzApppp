@@ -5,4 +5,5 @@ class TransactionDetailsVm(){
     var textAmount : String? = null
     var textTimeStamp : String? = null
     var textDescription : String? = null
+    var transactionType : String? = null
 }

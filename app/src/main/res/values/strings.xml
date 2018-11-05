@@ -1,29 +1,29 @@
 <resources>
     <string name="app_name">KwizzApp</string>
-    <string name="app_id">1013339845291</string>
+    <string name="app_id">862994340865</string>
     <string name="signin_other_error">SignIn Unknown Error !</string>
 
 
     <!-- package_name -->
-    <string name="package_name" translatable="false">com.example.mayank.kwizzapp</string>
+    <string name="package_name" translatable="false">com.alchemyeducation.kwizzapp</string>
     <!-- achievement Kwizz Novice -->
-    <string name="achievement_kwizz_novice" translatable="false">CgkIq-WL_r4dEAIQAw</string>
+    <string name="achievement_kwizz_novice" translatable="false">CgkIgbji844ZEAIQAg</string>
     <!-- achievement Kwizz Beginner -->
-    <string name="achievement_kwizz_beginner" translatable="false">CgkIq-WL_r4dEAIQBA</string>
+    <string name="achievement_kwizz_beginner" translatable="false">CgkIgbji844ZEAIQAw</string>
     <!-- achievement Kwizz Lone Wolf -->
-    <string name="achievement_kwizz_lone_wolf" translatable="false">CgkIq-WL_r4dEAIQBQ</string>
+    <string name="achievement_kwizz_lone_wolf" translatable="false">CgkIgbji844ZEAIQBA</string>
     <!-- achievement Kwizz Full League -->
-    <string name="achievement_kwizz_full_league" translatable="false">CgkIq-WL_r4dEAIQBg</string>
+    <string name="achievement_kwizz_full_league" translatable="false">CgkIgbji844ZEAIQBQ</string>
     <!-- achievement Kwizz Fortune -->
-    <string name="achievement_kwizz_fortune" translatable="false">CgkIq-WL_r4dEAIQBw</string>
+    <string name="achievement_kwizz_fortune" translatable="false">CgkIgbji844ZEAIQBg</string>
     <!-- achievement On a Roll -->
-    <string name="achievement_on_a_roll" translatable="false">CgkIq-WL_r4dEAIQCA</string>
+    <string name="achievement_on_a_roll" translatable="false">CgkIgbji844ZEAIQBw</string>
     <!-- achievement Great Luck -->
-    <string name="achievement_great_luck" translatable="false">CgkIq-WL_r4dEAIQCQ</string>
+    <string name="achievement_great_luck" translatable="false">CgkIgbji844ZEAIQCA</string>
     <!-- achievement 10 Rounds Back to Back -->
-    <string name="achievement_10_rounds_back_to_back" translatable="false">CgkIq-WL_r4dEAIQCg</string>
-    <!-- leaderboard Kwizz Topper's -->
-    <string name="leaderboard_kwizz_toppers" translatable="false">CgkIq-WL_r4dEAIQAQ</string>
+    <string name="achievement_10_rounds_back_to_back" translatable="false">CgkIgbji844ZEAIQCQ</string>
+    <!-- leaderboard Top Scores -->
+    <string name="leaderboard_top_scores" translatable="false">CgkIgbji844ZEAIQAQ</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

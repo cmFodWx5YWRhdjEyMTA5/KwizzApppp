@@ -20,6 +20,7 @@ import org.jetbrains.anko.find
 import com.example.mayank.kwizzapp.singleplay.SinglePlayDetails
 import com.example.mayank.kwizzapp.singleplay.SinglePlayQuizFragment
 import com.example.mayank.kwizzapp.singleplay.SinglePlayResultFragment
+import org.jetbrains.anko.startActivity
 
 
 class MainActivity : AppCompatActivity(), LoginFragment.OnFragmentInteractionListener,
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity(), LoginFragment.OnFragmentInteractionLis
         SinglePlayQuizFragment.OnFragmentInteractionListener, SinglePlayResultFragment.OnFragmentInteractionListener {
 
     private lateinit var toolBar: Toolbar
-    private lateinit var libPlayGame : LibPlayGame
+    private var libPlayGame : LibPlayGame? =null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,19 +53,33 @@ class MainActivity : AppCompatActivity(), LoginFragment.OnFragmentInteractionLis
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode== Activity.RESULT_OK){
             libPlayGame = LibPlayGame(this)
-            libPlayGame.onActivityResult(requestCode, resultCode, data)
+            libPlayGame?.onActivityResult(requestCode, resultCode, data)
         }
     }
 
 
     override fun onBackPressed() {
-        AlertDialog.Builder(this).setMessage("Do you really want to exit?").setPositiveButton("Ok") { dialog, which ->
-            super.onBackPressed()
-            finish()
-            dialog.dismiss()
-        }.setNegativeButton("Cancel") { dialog, which ->
-            dialog.dismiss()
-        }.show()
+        val count = supportFragmentManager.backStackEntryCount
+        if (count >=1){
+            AlertDialog.Builder(this).setMessage("Do you really want to leave the game?").setPositiveButton("Ok") { dialog, which ->
+                super.onBackPressed()
+                startActivity<MainActivity>()
+                libPlayGame?.leaveRoom()
+                finish()
+                dialog.dismiss()
+            }.setNegativeButton("Cancel") { dialog, which ->
+                dialog.dismiss()
+            }.show()
+        }else{
+            AlertDialog.Builder(this).setMessage("Do you really want to Exit?").setPositiveButton("Ok") { dialog, which ->
+                super.onBackPressed()
+                finish()
+                dialog.dismiss()
+            }.setNegativeButton("Cancel") { dialog, which ->
+                dialog.dismiss()
+            }.show()
+        }
+
 
     }
 

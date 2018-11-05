@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.transfer_points_layout.*
 import net.rmitsolutions.mfexpert.lms.helpers.*
 import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.startActivity
+import java.util.*
 import javax.inject.Inject
 
 
@@ -73,7 +74,7 @@ class TransferPointsFragment : Fragment(), View.OnClickListener {
         if (validate()) {
             showProgress()
             compositeDisposable.add(transactionService.transferPoints(firstName!!, lastName!!, displayName!!, mobileNumber!!, transferTo!!,
-                    "", email!!, "Transfer Points", amount!!, txnId, "", System.currentTimeMillis().toString(), System.currentTimeMillis().toString(), "", "", "Debited", "success")
+                    "", email!!, "Transferred to $transferTo.", amount!!, txnId, "", Calendar.getInstance().time.toString(), Calendar.getInstance().time.toString(), "", "", "Debited", "success")
                     .processRequest(
                             { response ->
                                 when {
