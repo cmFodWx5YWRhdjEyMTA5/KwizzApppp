@@ -20,6 +20,7 @@ import org.jetbrains.anko.find
 import com.example.mayank.kwizzapp.singleplay.SinglePlayDetails
 import com.example.mayank.kwizzapp.singleplay.SinglePlayQuizFragment
 import com.example.mayank.kwizzapp.singleplay.SinglePlayResultFragment
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import org.jetbrains.anko.startActivity
 
 
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity(), LoginFragment.OnFragmentInteractionLis
         SinglePlayQuizFragment.OnFragmentInteractionListener, SinglePlayResultFragment.OnFragmentInteractionListener {
 
     private lateinit var toolBar: Toolbar
-    private var libPlayGame : LibPlayGame? =null
+    private var libPlayGame: LibPlayGame? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +42,17 @@ class MainActivity : AppCompatActivity(), LoginFragment.OnFragmentInteractionLis
         setSupportActionBar(toolBar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        val loginFragment = LoginFragment()
-        switchToFragment(loginFragment)
+        if (isSignedIn()) {
+            val dashboardFragment = DashboardFragment()
+            switchToFragment(dashboardFragment)
+        } else {
+            val loginFragment = LoginFragment()
+            switchToFragment(loginFragment)
+        }
+    }
+
+    private fun isSignedIn(): Boolean {
+        return GoogleSignIn.getLastSignedInAccount(this) != null
     }
 
     override fun onFragmentInteraction(uri: Uri) {
@@ -51,16 +61,15 @@ class MainActivity : AppCompatActivity(), LoginFragment.OnFragmentInteractionLis
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode== Activity.RESULT_OK){
-            libPlayGame = LibPlayGame(this)
-            libPlayGame?.onActivityResult(requestCode, resultCode, data)
-        }
+        libPlayGame = LibPlayGame(this)
+        libPlayGame?.onActivityResult(requestCode, resultCode, data)
+
     }
 
 
     override fun onBackPressed() {
         val count = supportFragmentManager.backStackEntryCount
-        if (count >=1){
+        if (count >= 1) {
             AlertDialog.Builder(this).setMessage("Do you really want to leave the game?").setPositiveButton("Ok") { dialog, which ->
                 super.onBackPressed()
                 startActivity<MainActivity>()
@@ -70,7 +79,7 @@ class MainActivity : AppCompatActivity(), LoginFragment.OnFragmentInteractionLis
             }.setNegativeButton("Cancel") { dialog, which ->
                 dialog.dismiss()
             }.show()
-        }else{
+        } else {
             AlertDialog.Builder(this).setMessage("Do you really want to Exit?").setPositiveButton("Ok") { dialog, which ->
                 super.onBackPressed()
                 finish()

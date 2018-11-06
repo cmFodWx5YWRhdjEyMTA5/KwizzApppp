@@ -109,7 +109,6 @@ class LibPlayGame(private var activity: Activity) {
         Log.d(TAG, "Multiplayer clicked")
         GameConstants.mRealTimeMultiplayerClient?.getSelectOpponentsIntent(1, 7)?.addOnSuccessListener { intent ->
             activity.startActivityForResult(intent, GameConstants.RC_SELECT_PLAYERS)
-            activity.hideProgress()
 
         }?.addOnFailureListener(createFailureListener("There was a problem selecting opponents."))
     }
@@ -483,12 +482,8 @@ class LibPlayGame(private var activity: Activity) {
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-        Log.d(TAG, "Request code - $requestCode")
-        Log.d(TAG, "Result Code - $resultCode")
         if (requestCode == GameConstants.RC_SELECT_PLAYERS) {
-            Log.d("ResultCode", "$resultCode")
             // we got the result from the "select players" UI -- ready to create the room
-            Log.d(TAG, "Inside rc select player activity result")
             when (resultCode) {
                 Activity.RESULT_CANCELED -> activity.hideProgress()
                 Activity.RESULT_OK -> {
@@ -499,8 +494,6 @@ class LibPlayGame(private var activity: Activity) {
                         activity.showDialog(activity, "Error", "Some error occurred please try again...")
                     }
                 }
-
-
             }
 
         } else if (requestCode == GameConstants.RC_WAITING_ROOM) {

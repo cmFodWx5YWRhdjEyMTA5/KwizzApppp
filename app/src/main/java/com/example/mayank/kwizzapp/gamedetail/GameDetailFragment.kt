@@ -248,7 +248,6 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
             }
 
             override fun onFinish() {
-
                 timerStatus = TimerStatus.STOPPED
 
                 if (amount == null) {
@@ -258,6 +257,7 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
                 } else {
                     if (!subtract) {
                         logD("Amount - $amount")
+                        subtract = true
                         subtractBalance(displayName!!, amount?.toDouble(), Calendar.getInstance().time.toString())
                     }
                 }
@@ -276,7 +276,6 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
                                 if (countDownTimer != null) {
                                     countDownTimer?.cancel()
                                 }
-                                subtract = true
                                 val bundle = Bundle()
                                 bundle.putString("Subject", subject)
                                 bundle.putString("SubjectCode", subCode)

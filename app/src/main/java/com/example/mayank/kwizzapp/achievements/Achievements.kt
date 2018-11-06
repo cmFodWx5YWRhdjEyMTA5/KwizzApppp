@@ -32,9 +32,7 @@ class Achievements(private val activity: Activity) {
             activity.putPref(SharedPrefKeys.COMPLETE_A_GAME, "Complete a game successfully !")
         }
 
-        if (score >5){
-            unlockAchievement(R.string.achievement_kwizz_lone_wolf)
-        }
+
 
         if (score >15){
             unlockAchievement(R.string.achievement_kwizz_beginner)
@@ -56,7 +54,19 @@ class Achievements(private val activity: Activity) {
             unlockIncrementalAchievement(R.string.achievement_10_rounds_back_to_back, winThreeGame.toInt())
         }
 
+    }
 
+    fun checkSinglePlayerAchievements(score : Int){
+        val completeAGame = activity.getPref(SharedPrefKeys.COMPLETE_A_GAME, "")
+
+        if (score >5){
+            unlockAchievement(R.string.achievement_kwizz_lone_wolf)
+        }
+
+        if (completeAGame!="" && score >5){
+            unlockAchievement(R.string.achievement_kwizz_novice)
+            activity.putPref(SharedPrefKeys.COMPLETE_A_GAME, "Complete a game successfully !")
+        }
     }
 
 }
