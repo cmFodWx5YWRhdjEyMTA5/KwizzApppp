@@ -60,7 +60,6 @@ class WithdrawalPointsFragment : Fragment(), View.OnClickListener {
         when {
             accountNumber!="" -> disableBankDetail(true)
             else -> {
-                logD("inside else false")
                 disableBankDetail(false)
             }
         }
@@ -100,7 +99,7 @@ class WithdrawalPointsFragment : Fragment(), View.OnClickListener {
                 activity?.putPref(SharedPrefKeys.ACCOUNT_NUMBER, accountNumber)
                 activity?.putPref(SharedPrefKeys.IFSC_CODE, ifscCode)
                 compositeDisposable.add(transactionService.withdrawalPoints(firstName!!, lastName!!,displayName!!,mobileNumber!!,"",
-                        "",email!!,"Withdrawn money by itself.",amount!!,txnId,"",Calendar.getInstance().time.toString(),
+                        "",email!!,"Withdrawn points by itself.",amount!!,txnId,"",Calendar.getInstance().time.toString(),
                         Calendar.getInstance().time.toString(),"","","Debited",accountNumber!!,ifscCode!!,"Processed")
                         .processRequest(
                                 { response ->
@@ -174,7 +173,5 @@ class WithdrawalPointsFragment : Fragment(), View.OnClickListener {
     interface OnFragmentInteractionListener {
         fun onFragmentInteraction(uri: Uri)
     }
-
-    companion object {
-    }
+    
 }
