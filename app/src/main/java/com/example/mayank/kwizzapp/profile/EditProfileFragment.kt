@@ -22,10 +22,7 @@ import com.example.mayank.kwizzapp.settings.SettingsActivity
 import com.example.mayank.kwizzapp.viewmodels.Users
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_user_info.*
-import net.rmitsolutions.mfexpert.lms.helpers.SharedPrefKeys
-import net.rmitsolutions.mfexpert.lms.helpers.getPref
-import net.rmitsolutions.mfexpert.lms.helpers.showDialog
-import net.rmitsolutions.mfexpert.lms.helpers.toast
+import net.rmitsolutions.mfexpert.lms.helpers.*
 import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject
@@ -70,7 +67,6 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
                 dataBinding.userInfoVm?.email = email
             }
         }
-
         updateData = view.find(R.id.buttonUpdateInfo)
         updateData.setOnClickListener(this)
         return view
@@ -84,11 +80,18 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
 
     private fun updateInfo() {
         if (validate()) {
-            compositeDisposable.add(userService.updateProfileInfo(dataBinding.userInfoVm?.firstName?.get()!!,
-                    dataBinding.userInfoVm?.lastName?.get()!!, dataBinding.userInfoVm?.mobileNumber!!, dataBinding.userInfoVm?.email!!)
+            val user = Users.UpdateUserInfo()
+            user.firstName = dataBinding.userInfoVm?.firstName?.get()
+            user.lastName = dataBinding.userInfoVm?.lastName?.get()
+            user.email = dataBinding.userInfoVm?.email
+            user.mobileNumber = dataBinding.userInfoVm?.mobileNumber
+            compositeDisposable.add(userService.updateUserInfo(user)
                     .processRequest(
                             { response ->
                                 if (response.isSuccess) {
+                                    activity?.putPref(SharedPrefKeys.FIRST_NAME, user.firstName)
+                                    activity?.putPref(SharedPrefKeys.LAST_NAME, user.lastName)
+                                    activity?.putPref(SharedPrefKeys.EMAIL, user.email)
                                     toast(response.message)
                                     startActivity<SettingsActivity>()
                                 } else {

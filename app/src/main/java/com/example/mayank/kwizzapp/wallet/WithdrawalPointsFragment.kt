@@ -82,6 +82,7 @@ class WithdrawalPointsFragment : Fragment(), View.OnClickListener {
         val lastName = activity?.getPref(SharedPrefKeys.LAST_NAME, "")
         val mobileNumber = activity?.getPref(SharedPrefKeys.MOBILE_NUMBER, "")
         val email = activity?.getPref(SharedPrefKeys.EMAIL, "")
+        val playerId = activity?.getPref(SharedPrefKeys.PLAYER_ID, "")
         val displayName = activity?.getPref(SharedPrefKeys.DISPLAY_NAME, "")
         val txnId = displayName+System.currentTimeMillis()
         when {
@@ -98,7 +99,7 @@ class WithdrawalPointsFragment : Fragment(), View.OnClickListener {
                 showProgress()
                 activity?.putPref(SharedPrefKeys.ACCOUNT_NUMBER, accountNumber)
                 activity?.putPref(SharedPrefKeys.IFSC_CODE, ifscCode)
-                compositeDisposable.add(transactionService.withdrawalPoints(firstName!!, lastName!!,displayName!!,mobileNumber!!,"",
+                compositeDisposable.add(transactionService.withdrawalPoints(firstName!!, lastName!!,playerId!!,mobileNumber!!,"",
                         "",email!!,"Withdrawn points by itself.",amount!!,txnId,"",Calendar.getInstance().time.toString(),
                         Calendar.getInstance().time.toString(),"","","Debited",accountNumber!!,ifscCode!!,"Processed")
                         .processRequest(

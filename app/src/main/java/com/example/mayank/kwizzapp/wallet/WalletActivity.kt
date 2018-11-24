@@ -82,9 +82,9 @@ class WalletActivity : AppCompatActivity(), WalletMenuFragment.OnFragmentInterac
                         val mobileNumber = result.getString("phone")
                         val bankRefNumber = result.getString("bank_ref_num")
                         val bankCode = result.getString("bankcode")
-                        val displayName = getPref(SharedPrefKeys.DISPLAY_NAME, "")
+                        val playerId = getPref(SharedPrefKeys.PLAYER_ID, "")
 
-                        updateTransactionDetails(firstName, "$lastName", "$displayName", mobileNumber, "", "", email, productInfo, amount, txnId, paymentId, addedOn, createdOn.toString(), bankRefNumber, bankCode, "Credited", status)
+                        updateTransactionDetails(firstName, "$lastName", "$playerId", mobileNumber, "", "", email, productInfo, amount, txnId, paymentId, addedOn, createdOn.toString(), bankRefNumber, bankCode, "Credited", status)
 
                     }else{
                         showDialog(this, "PayU Error", "PayU response is null.")
@@ -102,9 +102,9 @@ class WalletActivity : AppCompatActivity(), WalletMenuFragment.OnFragmentInterac
         }
     }
 
-    private fun updateTransactionDetails(firstName: String, lastName: String, displayName: String, mobileNumber: String, transferTo: String, receiveFrom: String, email: String, productInfo: String, amount: String, txnId: String, paymentId: String, addedOn: String, createdOn: String, bankRefNumber: String, bankCode: String, transactionType: String, status: String) {
+    private fun updateTransactionDetails(firstName: String, lastName: String, playerId: String, mobileNumber: String, transferTo: String, receiveFrom: String, email: String, productInfo: String, amount: String, txnId: String, paymentId: String, addedOn: String, createdOn: String, bankRefNumber: String, bankCode: String, transactionType: String, status: String) {
         compositeDisposable = CompositeDisposable()
-        compositeDisposable.add(transactionService.addTransactionDetails(firstName,lastName, displayName, mobileNumber,
+        compositeDisposable.add(transactionService.addTransactionDetails(firstName,lastName, playerId, mobileNumber,
                 transferTo, receiveFrom, email, productInfo,amount, txnId, paymentId, addedOn, createdOn,
                 bankRefNumber, bankCode, transactionType, status)
                 .processRequest(

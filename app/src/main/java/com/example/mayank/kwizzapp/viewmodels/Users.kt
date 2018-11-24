@@ -11,7 +11,22 @@ class Users {
         var lastName = ObservableField<String>()
         var mobileNumber : String? = null
         var email :String? = null
-        var displayName: String? = null
+        var playerId: String? = null
+    }
+
+    class InsertUserInfo{
+        var firstName :String? = null
+        var lastName : String? = null
+        var mobileNumber : String? = null
+        var email :String? = null
+        var playerId: String? = null
+    }
+
+    class UpdateUserInfo{
+        var firstName :String? = null
+        var lastName : String? = null
+        var mobileNumber : String? = null
+        var email :String? = null
     }
 
     class UserBankDetails : BaseObservable(){

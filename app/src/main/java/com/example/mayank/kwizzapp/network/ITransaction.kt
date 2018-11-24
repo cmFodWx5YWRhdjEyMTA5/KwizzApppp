@@ -1,25 +1,21 @@
 package com.example.mayank.kwizzapp.network
 
 import com.example.mayank.googleplaygame.network.wallet.Transactions
-import com.payumoney.core.response.TransactionResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 import io.reactivex.Observable
-import retrofit2.Call
+import retrofit2.http.Body
 
 interface ITransaction {
 
-    @FormUrlEncoded
-    @POST("payu/checkBalance.php")
-    fun checkBalance(@Field("mobileNumber") mobileNumber: String): Observable<Transactions.CheckBalance>
 
-    @FormUrlEncoded
+    @POST("payu/checkBalance.php")
+    fun checkBalance(@Body mobileNumber: Transactions.CheckBalance): Observable<Transactions.CheckBalance>
+
+
     @POST("payu/subtractBalance.php")
-    fun subtractResultBalance(
-            @Field("displayName") displayName: String,
-            @Field("amount") amount: Double,
-            @Field("timeStamp") timeStamp: String): Observable<Transactions.GetBalance>
+    fun subtractBalance(@Body subtractBalance: Transactions.SubtractBalance): Observable<Transactions.CheckBalance>
 
     @FormUrlEncoded
     @POST("payu/updateResultBalance.php")
@@ -33,7 +29,7 @@ interface ITransaction {
     fun addTransactionDetails(
             @Field("firstName") firstName: String,
             @Field("lastName") lastName: String,
-            @Field("displayName") displayName: String,
+            @Field("playerId") displayName: String,
             @Field("mobileNumber") mobileNumber: String,
             @Field("transferTo") transferTo: String,
             @Field("receivedFrom") receivedFrom: String,
@@ -54,7 +50,7 @@ interface ITransaction {
     fun withdrawalPoints(
             @Field("firstName") firstName: String,
             @Field("lastName") lastName: String,
-            @Field("displayName") playGameName: String,
+            @Field("playerId") playGameName: String,
             @Field("mobileNumber") mobileNumber: String,
             @Field("transferTo") transferTo: String,
             @Field("receivedFrom") receivedFrom: String,
@@ -77,7 +73,7 @@ interface ITransaction {
     fun transferPoints(
             @Field("firstName") firstName: String,
             @Field("lastName") lastName: String,
-            @Field("displayName") displayName: String,
+            @Field("playerId") displayName: String,
             @Field("mobileNumber") mobileNumber: String,
             @Field("transferTo") transferTo: String,
             @Field("receivedFrom") receivedFrom: String,

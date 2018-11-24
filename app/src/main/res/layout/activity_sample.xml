@@ -43,7 +43,7 @@
                     android:id="@+id/postScore"
                     android:background="@color/primaryColor"
                     android:padding="8dp"
-                    android:text="Pay"
+                    android:text="Delete"
                     android:textColor="@color/white"
                     android:textSize="20sp" />
 
@@ -54,7 +54,7 @@
                     android:id="@+id/leaderboards"
                     android:background="@color/primaryColor"
                     android:padding="8dp"
-                    android:text="Leaderboards"
+                    android:text="Insert"
                     android:textColor="@color/white"
                     android:textSize="20sp" />
             </LinearLayout>

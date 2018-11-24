@@ -70,10 +70,11 @@ class TransferPointsFragment : Fragment(), View.OnClickListener {
         val displayName = activity?.getPref(SharedPrefKeys.DISPLAY_NAME, "")
         val txnId = displayName + System.currentTimeMillis()
         val transferTo = dataBinding.transferPointsVm?.transferTo
+        val playerId = activity?.getPref(SharedPrefKeys.PLAYER_ID, "")
 
         if (validate()) {
             showProgress()
-            compositeDisposable.add(transactionService.transferPoints(firstName!!, lastName!!, displayName!!, mobileNumber!!, transferTo!!,
+            compositeDisposable.add(transactionService.transferPoints(firstName!!, lastName!!, playerId!!, mobileNumber!!, transferTo!!,
                     "", email!!, "Transferred to $transferTo.", amount!!, txnId, "", Calendar.getInstance().time.toString(), Calendar.getInstance().time.toString(), "", "", "Debited", "success")
                     .processRequest(
                             { response ->

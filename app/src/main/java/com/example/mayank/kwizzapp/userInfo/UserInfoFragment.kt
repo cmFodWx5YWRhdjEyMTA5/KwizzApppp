@@ -22,14 +22,10 @@ import com.example.mayank.kwizzapp.viewmodels.Users
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_user_info.*
 import net.rmitsolutions.mfexpert.lms.helpers.*
-import net.rmitsolutions.mfexpert.lms.helpers.SharedPrefKeys.DISPLAY_NAME
 import org.jetbrains.anko.find
 import javax.inject.Inject
 import android.util.Patterns
 import android.text.TextUtils
-
-
-
 
 class UserInfoFragment : Fragment(), View.OnClickListener {
 
@@ -71,24 +67,29 @@ class UserInfoFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.buttonSubmitInfo -> {
-                val playerId = activity?.getPref(SharedPrefKeys.PLAYER_ID, "")
-                dataBinding.userInfoVm
-                dataBinding.userInfoVm?.displayName = activity?.getPref(DISPLAY_NAME, "")
+                val userInfo = Users.InsertUserInfo()
+                userInfo.firstName = dataBinding.userInfoVm?.firstName?.get()
+                userInfo.lastName = dataBinding.userInfoVm?.lastName?.get()
+                userInfo.mobileNumber = dataBinding.userInfoVm?.mobileNumber
+                userInfo.playerId = activity?.getPref(SharedPrefKeys.PLAYER_ID, "")
+                userInfo.email = dataBinding.userInfoVm?.email
+                dataBinding.userInfoVm?.playerId = activity?.getPref(SharedPrefKeys.PLAYER_ID, "")
                 if (validate()) {
-                    compositeDisposable.add(userService.addDetails(dataBinding.userInfoVm?.firstName?.get()!!,
-                            dataBinding.userInfoVm?.lastName?.get()!!, dataBinding.userInfoVm?.displayName!!, playerId!!,
-                            dataBinding.userInfoVm?.mobileNumber!!, dataBinding.userInfoVm?.email!!).processRequest(
-                            { response ->
-                                if (response.isSuccess) {
-                                    toast(response.message)
-                                    switchToDashboard(dataBinding.userInfoVm!!)
-                                } else {
-                                    toast(response.message)
-                                }
-                            }, { err ->
-                        showDialog(activity!!, "Error", err.toString())
-                        logD("Error - ${err.toString()}")
-                    }))
+                    compositeDisposable.add(userService.insertUserInfo(userInfo)
+                            .processRequest(
+                                    { response ->
+                                        if (response.isSuccess) {
+                                            toast(response.message)
+                                            switchToDashboard(dataBinding.userInfoVm!!)
+                                        } else {
+                                            toast(response.message)
+                                        }
+                                    },
+                                    { err ->
+                                        showDialog(activity!!, "Error", err.toString())
+                                        logD("Error - ${err.toString()}")
+                                    }
+                            ))
                 }
             }
         }
@@ -136,7 +137,7 @@ class UserInfoFragment : Fragment(), View.OnClickListener {
         return true
     }
 
-    fun isValidEmail(target: CharSequence): Boolean {
+    private fun isValidEmail(target: CharSequence): Boolean {
         return !TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches()
     }
 
@@ -180,6 +181,4 @@ class UserInfoFragment : Fragment(), View.OnClickListener {
         fun onFragmentInteraction(uri: Uri)
     }
 
-    companion object {
-    }
 }

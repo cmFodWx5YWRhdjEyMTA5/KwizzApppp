@@ -15,7 +15,6 @@
             android:layout_height="match_parent">
 
             <android.support.constraint.ConstraintLayout
-                android:background="@drawable/back_book"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -34,7 +33,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:textColor="@color/white"
                     android:id="@+id/textViewAppName"
                     style="@style/TitleText"
                     android:layout_width="wrap_content"

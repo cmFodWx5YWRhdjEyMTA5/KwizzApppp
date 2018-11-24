@@ -10,6 +10,7 @@ import android.support.v7.widget.CardView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.mayank.googleplaygame.network.wallet.Transactions
 import com.example.mayank.kwizzapp.KwizzApp
 
 import com.example.mayank.kwizzapp.R
@@ -82,9 +83,10 @@ class GameMenuFragment : Fragment(), View.OnClickListener {
 
 
     private fun checkBalance() {
-        val mobileNumber = activity?.getPref(SharedPrefKeys.MOBILE_NUMBER, "")
-        if (mobileNumber != "") {
-            compositeDisposable.add(transactionService.checkBalance(mobileNumber!!)
+        val checkBalance = Transactions.CheckBalance()
+        checkBalance.mobileNumber = activity?.getPref(SharedPrefKeys.MOBILE_NUMBER, "")
+        if (checkBalance.mobileNumber != "") {
+            compositeDisposable.add(transactionService.checkBalance(checkBalance)
                     .processRequest({ response ->
                         if (response.isSuccess) {
                             if (response.balance >= 10.00) {

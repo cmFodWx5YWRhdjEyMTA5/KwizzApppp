@@ -1,36 +1,21 @@
 package com.example.mayank.kwizzapp.network
 
+import com.example.mayank.kwizzapp.sample.User
 import com.example.mayank.kwizzapp.viewmodels.CommonResult
 import com.example.mayank.kwizzapp.viewmodels.Users
 import io.reactivex.Observable
-import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
-import java.util.*
+import org.json.JSONObject
+import retrofit2.http.*
 
 interface IUser {
-
-    @FormUrlEncoded
-    @POST("payu/insertUserInfo.php")
-    fun addDetails(
-            @Field("firstName") firstName: String,
-            @Field("lastName") lastName: String,
-            @Field("displayName") displayName: String,
-            @Field("playerId") playerId : String,
-            @Field("mobileNumber") mobileNumber: String,
-            @Field("email") email: String): Observable<CommonResult>
-
-    @FormUrlEncoded
+    // Working
     @POST("payu/updateProfileInfo.php")
-    fun updateProfileInfo(
-            @Field("firstName") firstName: String,
-            @Field("lastName") lastName: String,
-            @Field("mobileNumber") mobileNumber: String,
-            @Field("email") email: String): Observable<CommonResult>
+    fun updateUserInfo(@Body user: Users.UpdateUserInfo) : Observable<CommonResult>
 
+    @POST("payu/insertUser.php")
+    fun insertUser(@Body user: User) : Observable<CommonResult>
 
-
+    // Working
     @POST("payu/insertUserInfo.php")
-    fun addDetailsNew(@Body userInfo: Users.UserInfo): Observable<CommonResult>
+    fun insertUserInfo(@Body user: Users.InsertUserInfo) : Observable<CommonResult>
 }

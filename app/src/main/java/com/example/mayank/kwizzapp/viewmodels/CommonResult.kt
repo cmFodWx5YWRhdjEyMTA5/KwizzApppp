@@ -10,4 +10,6 @@ open class CommonResult {
     @Ignore
     @SerializedName("message")
     var message: String = ""
+    @SerializedName("data")
+    var data: String = ""
 }

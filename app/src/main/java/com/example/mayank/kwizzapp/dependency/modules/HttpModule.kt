@@ -23,7 +23,7 @@ class HttpModule {
     fun okhttpIntersepter(): okhttp3.Interceptor {
         return okhttp3.Interceptor { chain ->
             val original = chain.request()
-            val requestBuilder = original.newBuilder()
+            val requestBuilder = original.newBuilder().addHeader("Content-Type", "application/json")
             chain.proceed(requestBuilder.build())
         }
     }

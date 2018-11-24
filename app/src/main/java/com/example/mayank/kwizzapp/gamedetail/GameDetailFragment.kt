@@ -10,12 +10,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.example.mayank.googleplaygame.network.wallet.Transactions
 import com.example.mayank.kwizzapp.KwizzApp
 
 import com.example.mayank.kwizzapp.R
 import com.example.mayank.kwizzapp.dependency.components.DaggerInjectFragmentComponent
 import com.example.mayank.kwizzapp.helpers.processRequest
-import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.displayName
 import com.example.mayank.kwizzapp.libgame.LibPlayGame
 import com.example.mayank.kwizzapp.network.ITransaction
 import com.example.mayank.kwizzapp.quiz.QuizFragment
@@ -258,7 +258,18 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
                     if (!subtract) {
                         logD("Amount - $amount")
                         subtract = true
-                        subtractBalance(displayName!!, amount?.toDouble(), Calendar.getInstance().time.toString())
+                        val subtractBalance = Transactions.SubtractBalance()
+                        subtractBalance.firstName = activity?.getPref(SharedPrefKeys.FIRST_NAME, "")
+                        subtractBalance.lastName = activity?.getPref(SharedPrefKeys.LAST_NAME, "")
+                        subtractBalance.mobileNumber = activity?.getPref(SharedPrefKeys.MOBILE_NUMBER, "")
+                        subtractBalance.email = activity?.getPref(SharedPrefKeys.EMAIL, "")
+                        subtractBalance.amount = amount?.toDouble()
+                        subtractBalance.playerId = activity?.getPref(SharedPrefKeys.PLAYER_ID, "")
+                        subtractBalance.productInfo = "Debited for play Quiz"
+                        subtractBalance.addedOn = Calendar.getInstance().time.toString()
+                        subtractBalance.createdOn = Calendar.getInstance().time.toString()
+                        subtractBalance.transactionType = "Debited"
+                        subtractBalance(subtractBalance)
                     }
                 }
             }
@@ -267,9 +278,8 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
         countDownTimer!!.start()
     }
 
-    private fun subtractBalance(displayName: String, amount: Double?, time: String) {
-        logD("Amount inside subtract - $amount")
-        compositeDisposable.add(transactionService.subtractResultBalance(displayName, amount!!, time)
+    private fun subtractBalance(subtractBalance : Transactions.SubtractBalance) {
+        compositeDisposable.add(transactionService.subtractBalance(subtractBalance)
                 .processRequest(
                         { response ->
                             if (response.isSuccess) {
@@ -279,7 +289,7 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
                                 val bundle = Bundle()
                                 bundle.putString("Subject", subject)
                                 bundle.putString("SubjectCode", subCode)
-                                bundle.putDouble("Amount", amount)
+                                bundle.putDouble("Amount", subtractBalance.amount!!)
                                 val quizFragment = QuizFragment()
                                 quizFragment.arguments = bundle
                                 switchToFragment(quizFragment)
@@ -292,7 +302,6 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
                         }, { err ->
                     subtract = false
                     showDialog(activity!!, "Error", err.toString())
-
                 }))
     }
 

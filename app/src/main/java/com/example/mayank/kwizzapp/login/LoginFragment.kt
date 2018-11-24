@@ -89,7 +89,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
         playersClient.currentPlayer.addOnSuccessListener { player ->
             mPlayerId = player.playerId
             logD("Player Id - $mPlayerId")
-            activity?.putPref(SharedPrefKeys.PLAYER_ID, mPlayerId!!)
+            activity?.putPref(SharedPrefKeys.PLAYER_ID, mPlayerId)
             activity?.putPref(SharedPrefKeys.DISPLAY_NAME, player.displayName)
             var nameArray: List<String>? = null
             if (player.name != null) {

@@ -6,8 +6,22 @@ import com.google.gson.annotations.SerializedName
 class Transactions {
 
     class CheckBalance : CommonResult() {
-        val mobileNumber: String? = null
+        var mobileNumber: String? = null
         val balance: Double = 0.0
+    }
+
+    class SubtractBalance{
+        var firstName: String? = null
+        var lastName: String? = null
+        var playerId: String? = null
+        var mobileNumber: String? = null
+        var email: String? = null
+        var productInfo: String? = null
+        var amount: Double? = null
+        var addedOn: String? = null
+        var createdOn: String? = null
+        var transactionType: String? = null
+        var status: String? = null
     }
 
     class GetBalance : CommonResult() {

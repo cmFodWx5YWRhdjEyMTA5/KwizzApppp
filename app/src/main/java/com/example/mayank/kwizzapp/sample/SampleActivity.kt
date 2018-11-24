@@ -1,29 +1,32 @@
-package com.example.mayank.kwizzapp
+package com.example.mayank.kwizzapp.sample
 
-import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.widget.Button
+import com.example.mayank.kwizzapp.Constants
+import com.example.mayank.kwizzapp.KwizzApp
+import com.example.mayank.kwizzapp.R
 import com.example.mayank.kwizzapp.dependency.components.DaggerInjectActivityComponent
+import com.example.mayank.kwizzapp.helpers.JsonHelper
 import com.example.mayank.kwizzapp.helpers.processRequest
-import com.example.mayank.kwizzapp.network.IQuestion
+import com.example.mayank.kwizzapp.network.IUser
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.games.Games
-import com.google.android.gms.games.LeaderboardsClient
-import com.google.android.gms.games.leaderboard.Leaderboard
-import com.google.android.gms.games.leaderboard.LeaderboardScore
-import com.google.android.gms.games.leaderboard.ScoreSubmissionData
 import io.reactivex.disposables.CompositeDisposable
 import net.rmitsolutions.mfexpert.lms.helpers.logD
 import org.jetbrains.anko.find
+import org.jetbrains.anko.toast
 import javax.inject.Inject
+import org.json.JSONObject
+
+
 
 class SampleActivity : AppCompatActivity() {
 
 
     @Inject
-    lateinit var questionService: IQuestion
+    lateinit var userService: IUser
 
     private lateinit var compositeDisposable: CompositeDisposable
     private lateinit var postScore : Button
@@ -61,7 +64,40 @@ class SampleActivity : AppCompatActivity() {
 //                                }
 //                        ))
 //            }
-            showLeaderBoards()
+            //showLeaderBoards()
+
+            val postData = JSONObject()
+
+            val user = User()
+            user.tableName = "users"
+            user.mobileNumber = "1234567890"
+            user.name = "Priyank Sharma"
+            user.email = "testmail@gmail.com"
+            user.password = "alchemy@123"
+//            val jsonObject = JSONObject()
+//            jsonObject.put("tableName", user.tableName)
+//            jsonObject.put("name", user.name)
+//            jsonObject.put("mobileNumber", user.mobile_number)
+//            jsonObject.put("email", user.email)
+
+
+            compositeDisposable.add(userService.insertUser(user)
+                    .processRequest(
+                            { response ->
+                                if (response.isSuccess){
+                                    toast(response.message)
+                                    logD(response.message)
+                                }else{
+                                    logD("Message -" +response.message)
+                                    toast(response.message)
+                                    logD("Data - "+response.data)
+                                }
+                            },
+                            {error ->
+                                logD("Error - $error")
+
+                            }
+                    ))
         }
 
         postScore.setOnClickListener {
