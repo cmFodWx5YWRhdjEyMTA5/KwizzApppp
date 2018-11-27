@@ -5,6 +5,7 @@ import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.example.mayank.googleplaygame.network.wallet.Transactions
 import com.example.mayank.kwizzapp.Constants
 import com.example.mayank.kwizzapp.KwizzApp
 import com.example.mayank.kwizzapp.R
@@ -66,25 +67,27 @@ class WalletActivity : AppCompatActivity(), WalletMenuFragment.OnFragmentInterac
                     //Success Transaction
                     Log.d("TAG", "Pay u Response - $payuResponse")
                     if (payuResponse!=""){
+                        val addPoints = Transactions.AddPointToServer()
                         val response = JSONObject(payuResponse)     // Done
                         val result = response.getJSONObject("result")   // Done
-                        val status = result.getString("status")     // Done
-                        val paymentId = result.getString("paymentId")
-                        val txnId = result.getString("txnid")
-                        val amount = result.getString("amount")
-                        val addedOn = result.getString("addedon")
+                        addPoints.status = result.getString("status")     // Done
+                        addPoints.paymentId = result.getString("paymentId")
+                        addPoints.txnId = result.getString("txnid")
+                        addPoints.amount = result.getString("amount").toDouble()
+                        addPoints.addedOn = result.getString("addedon")
                         val formatDate = Converters.fromTimestamp(result.getString("createdOn").toLong())
-                        val createdOn = Constants.getFormatDate(formatDate!!)
-                        val productInfo = result.getString("productinfo")
-                        val firstName = result.getString("firstname")
-                        val lastName = getPref(SharedPrefKeys.LAST_NAME, "")
-                        val email = result.getString("email")
-                        val mobileNumber = result.getString("phone")
-                        val bankRefNumber = result.getString("bank_ref_num")
-                        val bankCode = result.getString("bankcode")
-                        val playerId = getPref(SharedPrefKeys.PLAYER_ID, "")
+                        addPoints.createdOn = Constants.getFormatDate(formatDate!!)
+                        addPoints.productInfo = result.getString("productinfo")
+                        addPoints.firstName = result.getString("firstname")
+                        addPoints.lastName = getPref(SharedPrefKeys.LAST_NAME, "")
+                        addPoints.email = result.getString("email")
+                        addPoints.mobileNumber = result.getString("phone")
+                        addPoints.bankRefNumber = result.getString("bank_ref_num")
+                        addPoints.bankCode = result.getString("bankcode")
+                        addPoints.playerId = getPref(SharedPrefKeys.PLAYER_ID, "")
+                        addPoints.transactionType = "Credited"
 
-                        updateTransactionDetails(firstName, "$lastName", "$playerId", mobileNumber, "", "", email, productInfo, amount, txnId, paymentId, addedOn, createdOn.toString(), bankRefNumber, bankCode, "Credited", status)
+                        updateTransactionDetails(addPoints)
 
                     }else{
                         showDialog(this, "PayU Error", "PayU response is null.")
@@ -102,11 +105,9 @@ class WalletActivity : AppCompatActivity(), WalletMenuFragment.OnFragmentInterac
         }
     }
 
-    private fun updateTransactionDetails(firstName: String, lastName: String, playerId: String, mobileNumber: String, transferTo: String, receiveFrom: String, email: String, productInfo: String, amount: String, txnId: String, paymentId: String, addedOn: String, createdOn: String, bankRefNumber: String, bankCode: String, transactionType: String, status: String) {
+    private fun updateTransactionDetails(addPoints : Transactions.AddPointToServer) {
         compositeDisposable = CompositeDisposable()
-        compositeDisposable.add(transactionService.addTransactionDetails(firstName,lastName, playerId, mobileNumber,
-                transferTo, receiveFrom, email, productInfo,amount, txnId, paymentId, addedOn, createdOn,
-                bankRefNumber, bankCode, transactionType, status)
+        compositeDisposable.add(transactionService.addPoints(addPoints)
                 .processRequest(
                         { response ->
                             if (response.isSuccess){

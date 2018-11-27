@@ -4,12 +4,17 @@ import com.google.gson.annotations.SerializedName
 
 class Questions {
 
-    class CountRows : CommonResult(){
+    class CountRows : CommonResult() {
         @SerializedName("numberOfRows")
-        val rowCount : Int? = null
+        val rowCount: Int? = null
     }
 
-    class Question : CommonResult(){
+    class GetQuestion {
+        var quesId: String? = null
+        var tableName : String? = null
+    }
+
+    class Question : CommonResult() {
         val quesCode: String? = null
         val question: String? = null
         val optionA: String? = null

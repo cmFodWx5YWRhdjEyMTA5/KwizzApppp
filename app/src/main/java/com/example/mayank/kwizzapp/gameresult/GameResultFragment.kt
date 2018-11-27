@@ -17,6 +17,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import com.example.mayank.googleplaygame.network.wallet.Transactions
+import com.example.mayank.kwizzapp.Constants
 import com.example.mayank.kwizzapp.Constants.DROP_QUESTIONS
 import com.example.mayank.kwizzapp.Constants.RIGHT_ANSWERS
 import com.example.mayank.kwizzapp.Constants.WRONG_ANSWERS
@@ -29,7 +31,6 @@ import com.example.mayank.kwizzapp.dialog.ShowDialog
 import com.example.mayank.kwizzapp.gameresult.adapter.ResultViewAdapter
 import com.example.mayank.kwizzapp.helpers.processRequest
 import com.example.mayank.kwizzapp.libgame.LibGameConstants
-import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.displayName
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.imageUri
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.listResult
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.mFinishedParticipants
@@ -45,12 +46,10 @@ import com.example.mayank.kwizzapp.quiz.AMOUNT
 import com.example.mayank.kwizzapp.viewmodels.ResultViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.games.Games
-import com.google.android.gms.games.achievement.Achievement
 import com.google.android.gms.games.multiplayer.Participant
 import com.technoholicdeveloper.kwizzapp.achievements.Achievements
 import io.reactivex.disposables.CompositeDisposable
-import net.rmitsolutions.mfexpert.lms.helpers.logD
-import net.rmitsolutions.mfexpert.lms.helpers.showDialog
+import net.rmitsolutions.mfexpert.lms.helpers.*
 import org.jetbrains.anko.find
 import java.util.*
 import javax.inject.Inject
@@ -79,6 +78,7 @@ class GameResultFragment : Fragment(), View.OnClickListener{
     private lateinit var resultLayout : CardView
     private lateinit var achievements: Achievements
     private var win : Boolean = false
+    private var displayName :  String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -133,6 +133,7 @@ class GameResultFragment : Fragment(), View.OnClickListener{
 
     private fun setItem() {
         modelList.clear()
+        displayName = activity?.getPref(SharedPrefKeys.DISPLAY_NAME, "")
         modelList.add(ResultViewModel(displayName!!, rightAnswers!!, imageUri))
 
         for (p in mParticipants!!) {
@@ -204,11 +205,16 @@ class GameResultFragment : Fragment(), View.OnClickListener{
     private fun showResultDialog(resultList: MutableList<ResultViewModel>?) {
         if (resultList!![0].playerName == displayName) {
             logD("List 0 score - ${resultList[0].rightAnswers} List 1 score - ${resultList[1].rightAnswers}")
+            val updateResult = Transactions.ResultBalance()
             if (resultList[0].rightAnswers == resultList[1].rightAnswers) {
                 if (!show) {
                     win = false
                     showDialogResult(activity!!, "Sorry", "It's a Tie","Your bid points will credited to your wallet", R.mipmap.ic_loose)
-                    updateBalance(displayName!!, amount!!, Calendar.getInstance().time.toString(), "Sample Message")
+                    updateResult.displayName = displayName
+                    updateResult.amount = amount
+                    updateResult.timeStamp = Constants.getFormatDate(Calendar.getInstance().time)
+                    updateResult.productInfo = "Points refund due to tie in Quiz."
+                    updateBalance(updateResult)
                     show = true
                     resultLayout.visibility = View.VISIBLE
                 }
@@ -217,7 +223,11 @@ class GameResultFragment : Fragment(), View.OnClickListener{
                     win = true
                     showDialogResult(activity!!,"Congrats", "You Win !", "Your winning points will credited to your wallet", R.mipmap.ic_done)
                     val totalAmount = (amount?.times(mFinishedParticipants.size))?.times(80)?.div(100)
-                    updateBalance(displayName!!, totalAmount!!, Calendar.getInstance().time.toString(), "Sample Message")
+                    updateResult.displayName = displayName
+                    updateResult.amount = totalAmount
+                    updateResult.timeStamp = Constants.getFormatDate(Calendar.getInstance().time)
+                    updateResult.productInfo = "You have won for Quiz."
+                    updateBalance(updateResult)
                     show = true
                     resultLayout.visibility = View.VISIBLE
                 }
@@ -247,14 +257,14 @@ class GameResultFragment : Fragment(), View.OnClickListener{
     }
 
 
-    private fun updateBalance(displayName: String, amount: Double, timeStamp: String, message: String) {
-        compositeDisposable.add(transactionService.updateResultBalance(displayName, amount, timeStamp)
+    private fun updateBalance(updateResult : Transactions.ResultBalance) {
+        compositeDisposable.add(transactionService.updateResultBalance(updateResult)
                 .processRequest(
                         { response ->
                             if (response.isSuccess) {
                                 logD("Message = ${response.message}")
                                 logD("Response balance = ${response.balance}")
-                                submitScoreToLeaderboards(response.balance?.toLong()!!)
+                                submitScoreToLeaderboards(response.balance.toLong())
                                 achievements.checkAchievements(response.balance.toInt(), resultList?.size!!,win, rightAnswers!!)
                             } else {
                                 logD("Message - ${response.message}")

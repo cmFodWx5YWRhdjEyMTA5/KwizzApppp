@@ -36,5 +36,10 @@ class Users {
         var ifscCode : String? = null
     }
 
+    class UpdateDisplayName{
+        var mobileNumber : String? = null
+        var displayName: String? = null
+    }
+
 
 }

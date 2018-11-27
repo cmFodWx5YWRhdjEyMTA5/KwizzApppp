@@ -1,5 +1,6 @@
 package com.example.mayank.kwizzapp.dependency.components
 
+import com.example.mayank.kwizzapp.MainActivity
 import com.example.mayank.kwizzapp.sample.SampleActivity
 import com.example.mayank.kwizzapp.dependency.scopes.ActivityScope
 import com.example.mayank.kwizzapp.wallet.WalletActivity
@@ -10,4 +11,5 @@ import dagger.Component
 interface InjectActivityComponent {
     fun injectWalletActivity(walletActivity: WalletActivity)
     fun injectSampleActivity(sampleActivity: SampleActivity)
+    fun injectMainActivity(mainActivity: MainActivity)
 }

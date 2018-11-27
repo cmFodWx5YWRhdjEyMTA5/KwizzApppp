@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import com.example.mayank.googleplaygame.network.wallet.Transactions
+import com.example.mayank.kwizzapp.Constants
 import com.example.mayank.kwizzapp.KwizzApp
 
 import com.example.mayank.kwizzapp.R
@@ -33,10 +34,10 @@ class WithdrawalPointsFragment : Fragment(), View.OnClickListener {
     @Inject
     lateinit var transactionService: ITransaction
     private lateinit var compositeDisposable: CompositeDisposable
-    private lateinit var dataBinding : WithdrawalPointsBinding
-    private lateinit var withdrawalPoints : Transactions.WithdrawalPoints
-    private var accountNumber : String? = null
-    private var ifscCode : String? = null
+    private lateinit var dataBinding: WithdrawalPointsBinding
+    private lateinit var withdrawalPoints: Transactions.WithdrawalPoints
+    private var accountNumber: String? = null
+    private var ifscCode: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +51,7 @@ class WithdrawalPointsFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        dataBinding=DataBindingUtil.inflate(inflater,R.layout.fragment_withdrawal_points, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_withdrawal_points, container, false)
         val view = dataBinding.root
         withdrawalPoints = Transactions.WithdrawalPoints()
         dataBinding.withdrawalPointsVm = withdrawalPoints
@@ -58,7 +59,7 @@ class WithdrawalPointsFragment : Fragment(), View.OnClickListener {
         accountNumber = activity?.getPref(SharedPrefKeys.ACCOUNT_NUMBER, "")
         ifscCode = activity?.getPref(SharedPrefKeys.IFSC_CODE, "")
         when {
-            accountNumber!="" -> disableBankDetail(true)
+            accountNumber != "" -> disableBankDetail(true)
             else -> {
                 disableBankDetail(false)
             }
@@ -71,46 +72,53 @@ class WithdrawalPointsFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        when(v?.id){
+        when (v?.id) {
             R.id.buttonWithdrawalPoints -> withdrawalPoint()
         }
     }
 
     private fun withdrawalPoint() {
-        val amount = dataBinding.withdrawalPointsVm?.amount
-        val firstName = activity?.getPref(SharedPrefKeys.FIRST_NAME, "")
-        val lastName = activity?.getPref(SharedPrefKeys.LAST_NAME, "")
-        val mobileNumber = activity?.getPref(SharedPrefKeys.MOBILE_NUMBER, "")
-        val email = activity?.getPref(SharedPrefKeys.EMAIL, "")
-        val playerId = activity?.getPref(SharedPrefKeys.PLAYER_ID, "")
+        val withdrawal = Transactions.WithdrawalPointsToServer()
+
+        withdrawal.amount = dataBinding.withdrawalPointsVm?.amount?.toDouble()
+        withdrawal.firstName = activity?.getPref(SharedPrefKeys.FIRST_NAME, "")
+        withdrawal.lastName = activity?.getPref(SharedPrefKeys.LAST_NAME, "")
+        withdrawal.mobileNumber = activity?.getPref(SharedPrefKeys.MOBILE_NUMBER, "")
+        withdrawal.email = activity?.getPref(SharedPrefKeys.EMAIL, "")
+        withdrawal.playerId = activity?.getPref(SharedPrefKeys.PLAYER_ID, "")
         val displayName = activity?.getPref(SharedPrefKeys.DISPLAY_NAME, "")
-        val txnId = displayName+System.currentTimeMillis()
+        withdrawal.txnId = displayName + System.currentTimeMillis()
         when {
-            dataBinding.disableBankDetails!=null -> when {
+            dataBinding.disableBankDetails != null -> when {
                 !dataBinding.disableBankDetails!! -> {
                     accountNumber = dataBinding.withdrawalPointsVm?.accountNumber
                     ifscCode = dataBinding.withdrawalPointsVm?.ifscCode
                 }
             }
         }
+        withdrawal.accountNumber = accountNumber
+        withdrawal.ifscCode = ifscCode
+        withdrawal.productInfo = "Withdrawn points by itself."
+        withdrawal.addedOn = Constants.getFormatDate(Calendar.getInstance().time)
+        withdrawal.createdOn = Constants.getFormatDate(Calendar.getInstance().time)
+        withdrawal.transactionType = "Debited"
+        withdrawal.status = "Processed"
 
         when {
             validate() -> {
                 showProgress()
                 activity?.putPref(SharedPrefKeys.ACCOUNT_NUMBER, accountNumber)
                 activity?.putPref(SharedPrefKeys.IFSC_CODE, ifscCode)
-                compositeDisposable.add(transactionService.withdrawalPoints(firstName!!, lastName!!,playerId!!,mobileNumber!!,"",
-                        "",email!!,"Withdrawn points by itself.",amount!!,txnId,"",Calendar.getInstance().time.toString(),
-                        Calendar.getInstance().time.toString(),"","","Debited",accountNumber!!,ifscCode!!,"Processed")
+                compositeDisposable.add(transactionService.withdrawalPoint(withdrawal)
                         .processRequest(
                                 { response ->
-                                    if (response.isSuccess){
+                                    if (response.isSuccess) {
                                         toast("Withdrawal request register successfully")
                                         hideProgress()
                                         startActivity<WalletActivity>()
                                         activity?.finish()
-                                    }else{
-                                        showDialog(activity!!,"Error",response.message)
+                                    } else {
+                                        showDialog(activity!!, "Error", response.message)
                                         hideProgress()
                                     }
                                 },
@@ -174,5 +182,5 @@ class WithdrawalPointsFragment : Fragment(), View.OnClickListener {
     interface OnFragmentInteractionListener {
         fun onFragmentInteraction(uri: Uri)
     }
-    
+
 }

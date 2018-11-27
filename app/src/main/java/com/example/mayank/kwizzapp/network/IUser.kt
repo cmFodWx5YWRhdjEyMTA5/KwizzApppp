@@ -18,4 +18,7 @@ interface IUser {
     // Working
     @POST("payu/insertUserInfo.php")
     fun insertUserInfo(@Body user: Users.InsertUserInfo) : Observable<CommonResult>
+
+    @POST("payu/updateDisplayName.php")
+    fun updateDisplayName(@Body updateDisplayName: Users.UpdateDisplayName) : Observable<CommonResult>
 }

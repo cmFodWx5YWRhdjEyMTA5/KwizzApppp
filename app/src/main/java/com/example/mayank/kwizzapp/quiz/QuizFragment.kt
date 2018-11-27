@@ -178,7 +178,10 @@ class QuizFragment : Fragment(), View.OnClickListener {
         showProgress()
         show = false
         if (q < 10) {
-            compositeDisposable.add(questionService.getQuestion(randomNumbers[q].toString(), subjectCode!!)
+            val question = Questions.GetQuestion()
+            question.tableName = subjectCode
+            question.quesId = randomNumbers[q].toString()
+            compositeDisposable.add(questionService.getQuestions(question)
                     .processRequest(
                             { response ->
                                 q++

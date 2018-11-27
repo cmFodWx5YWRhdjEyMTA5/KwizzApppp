@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import com.example.mayank.googleplaygame.network.wallet.Transactions
+import com.example.mayank.kwizzapp.Constants
 import com.example.mayank.kwizzapp.KwizzApp
 
 import com.example.mayank.kwizzapp.R
@@ -62,20 +63,23 @@ class TransferPointsFragment : Fragment(), View.OnClickListener {
     }
 
     private fun transferPoint() {
-        val amount = dataBinding.transferPointsVm?.amount
-        val firstName = activity?.getPref(SharedPrefKeys.FIRST_NAME, "")
-        val lastName = activity?.getPref(SharedPrefKeys.LAST_NAME, "")
-        val mobileNumber = activity?.getPref(SharedPrefKeys.MOBILE_NUMBER, "")
-        val email = activity?.getPref(SharedPrefKeys.EMAIL, "")
+        val transfer = Transactions.TransferPointsToServer()
+        transfer.amount = dataBinding.transferPointsVm?.amount?.toDouble()
+        transfer.firstName = activity?.getPref(SharedPrefKeys.FIRST_NAME, "")
+        transfer.lastName = activity?.getPref(SharedPrefKeys.LAST_NAME, "")
+        transfer.mobileNumber = activity?.getPref(SharedPrefKeys.MOBILE_NUMBER, "")
+        transfer.email = activity?.getPref(SharedPrefKeys.EMAIL, "")
         val displayName = activity?.getPref(SharedPrefKeys.DISPLAY_NAME, "")
-        val txnId = displayName + System.currentTimeMillis()
-        val transferTo = dataBinding.transferPointsVm?.transferTo
-        val playerId = activity?.getPref(SharedPrefKeys.PLAYER_ID, "")
+        transfer.txnId = displayName + System.currentTimeMillis()
+        transfer.transferToNumber = dataBinding.transferPointsVm?.transferTo
+        transfer.playerId = activity?.getPref(SharedPrefKeys.PLAYER_ID, "")
+        transfer.addedOn = Constants.getFormatDate(Calendar.getInstance().time)
+        transfer.createdOn = Constants.getFormatDate(Calendar.getInstance().time)
+        transfer.status = "Success"
 
         if (validate()) {
             showProgress()
-            compositeDisposable.add(transactionService.transferPoints(firstName!!, lastName!!, playerId!!, mobileNumber!!, transferTo!!,
-                    "", email!!, "Transferred to $transferTo.", amount!!, txnId, "", Calendar.getInstance().time.toString(), Calendar.getInstance().time.toString(), "", "", "Debited", "success")
+            compositeDisposable.add(transactionService.transferPoint(transfer)
                     .processRequest(
                             { response ->
                                 when {

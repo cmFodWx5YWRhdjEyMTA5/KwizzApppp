@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.mayank.googleplaygame.network.wallet.Transactions
+import com.example.mayank.kwizzapp.Constants
 import com.example.mayank.kwizzapp.KwizzApp
 
 import com.example.mayank.kwizzapp.R
@@ -266,9 +267,10 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
                         subtractBalance.amount = amount?.toDouble()
                         subtractBalance.playerId = activity?.getPref(SharedPrefKeys.PLAYER_ID, "")
                         subtractBalance.productInfo = "Debited for play Quiz"
-                        subtractBalance.addedOn = Calendar.getInstance().time.toString()
-                        subtractBalance.createdOn = Calendar.getInstance().time.toString()
+                        subtractBalance.addedOn = Constants.getFormatDate(Calendar.getInstance().time)
+                        subtractBalance.createdOn = Constants.getFormatDate(Calendar.getInstance().time)
                         subtractBalance.transactionType = "Debited"
+                        subtractBalance.status = "Success"
                         subtractBalance(subtractBalance)
                     }
                 }

@@ -9,86 +9,36 @@ import retrofit2.http.Body
 
 interface ITransaction {
 
-
+    // Check balance
     @POST("payu/checkBalance.php")
     fun checkBalance(@Body mobileNumber: Transactions.CheckBalance): Observable<Transactions.CheckBalance>
 
-
+    // Subtract Balance
     @POST("payu/subtractBalance.php")
     fun subtractBalance(@Body subtractBalance: Transactions.SubtractBalance): Observable<Transactions.CheckBalance>
 
-    @FormUrlEncoded
+    // Subtract Balance
     @POST("payu/updateResultBalance.php")
-    fun updateResultBalance(
-            @Field("displayName") displayName: String,
-            @Field("amount") amount: Double,
-            @Field("timeStamp") timeStamp: String): Observable<Transactions.GetBalance>
+    fun updateResultBalance(@Body subtractBalance: Transactions.ResultBalance): Observable<Transactions.CheckBalance>
 
-    @FormUrlEncoded
+//    @FormUrlEncoded
+//    @POST("payu/updateResultBalance.php")
+//    fun updateResultBalance(
+//            @Field("displayName") displayName: String,
+//            @Field("amount") amount: Double,
+//            @Field("timeStamp") timeStamp: String): Observable<Transactions.GetBalance>
+
+    // Add points to server
     @POST("payu/addPoints.php")
-    fun addTransactionDetails(
-            @Field("firstName") firstName: String,
-            @Field("lastName") lastName: String,
-            @Field("playerId") displayName: String,
-            @Field("mobileNumber") mobileNumber: String,
-            @Field("transferTo") transferTo: String,
-            @Field("receivedFrom") receivedFrom: String,
-            @Field("email") email: String,
-            @Field("productInfo") productInfo: String,
-            @Field("amount") amount: String,
-            @Field("txnId") txnId: String,
-            @Field("paymentId") paymentId: String,
-            @Field("addedOn") addedOn: String,
-            @Field("createdOn") createdOn: String,
-            @Field("bankRefNumber") bankRefNumber: String,
-            @Field("bankCode") bankIfscCode: String,
-            @Field("transactionType") transactionType: String,
-            @Field("status") status: String): Observable<Transactions.GetBalance>
+    fun addPoints(@Body addPoints: Transactions.AddPointToServer): Observable<Transactions.CheckBalance>
 
-    @FormUrlEncoded
+    // Withdrawal points
     @POST("payu/withdrawalPoints.php")
-    fun withdrawalPoints(
-            @Field("firstName") firstName: String,
-            @Field("lastName") lastName: String,
-            @Field("playerId") playGameName: String,
-            @Field("mobileNumber") mobileNumber: String,
-            @Field("transferTo") transferTo: String,
-            @Field("receivedFrom") receivedFrom: String,
-            @Field("email") email: String,
-            @Field("productInfo") productInfo: String,
-            @Field("amount") amount: String,
-            @Field("txnId") txnId: String,
-            @Field("paymentId") paymentId: String,
-            @Field("addedOn") addedOn: String,
-            @Field("createdOn") createdOn: String,
-            @Field("bankRefNumber") bankRefNumber: String,
-            @Field("bankCode") bankCode: String,
-            @Field("transactionType") transactionType: String,
-            @Field("accountNumber") accountNumber : String,
-            @Field("ifscCode") ifscCode : String,
-            @Field("status") status: String): Observable<Transactions.GetBalance>
+    fun withdrawalPoint(@Body addPoints: Transactions.WithdrawalPointsToServer): Observable<Transactions.CheckBalance>
 
-    @FormUrlEncoded
+    // Transfer Points
     @POST("payu/transferPoints.php")
-    fun transferPoints(
-            @Field("firstName") firstName: String,
-            @Field("lastName") lastName: String,
-            @Field("playerId") displayName: String,
-            @Field("mobileNumber") mobileNumber: String,
-            @Field("transferTo") transferTo: String,
-            @Field("receivedFrom") receivedFrom: String,
-            @Field("email") email: String,
-            @Field("productInfo") productInfo: String,
-            @Field("amount") amount: String,
-            @Field("txnId") txnId: String,
-            @Field("paymentId") paymentId: String,
-            @Field("addedOn") addedOn: String,
-            @Field("createdOn") createdOn: String,
-            @Field("bankRefNumber") bankRefNumber: String,
-            @Field("bankCode") bankCode: String,
-            @Field("transactionType") transactionType: String,
-            @Field("status") status: String): Observable<Transactions.GetBalance>
-
+    fun transferPoint(@Body addPoints: Transactions.TransferPointsToServer): Observable<Transactions.CheckBalance>
 
     @FormUrlEncoded
     @POST("payu/fetchTransactions.php")
