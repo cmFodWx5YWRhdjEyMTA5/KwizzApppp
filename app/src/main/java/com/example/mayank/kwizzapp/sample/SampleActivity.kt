@@ -53,55 +53,12 @@ class SampleActivity : AppCompatActivity() {
         leaderboards = find(R.id.leaderboards)
 
         leaderboards.setOnClickListener{
-//            for (quesId in id){
-//                compositeDisposable.add(questionService.getQuestion(quesId.toString(),"apt_ques")
-//                        .processRequest(
-//                                { question ->
-//                                    logD("Question - ${question.question}")
-//                                },
-//                                { error ->
-//                                    logD("Error - $error")
-//                                }
-//                        ))
-//            }
-            //showLeaderBoards()
-
-            val postData = JSONObject()
-
-            val user = User()
-            user.tableName = "users"
-            user.mobileNumber = "1234567890"
-            user.name = "Priyank Sharma"
-            user.email = "testmail@gmail.com"
-            user.password = "alchemy@123"
-//            val jsonObject = JSONObject()
-//            jsonObject.put("tableName", user.tableName)
-//            jsonObject.put("name", user.name)
-//            jsonObject.put("mobileNumber", user.mobile_number)
-//            jsonObject.put("email", user.email)
-
-
-            compositeDisposable.add(userService.insertUser(user)
-                    .processRequest(
-                            { response ->
-                                if (response.isSuccess){
-                                    toast(response.message)
-                                    logD(response.message)
-                                }else{
-                                    logD("Message -" +response.message)
-                                    toast(response.message)
-                                    logD("Data - "+response.data)
-                                }
-                            },
-                            {error ->
-                                logD("Error - $error")
-
-                            }
-                    ))
+            showLeaderBoards()
         }
 
         postScore.setOnClickListener {
-            val points = inputPoints.text.toString().toLong()
+            var points = inputPoints.text.toString().toLong()
+            points += points * 1000000
 
 //            Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
 //                    .submitScore(getString(R.string.leaderboard_kwizz_toppers), points)
