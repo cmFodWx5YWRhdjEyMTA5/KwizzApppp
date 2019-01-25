@@ -93,6 +93,7 @@ class EditProfileFragment : Fragment(), View.OnClickListener {
                                     activity?.putPref(SharedPrefKeys.LAST_NAME, user.lastName)
                                     activity?.putPref(SharedPrefKeys.EMAIL, user.email)
                                     toast(response.message)
+                                    activity?.finish()
                                     startActivity<SettingsActivity>()
                                 } else {
                                     toast(response.message)

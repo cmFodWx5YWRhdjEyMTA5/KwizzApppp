@@ -37,6 +37,10 @@ class LibGameConstants {
         // Score of other participants. We update this as we receive their scores
         // from the network.
         var mParticipantScore: MutableMap<String, Int> = HashMap()
+
+        var mParticipantWrong: MutableMap<String, Int> = HashMap()
+
+        var mParticipantDrop: MutableMap<String, Int> = HashMap()
         // Participants who sent us their final score.
         var mFinishedParticipants: MutableSet<String> = HashSet()
 

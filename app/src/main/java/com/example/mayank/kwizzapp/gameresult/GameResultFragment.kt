@@ -5,11 +5,11 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.CardView
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -17,6 +17,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
 import com.example.mayank.googleplaygame.network.wallet.Transactions
 import com.example.mayank.kwizzapp.Constants
 import com.example.mayank.kwizzapp.Constants.DROP_QUESTIONS
@@ -35,7 +37,9 @@ import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.imageU
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.listResult
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.mFinishedParticipants
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.mMyId
+import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.mParticipantDrop
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.mParticipantScore
+import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.mParticipantWrong
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.mParticipants
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.mRoomId
 import com.example.mayank.kwizzapp.libgame.LibGameConstants.GameConstants.modelList
@@ -49,8 +53,11 @@ import com.google.android.gms.games.Games
 import com.google.android.gms.games.multiplayer.Participant
 import com.technoholicdeveloper.kwizzapp.achievements.Achievements
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.result_layout.*
 import net.rmitsolutions.mfexpert.lms.helpers.*
+import org.jetbrains.anko.custom.style
 import org.jetbrains.anko.find
+import java.time.format.TextStyle
 import java.util.*
 import javax.inject.Inject
 
@@ -75,10 +82,14 @@ class GameResultFragment : Fragment(), View.OnClickListener{
 
     private lateinit var showResultProgress: ProgressDialog
     private val syncIntentFilter = IntentFilter(ACTION_RESULT_RECEIVED)
-    private lateinit var resultLayout : CardView
+    private lateinit var resultLayout : LinearLayout
     private lateinit var achievements: Achievements
     private var win : Boolean = false
     private var displayName :  String? = null
+    private lateinit var greetOne : TextView
+    private lateinit var greetTwo : TextView
+    private lateinit var greetThree : TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,30 +122,35 @@ class GameResultFragment : Fragment(), View.OnClickListener{
         resultRecyclerView = view.findViewById(R.id.result_recycler_view)
         resultRecyclerView.layoutManager = LinearLayoutManager(activity)
         resultRecyclerView.setHasFixedSize(true)
-        resultRecyclerView.addItemDecoration(DividerItemDecoration(activity, LinearLayoutManager.VERTICAL))
-        buttonBack = view.find(R.id.buttonBack)
+        resultRecyclerView.addItemDecoration(DividerItemDecoration(activity, 0))
+        //buttonBack = view.find(R.id.buttonBack)
         resultLayout = view.find(R.id.result_layout)
         resultLayout.visibility = View.GONE
-        buttonBack.setOnClickListener(this)
+        //buttonBack.setOnClickListener(this)
         resultRecyclerView.adapter = adapter
+        greetOne = view.find(R.id.greetOne)
+        greetTwo = view.find(R.id.greetTwo)
+        greetThree = view.find(R.id.greetThree)
         showResultProgress.showResultProgress(activity!!)
         setItem()
         return view
     }
 
+
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.buttonBack -> {
-                context?.unregisterReceiver(resultBroadcastReceiver)
-                libPlayGame?.leaveRoom()
-            }
+//            R.id.buttonBack -> {
+//                context?.unregisterReceiver(resultBroadcastReceiver)
+//                libPlayGame?.leaveRoom()
+//            }
         }
     }
 
     private fun setItem() {
         modelList.clear()
         displayName = activity?.getPref(SharedPrefKeys.DISPLAY_NAME, "")
-        modelList.add(ResultViewModel(displayName!!, rightAnswers!!, imageUri))
+        modelList.add(ResultViewModel(displayName!!, rightAnswers!!, imageUri, wrongAnswers!!, dropQuestions!!))
+        logD("Player Image Uri - $imageUri")
 
         for (p in mParticipants!!) {
             if (mRoomId != null) {
@@ -173,11 +189,14 @@ class GameResultFragment : Fragment(), View.OnClickListener{
                 }
 
                 val score = if (mParticipantScore.containsKey(pid)) mParticipantScore[pid] else 0
+                val wrong = if (mParticipantWrong.containsKey(pid)) mParticipantWrong[pid] else 0
+                val drop = if (mParticipantDrop.containsKey(pid)) mParticipantDrop[pid] else 0
 
                 if (mParticipants?.size == mFinishedParticipants.size) {
                     if (p.displayName != displayName) {
                         if (!listResult.containsKey(p.displayName)) {
-                            listResult[p.displayName] = ResultViewModel(p.displayName, score!!, p.iconImageUri)
+                            listResult[p.displayName] = ResultViewModel(p.displayName, score!!, p.hiResImageUri, wrong!!, drop!!)
+                            logD("Opponent Image Uri - ${p.hiResImageUri}")
                             val resultViewModel = listResult[p.displayName]
                             modelList.add(resultViewModel!!)
                         }
@@ -188,7 +207,7 @@ class GameResultFragment : Fragment(), View.OnClickListener{
                             }.toMutableList()
                             showResultDialog(resultList)
                             showResultProgress.hideProgressDialog()
-                            buttonBack.visibility = View.VISIBLE
+                            //buttonBack.visibility = View.VISIBLE
                         }
 
                     } else {
@@ -237,6 +256,9 @@ class GameResultFragment : Fragment(), View.OnClickListener{
                 win = false
                 showDialogResult(activity!!, "Sorry", "You Loose !", "Better luck next time", R.mipmap.ic_loose)
                 show = true
+                greetThree.textSize = 14F
+                greetThree.typeface = Typeface.DEFAULT
+                setGreetingText("Sorry", "You Loose", "Better luck next time")
                 resultLayout.visibility = View.VISIBLE
                 achievements.checkAchievements(0, LibGameConstants.GameConstants.resultList?.size!!,win, rightAnswers!!)
             }
@@ -266,6 +288,13 @@ class GameResultFragment : Fragment(), View.OnClickListener{
                                 logD("Response balance = ${response.balance}")
                                 submitScoreToLeaderboards(response.balance.toLong())
                                 achievements.checkAchievements(response.balance.toInt(), resultList?.size!!,win, rightAnswers!!)
+                                if (updateResult.amount.toString().toDouble() > amount!!){
+                                    setGreetingText("Congratulations", "You've won", "${updateResult.amount}")
+                                }else{
+                                    greetThree.textSize = 14F
+                                    greetThree.typeface = Typeface.DEFAULT
+                                    setGreetingText("Sorry", "It's a tie", "Try one more time")
+                                }
                             } else {
                                 logD("Message - ${response.message}")
                             }
@@ -276,6 +305,13 @@ class GameResultFragment : Fragment(), View.OnClickListener{
                 ))
     }
 
+    private fun setGreetingText(greet1 : String, greet2 : String, greet3 : String){
+        greetOne.text = greet1
+        greetTwo.text = greet2
+        greetThree.text = greet3
+    }
+
+    // Update game status
     private fun updateGameStatus() {
 
     }

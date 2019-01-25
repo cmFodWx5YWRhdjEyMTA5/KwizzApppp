@@ -199,9 +199,11 @@ class LibPlayGame(private var activity: Activity) {
         val value1 = buf[1].toInt()
         if (state == 'R') {
             val value2 = buf[2].toInt()
-            val value3 = buf[1].toInt()
+            val value3 = buf[3].toInt()
             Log.d(TAG, "Message received: " + buf[0].toChar() + "/" + buf[1].toInt() + "/" + buf[2].toInt() + "/" + buf[3].toInt())
             GameConstants.mParticipantScore.put(sender, value1)
+            GameConstants.mParticipantWrong.put(sender, value2)
+            GameConstants.mParticipantDrop.put(sender, value3)
             if (GameConstants.mFinishedParticipants.contains(sender)) {
                 Log.d(TAG, "Participants already added")
             } else {

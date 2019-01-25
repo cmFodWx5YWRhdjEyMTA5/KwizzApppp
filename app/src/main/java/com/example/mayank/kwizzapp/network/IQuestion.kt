@@ -17,12 +17,6 @@ interface IQuestion {
     @POST("payu/fetchNumberOfRows.php")
     fun getNumberOfRows(@Field("tableName") tableName: String): Observable<Questions.CountRows>
 
-//    @FormUrlEncoded
-//    @POST("payu/getQuestions.php")
-//    fun getQuestion(
-//            @Field("quesId") questionID: String,
-//            @Field("tableName") tableName : String): Observable<Questions.Question>
-
     @POST("payu/getQuestions.php")
     fun getQuestions(@Body question: Questions.GetQuestion) : Observable<Questions.Question>
 }

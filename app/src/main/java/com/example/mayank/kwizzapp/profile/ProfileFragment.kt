@@ -61,7 +61,7 @@ class ProfileFragment : Fragment() {
         return when (item?.itemId) {
             R.id.edit -> {
                 val editProfileFragment = EditProfileFragment()
-                switchToFragment(editProfileFragment)
+                switchToFragmentBackStack(editProfileFragment)
                 return true
             }
             else -> super.onOptionsItemSelected(item)

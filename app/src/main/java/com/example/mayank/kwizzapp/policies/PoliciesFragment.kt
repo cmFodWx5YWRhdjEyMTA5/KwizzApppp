@@ -1,5 +1,6 @@
 package com.example.mayank.kwizzapp.policies
 
+
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -13,7 +14,7 @@ import android.view.ViewGroup
 
 import com.example.mayank.kwizzapp.R
 
-class PoliciesFragment : Fragment() {
+class PoliciesFragment : android.support.v4.app.Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
     private lateinit var recyclerView: RecyclerView

@@ -58,22 +58,22 @@ class WalletMenuFragment : Fragment(), View.OnClickListener {
         when (v?.id) {
             R.id.addPointsLayout -> {
                 val addPointsFragment = AddPointsFragment()
-                switchToFragment(addPointsFragment)
+                switchToFragmentBackStack(addPointsFragment)
             }
 
             R.id.withdrawalLayout -> {
                 val withdrawalPointsFragment = WithdrawalPointsFragment()
-                switchToFragment(withdrawalPointsFragment)
+                switchToFragmentBackStack(withdrawalPointsFragment)
             }
 
             R.id.transferLayout -> {
                 val transferPointsFragment = TransferPointsFragment()
-                switchToFragment(transferPointsFragment)
+                switchToFragmentBackStack(transferPointsFragment)
             }
 
             R.id.transactionLayout -> {
                 val transactionFragment = TransactionFragment()
-                switchToFragment(transactionFragment)
+                switchToFragmentBackStack(transactionFragment)
             }
         }
     }
@@ -89,7 +89,8 @@ class WalletMenuFragment : Fragment(), View.OnClickListener {
                                 when {
                                     response.isSuccess -> {
                                         hideProgress()
-                                        walletPoints.text = "Points - ${response.balance} ${activity?.getString(R.string.rupeeSymbol)}"
+//                                        walletPoints.text = "Points - ${response.balance} ${activity?.getString(R.string.rupeeSymbol)}"
+                                        walletPoints.text = "Points - ${response.balance}"
                                     }
                                     else -> {
                                         hideProgress()

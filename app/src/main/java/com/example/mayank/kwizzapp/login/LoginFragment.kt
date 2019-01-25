@@ -25,11 +25,12 @@ import com.google.android.gms.games.RealTimeMultiplayerClient
 import net.rmitsolutions.mfexpert.lms.helpers.*
 import org.jetbrains.anko.find
 import android.support.v7.app.AppCompatActivity
+import com.shobhitpuri.custombuttons.GoogleSignInButton
 
 class LoginFragment : Fragment(), View.OnClickListener {
 
     private var listener: OnFragmentInteractionListener? = null
-    private lateinit var loginButton: SignInButton
+    private lateinit var loginButton: GoogleSignInButton
     private val RC_SIGN_IN = 101
     private var mRealTimeMultiplayerClient: RealTimeMultiplayerClient? = null
     private var mInvitationsClient: InvitationsClient? = null

@@ -12,7 +12,7 @@ import android.view.*
 import com.example.mayank.kwizzapp.R
 import net.rmitsolutions.mfexpert.lms.helpers.SharedPrefKeys
 import net.rmitsolutions.mfexpert.lms.helpers.getPref
-import net.rmitsolutions.mfexpert.lms.helpers.switchToFragment
+import net.rmitsolutions.mfexpert.lms.helpers.switchToFragmentBackStack
 
 class BankDetailFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
@@ -58,7 +58,7 @@ class BankDetailFragment : Fragment() {
         return when (item?.itemId) {
             R.id.edit -> {
                 val editBankDetailsFragment = EditBankDetailsFragment()
-                switchToFragment(editBankDetailsFragment)
+                switchToFragmentBackStack(editBankDetailsFragment)
                 return true
             }
             else -> super.onOptionsItemSelected(item)

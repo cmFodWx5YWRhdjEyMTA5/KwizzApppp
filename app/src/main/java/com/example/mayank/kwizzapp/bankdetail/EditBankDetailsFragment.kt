@@ -68,6 +68,7 @@ class EditBankDetailsFragment : Fragment(), View.OnClickListener {
         activity?.putPref(SharedPrefKeys.ACCOUNT_NUMBER, dataBinding.userBankDetailsVm?.accountNumber)
         activity?.putPref(SharedPrefKeys.IFSC_CODE, dataBinding.userBankDetailsVm?.ifscCode)
         toast("Account details updated successfully !")
+        activity?.finish()
         startActivity<SettingsActivity>()
 
     }

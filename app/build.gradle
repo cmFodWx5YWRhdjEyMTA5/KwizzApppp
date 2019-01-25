@@ -91,6 +91,13 @@ dependencies {
     }
 
     implementation 'com.google.firebase:firebase-core:16.0.4'
+
+    implementation 'org.jsoup:jsoup:1.11.3'
+
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
+
+    // Google Sign In Button
+    implementation 'com.shobhitpuri.custombuttons:google-signin:1.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

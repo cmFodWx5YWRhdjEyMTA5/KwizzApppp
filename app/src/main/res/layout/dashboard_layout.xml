@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@drawable/background">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -10,9 +13,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/window_background"
             android:orientation="vertical"
-            android:padding="@dimen/dimen_10dp">
+            android:layout_gravity="center">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -22,9 +24,10 @@
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.CardView
+                    app:cardCornerRadius="@dimen/dimen_10dp"
                     android:id="@+id/playLayout"
-                    android:layout_width="160dp"
-                    android:layout_height="190dp"
+                    android:layout_width="150dp"
+                    android:layout_height="170dp"
                     android:layout_margin="@dimen/dimen_10dp"
                     android:clickable="true"
                     android:focusable="true"
@@ -37,43 +40,28 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
                             android:background="@drawable/circle_background_green"
-                            android:padding="@dimen/dimen_10dp"
+                            android:padding="@dimen/dimen_16dp"
                             android:src="@drawable/games_controller_white" />
 
                         <TextView
+                            android:textSize="@dimen/dimen_16sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_10dp"
                             android:text="Play"
                             android:textStyle="bold" />
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:background="@color/lightGrey" />
-
-                        <TextView
-                            android:layout_marginStart="@dimen/dimen_5dp"
-                            android:layout_marginEnd="@dimen/dimen_5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/space10dp"
-                            android:gravity="center"
-                            android:padding="@dimen/dimen_5dp"
-                            android:text="Start Play Here"
-                            android:textColor="@color/secondary_text" />
                     </LinearLayout>
-
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
+                    app:cardCornerRadius="@dimen/dimen_10dp"
                     android:id="@+id/walletLayout"
-                    android:layout_width="160dp"
-                    android:layout_height="190dp"
+                    android:layout_width="150dp"
+                    android:layout_height="170dp"
                     android:layout_margin="@dimen/dimen_10dp"
                     android:clickable="true"
                     android:focusable="true"
@@ -86,35 +74,20 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:background="@drawable/circle_background"
-                            android:padding="@dimen/dimen_10dp"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:background="@drawable/circle_background_pink"
+                            android:padding="@dimen/dimen_16dp"
                             android:src="@drawable/ic_account_balance_wallet_white_24dp" />
 
                         <TextView
+                            android:textSize="@dimen/dimen_16sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_10dp"
                             android:text="Wallet"
                             android:textStyle="bold" />
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:background="@color/lightGrey" />
-
-                        <TextView
-                            android:layout_marginStart="@dimen/dimen_5dp"
-                            android:layout_marginEnd="@dimen/dimen_5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:gravity="center"
-                            android:padding="@dimen/dimen_5dp"
-                            android:text="Reward Points here"
-                            android:textColor="@color/secondary_text" />
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
             </LinearLayout>
@@ -127,9 +100,10 @@
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.CardView
+                    app:cardCornerRadius="@dimen/dimen_10dp"
                     android:id="@+id/achievemnetLayout"
-                    android:layout_width="160dp"
-                    android:layout_height="190dp"
+                    android:layout_width="150dp"
+                    android:layout_height="170dp"
                     android:layout_margin="@dimen/dimen_10dp"
                     android:clickable="true"
                     android:focusable="true"
@@ -142,43 +116,28 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:background="@drawable/circle_background_pink"
-                            android:padding="@dimen/dimen_10dp"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:background="@drawable/circle_background_orange"
+                            android:padding="@dimen/dimen_16dp"
                             android:src="@drawable/games_achievements_white" />
 
                         <TextView
+                            android:textSize="@dimen/dimen_16sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_10dp"
                             android:text="Achievements"
                             android:textStyle="bold" />
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:background="@color/lightGrey" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:layout_marginStart="@dimen/dimen_5dp"
-                            android:layout_marginEnd="@dimen/dimen_5dp"
-                            android:gravity="center"
-                            android:padding="@dimen/dimen_5dp"
-                            android:text="See your Achievements here"
-                            android:textColor="@color/secondary_text" />
                     </LinearLayout>
-
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
+                    app:cardCornerRadius="@dimen/dimen_10dp"
                     android:id="@+id/leaderboardLayout"
-                    android:layout_width="160dp"
-                    android:layout_height="190dp"
+                    android:layout_width="150dp"
+                    android:layout_height="170dp"
                     android:layout_margin="@dimen/dimen_10dp"
                     android:clickable="true"
                     android:focusable="true"
@@ -191,35 +150,20 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:background="@drawable/circle_background_orange"
-                            android:padding="@dimen/dimen_10dp"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:background="@drawable/circle_background_teal"
+                            android:padding="@dimen/dimen_16dp"
                             android:src="@drawable/games_leaderboards_white" />
 
                         <TextView
+                            android:textSize="@dimen/dimen_16sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_10dp"
                             android:text="Leaderboards"
                             android:textStyle="bold" />
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:background="@color/lightGrey" />
-
-                        <TextView
-                            android:layout_marginStart="@dimen/dimen_5dp"
-                            android:layout_marginEnd="@dimen/dimen_5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:gravity="center"
-                            android:padding="@dimen/dimen_5dp"
-                            android:text="See your Local and Global rank here"
-                            android:textColor="@color/secondary_text" />
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
             </LinearLayout>
@@ -232,9 +176,10 @@
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.CardView
+                    app:cardCornerRadius="@dimen/dimen_10dp"
                     android:id="@+id/settingLayout"
-                    android:layout_width="160dp"
-                    android:layout_height="190dp"
+                    android:layout_width="150dp"
+                    android:layout_height="170dp"
                     android:layout_margin="@dimen/dimen_10dp"
                     android:clickable="true"
                     android:focusable="true"
@@ -247,43 +192,28 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:background="@drawable/circle_background_brown"
-                            android:padding="@dimen/dimen_10dp"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:background="@drawable/circle_background_purple"
+                            android:padding="@dimen/dimen_16dp"
                             android:src="@drawable/ic_settings_white_24dp" />
 
                         <TextView
+                            android:textSize="@dimen/dimen_16sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_10dp"
                             android:text="Settings"
                             android:textStyle="bold" />
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:background="@color/lightGrey" />
-
-                        <TextView
-                            android:layout_marginStart="@dimen/dimen_5dp"
-                            android:layout_marginEnd="@dimen/dimen_5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:gravity="center"
-                            android:padding="@dimen/dimen_5dp"
-                            android:text="Change settings here"
-                            android:textColor="@color/secondary_text" />
                     </LinearLayout>
-
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
+                    app:cardCornerRadius="@dimen/dimen_10dp"
                     android:id="@+id/logoutLayout"
-                    android:layout_width="160dp"
-                    android:layout_height="190dp"
+                    android:layout_width="150dp"
+                    android:layout_height="170dp"
                     android:layout_margin="@dimen/dimen_10dp"
                     android:clickable="true"
                     android:focusable="true"
@@ -296,39 +226,26 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
                             android:background="@drawable/circle_background_red"
-                            android:padding="@dimen/dimen_10dp"
+                            android:padding="@dimen/dimen_16dp"
                             android:src="@drawable/ic_logout_variant" />
 
                         <TextView
+                            android:textSize="@dimen/dimen_16sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_10dp"
                             android:text="Logout"
                             android:textStyle="bold" />
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:background="@color/lightGrey" />
-
-                        <TextView
-                            android:layout_marginStart="@dimen/dimen_5dp"
-                            android:layout_marginEnd="@dimen/dimen_5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:gravity="center"
-                            android:padding="@dimen/dimen_5dp"
-                            android:text="Logout here"
-                            android:textColor="@color/secondary_text" />
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
             </LinearLayout>
+
         </LinearLayout>
+
     </ScrollView>
 
 

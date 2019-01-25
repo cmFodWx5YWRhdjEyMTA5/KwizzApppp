@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/window_background"
-            android:orientation="vertical"
-            android:padding="@dimen/dimen_10dp">
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -24,12 +24,13 @@
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/singlePlayerLayout"
-                    android:layout_width="160dp"
-                    android:layout_height="190dp"
+                    android:layout_width="150dp"
+                    android:layout_height="170dp"
                     android:layout_margin="@dimen/dimen_10dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground">
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardCornerRadius="@dimen/dimen_10dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -38,47 +39,32 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
                             android:background="@drawable/circle_background_green"
-                            android:padding="@dimen/dimen_10dp"
-                            android:src="@drawable/ic_book_white_24dp" />
+                            android:padding="@dimen/dimen_16dp"
+                            android:src="@drawable/games_controller_white" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_10dp"
                             android:text="Single Player"
+                            android:textSize="@dimen/dimen_16sp"
                             android:textStyle="bold" />
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:background="@color/lightGrey" />
-
-                        <TextView
-                            android:layout_marginStart="@dimen/dimen_5dp"
-                            android:layout_marginEnd="@dimen/dimen_5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:gravity="center"
-                            android:padding="@dimen/dimen_5dp"
-                            android:text="Start learning here"
-                            android:textColor="@color/secondary_text" />
                     </LinearLayout>
-
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/invitationLayout"
-                    android:layout_width="160dp"
-                    android:layout_height="190dp"
+                    android:id="@+id/quickGameLayout"
+                    android:layout_width="150dp"
+                    android:layout_height="170dp"
                     android:layout_margin="@dimen/dimen_10dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground">
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardCornerRadius="@dimen/dimen_10dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -87,35 +73,20 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:background="@drawable/circle_background"
-                            android:padding="@dimen/dimen_10dp"
-                            android:src="@drawable/ic_invitation_white_24dp" />
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:background="@drawable/circle_background_pink"
+                            android:padding="@dimen/dimen_16dp"
+                            android:src="@drawable/games_matches_white" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_10dp"
-                            android:text="Invitations"
+                            android:text="Quick Play"
+                            android:textSize="@dimen/dimen_16sp"
                             android:textStyle="bold" />
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:background="@color/lightGrey" />
-
-                        <TextView
-                            android:layout_marginStart="@dimen/dimen_5dp"
-                            android:layout_marginEnd="@dimen/dimen_5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:gravity="center"
-                            android:padding="@dimen/dimen_5dp"
-                            android:text="See who invites you"
-                            android:textColor="@color/secondary_text" />
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
             </LinearLayout>
@@ -128,62 +99,14 @@
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/quickGameLayout"
-                    android:layout_width="160dp"
-                    android:layout_height="190dp"
-                    android:layout_margin="@dimen/dimen_10dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:background="@drawable/circle_background_pink"
-                            android:padding="@dimen/dimen_10dp"
-                            android:src="@drawable/games_matches_white" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:text="Quick Game"
-                            android:textStyle="bold" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:background="@color/lightGrey" />
-
-                        <TextView
-                            android:layout_marginStart="@dimen/dimen_5dp"
-                            android:layout_marginEnd="@dimen/dimen_5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:gravity="center"
-                            android:padding="@dimen/dimen_5dp"
-                            android:text="Play with random player"
-                            android:textColor="@color/secondary_text" />
-                    </LinearLayout>
-
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
                     android:id="@+id/multiplayerLayout"
-                    android:layout_width="160dp"
-                    android:layout_height="190dp"
+                    android:layout_width="150dp"
+                    android:layout_height="170dp"
                     android:layout_margin="@dimen/dimen_10dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground">
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardCornerRadius="@dimen/dimen_10dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -192,10 +115,10 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
                             android:background="@drawable/circle_background_orange"
-                            android:padding="@dimen/dimen_10dp"
+                            android:padding="@dimen/dimen_16dp"
                             android:src="@drawable/games_matches_white" />
 
                         <TextView
@@ -203,29 +126,48 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_10dp"
                             android:text="Multiplayer"
+                            android:textSize="@dimen/dimen_16sp"
                             android:textStyle="bold" />
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:background="@color/lightGrey" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/invitationLayout"
+                    android:layout_width="150dp"
+                    android:layout_height="170dp"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardCornerRadius="@dimen/dimen_10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:background="@drawable/circle_background_teal"
+                            android:padding="@dimen/dimen_16dp"
+                            android:src="@drawable/ic_invitation_white_24dp" />
 
                         <TextView
-                            android:layout_marginStart="@dimen/dimen_5dp"
-                            android:layout_marginEnd="@dimen/dimen_5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_10dp"
-                            android:gravity="center"
-                            android:padding="@dimen/dimen_5dp"
-                            android:text="Invite your friends to Play"
-                            android:textColor="@color/secondary_text" />
+                            android:text="Invitations"
+                            android:textSize="@dimen/dimen_16sp"
+                            android:textStyle="bold" />
+
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
 
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

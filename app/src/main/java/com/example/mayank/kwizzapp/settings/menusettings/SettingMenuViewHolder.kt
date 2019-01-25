@@ -12,6 +12,7 @@ import com.example.mayank.kwizzapp.profile.ProfileFragment
 import com.example.mayank.kwizzapp.viewmodels.SettingVm
 import net.rmitsolutions.mfexpert.lms.helpers.showDialog
 import net.rmitsolutions.mfexpert.lms.helpers.switchToFragment
+import net.rmitsolutions.mfexpert.lms.helpers.switchToFragmentBackStack
 import org.jetbrains.anko.find
 import org.jetbrains.anko.toast
 
@@ -28,15 +29,15 @@ class SettingMenuViewHolder (itemView : View) : RecyclerView.ViewHolder(itemView
             when(position){
                 0 ->{
                     val profileFragment = ProfileFragment()
-                    context.switchToFragment(profileFragment)
+                    context.switchToFragmentBackStack(profileFragment)
                 }
                 1 ->{
                     val bankDetailFragment = BankDetailFragment()
-                    context.switchToFragment(bankDetailFragment)
+                    context.switchToFragmentBackStack(bankDetailFragment)
                 }
                 2 ->{
                     val policiesFragment = PoliciesFragment()
-                    context.switchToFragment(policiesFragment)
+                    context.switchToFragmentBackStack(policiesFragment)
                 }
             }
         }

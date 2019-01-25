@@ -83,6 +83,4 @@ class SinglePlayResultFragment : Fragment() {
         fun onFragmentInteraction(uri: Uri)
     }
 
-    companion object {
-    }
 }

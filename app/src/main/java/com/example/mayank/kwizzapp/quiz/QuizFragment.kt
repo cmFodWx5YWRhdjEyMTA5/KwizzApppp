@@ -184,15 +184,15 @@ class QuizFragment : Fragment(), View.OnClickListener {
             compositeDisposable.add(questionService.getQuestions(question)
                     .processRequest(
                             { response ->
-                                q++
                                 if (response.isSuccess) {
+                                    q++
+                                    hideProgress()
                                     setQuestionTextViews(response)
                                     reset()
                                 } else {
                                     hideProgress()
                                     stopCountdown()
                                     showDialog(response.message)
-
                                 }
                             }, { err ->
                         hideProgress()
@@ -233,7 +233,7 @@ class QuizFragment : Fragment(), View.OnClickListener {
         bundle.putInt(DROP_QUESTIONS, dropQuestions)
         val resultFragment = GameResultFragment()
         resultFragment.arguments = bundle
-        switchToFragment(resultFragment)
+        switchToFragmentBackStack(resultFragment)
 
     }
 

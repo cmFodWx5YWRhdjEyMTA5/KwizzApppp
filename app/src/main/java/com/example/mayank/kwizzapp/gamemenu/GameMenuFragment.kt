@@ -109,9 +109,11 @@ class GameMenuFragment : Fragment(), View.OnClickListener {
                                             dialog.dismiss()
                                         }.show()
                             }
+                        }else{
+                            showDialog(activity!!, "Error", response.message)
                         }
                     }, { err ->
-                        logD("Message - $err")
+                        showDialog(activity!!, "Error", err.toString())
                     }))
         } else {
             showDialog(activity!!, "Error", "Update mobile number to continue!")

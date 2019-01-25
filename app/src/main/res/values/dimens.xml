@@ -42,4 +42,5 @@
     <dimen name="margin_right">20dp</dimen>
     <dimen name="welcome_image_width">180dp</dimen>
     <dimen name="welcome_image_height">180dp</dimen>
+    <dimen name="space5dp">5dp</dimen>
 </resources>

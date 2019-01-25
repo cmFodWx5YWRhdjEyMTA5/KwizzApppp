@@ -294,7 +294,7 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
                                 bundle.putDouble("Amount", subtractBalance.amount!!)
                                 val quizFragment = QuizFragment()
                                 quizFragment.arguments = bundle
-                                switchToFragment(quizFragment)
+                                switchToFragmentBackStack(quizFragment)
                                 unRegisterBroadcastReceiver()
                             } else {
                                 subtract = false

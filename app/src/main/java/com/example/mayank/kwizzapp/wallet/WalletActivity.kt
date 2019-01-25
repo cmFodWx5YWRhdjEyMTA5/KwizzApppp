@@ -13,6 +13,7 @@ import com.example.mayank.kwizzapp.dependency.components.DaggerInjectActivityCom
 import com.example.mayank.kwizzapp.helpers.Converters
 import com.example.mayank.kwizzapp.helpers.processRequest
 import com.example.mayank.kwizzapp.network.ITransaction
+import com.example.mayank.kwizzapp.settings.SettingsActivity
 import com.example.mayank.kwizzapp.transactions.TransactionFragment
 import com.payumoney.core.entity.TransactionResponse
 import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager
@@ -122,5 +123,18 @@ class WalletActivity : AppCompatActivity(), WalletMenuFragment.OnFragmentInterac
                             showDialog(this, "Error", err.toString())
                         }
                 ))
+    }
+
+    override fun onBackPressed() {
+        val count = supportFragmentManager.backStackEntryCount
+        logD("Fragment Count - $count")
+        when (count) {
+            0 -> super.onBackPressed()
+            1 -> supportFragmentManager.popBackStack()
+            else -> {
+                finish()
+                startActivity<WalletActivity>()
+            }
+        }
     }
 }
