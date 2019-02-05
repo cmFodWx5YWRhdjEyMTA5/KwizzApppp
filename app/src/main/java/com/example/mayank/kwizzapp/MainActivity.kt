@@ -35,6 +35,7 @@ import org.jetbrains.anko.toast
 import javax.inject.Inject
 import org.jsoup.Jsoup
 import android.os.AsyncTask.execute
+import android.view.Window
 import java.util.concurrent.ExecutionException
 
 
@@ -53,6 +54,7 @@ class MainActivity : AppCompatActivity(), LoginFragment.OnFragmentInteractionLis
     private var back_pressed = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -73,7 +75,7 @@ class MainActivity : AppCompatActivity(), LoginFragment.OnFragmentInteractionLis
                 if (player.displayName == getPref(SharedPrefKeys.DISPLAY_NAME, "")) {
                     val dashboardFragment = DashboardFragment()
                     switchToFragment(dashboardFragment)
-                    getOnlineVersion()
+                    //getOnlineVersion()
                 } else {
                     val updateDisplayName = Users.UpdateDisplayName()
                     updateDisplayName.displayName = player.displayName

@@ -5,6 +5,7 @@ import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Window
 import com.example.mayank.googleplaygame.network.wallet.Transactions
 import com.example.mayank.kwizzapp.Constants
 import com.example.mayank.kwizzapp.KwizzApp
@@ -12,28 +13,37 @@ import com.example.mayank.kwizzapp.R
 import com.example.mayank.kwizzapp.dependency.components.DaggerInjectActivityComponent
 import com.example.mayank.kwizzapp.helpers.Converters
 import com.example.mayank.kwizzapp.helpers.processRequest
+import com.example.mayank.kwizzapp.network.IRazorpay
 import com.example.mayank.kwizzapp.network.ITransaction
 import com.example.mayank.kwizzapp.settings.SettingsActivity
 import com.example.mayank.kwizzapp.transactions.TransactionFragment
 import com.payumoney.core.entity.TransactionResponse
 import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager
 import com.payumoney.sdkui.ui.utils.ResultModel
+import com.razorpay.Checkout
+import com.razorpay.PaymentResultListener
 import io.reactivex.disposables.CompositeDisposable
 import net.rmitsolutions.mfexpert.lms.helpers.*
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.toast
 import org.json.JSONObject
 import javax.inject.Inject
 
 class WalletActivity : AppCompatActivity(), WalletMenuFragment.OnFragmentInteractionListener,
         AddPointsFragment.OnFragmentInteractionListener, WithdrawalPointsFragment.OnFragmentInteractionListener,
-        TransferPointsFragment.OnFragmentInteractionListener, TransactionFragment.OnFragmentInteractionListener {
+        TransferPointsFragment.OnFragmentInteractionListener, TransactionFragment.OnFragmentInteractionListener,
+        PaymentResultListener {
 
     private lateinit var compositeDisposable : CompositeDisposable
     @Inject
     lateinit var transactionService: ITransaction
 
+    @Inject
+    lateinit var razorpayService: IRazorpay
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wallet)
 
@@ -127,7 +137,6 @@ class WalletActivity : AppCompatActivity(), WalletMenuFragment.OnFragmentInterac
 
     override fun onBackPressed() {
         val count = supportFragmentManager.backStackEntryCount
-        logD("Fragment Count - $count")
         when (count) {
             0 -> super.onBackPressed()
             1 -> supportFragmentManager.popBackStack()
@@ -136,5 +145,49 @@ class WalletActivity : AppCompatActivity(), WalletMenuFragment.OnFragmentInterac
                 startActivity<WalletActivity>()
             }
         }
+    }
+
+    override fun onPaymentError(errorCode: Int, response: String?) {
+        hideProgress()
+        when (errorCode) {
+            Checkout.NETWORK_ERROR -> toast("Network error occourred")
+            Checkout.PAYMENT_CANCELED -> toast("Payment Cancelled")
+            Checkout.INVALID_OPTIONS -> toast("Invalid Options")
+            Checkout.TLS_ERROR -> toast("Device doesn't have TLS 1.1 or TLS 1.2")
+        }
+    }
+
+
+    override fun onPaymentSuccess(razorpayPaymentID: String?) {
+        logD("Success - $razorpayPaymentID")
+        getTransactionDetails(razorpayPaymentID!!)
+    }
+
+    // Get the transaction details using Razorpay
+    private fun getTransactionDetails(paymentId : String) {
+        val payment = Transactions.AddPointToServer()
+        payment.paymentId = paymentId
+        payment.firstName = getPref(SharedPrefKeys.FIRST_NAME, "")
+        payment.lastName = getPref(SharedPrefKeys.LAST_NAME, "")
+        payment.mobileNumber = getPref(SharedPrefKeys.MOBILE_NUMBER, "")
+        payment.playerId = getPref(SharedPrefKeys.PLAYER_ID, "")
+        payment.transactionType = "Credited"
+        payment.addedOn = System.currentTimeMillis().toString()
+        payment.createdOn = System.currentTimeMillis().toString()
+        payment.status = "success"
+        compositeDisposable.add(razorpayService.getTransactionByPaymentId(payment)
+                .processRequest(
+                        { transactions ->
+                            hideProgress()
+                            toast(transactions.message)
+                            finish()
+                            startActivity<WalletActivity>()
+                        },
+                        { err ->
+                            hideProgress()
+                            toast("Error - $err")
+                        }
+                )
+        )
     }
 }

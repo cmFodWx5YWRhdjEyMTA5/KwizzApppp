@@ -33,6 +33,10 @@
         <activity android:name=".wallet.WalletActivity" />
         <activity android:name=".sample.SampleActivity" />
         <activity android:name=".settings.SettingsActivity" />
+
+        <meta-data
+            android:name="com.razorpay.ApiKey"
+            android:value="rzp_live_L80QCSQrlinxL3" />
     </application>
 
 </manifest>

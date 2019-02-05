@@ -19,6 +19,7 @@ object SharedPrefKeys {
     const val PRODUCT_RECHARGE_POINTS = "Points recharged by yourself"
     const val ACCOUNT_NUMBER = "AccountNumber"
     const val IFSC_CODE= "IfscCode"
+    const val ICON_IMAGE = "icon_image"
 
     const val COMPLETE_A_GAME = "CompleteAGame"
     const val WIN_THREE_GAME = "WinThreeGame"

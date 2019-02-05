@@ -2,6 +2,7 @@ package com.example.mayank.kwizzapp.dependency.modules
 
 import com.example.mayank.kwizzapp.dependency.scopes.ApplicationScope
 import com.example.mayank.kwizzapp.network.IQuestion
+import com.example.mayank.kwizzapp.network.IRazorpay
 import com.example.mayank.kwizzapp.network.ITransaction
 import com.example.mayank.kwizzapp.network.IUser
 import dagger.Module
@@ -27,5 +28,11 @@ class NetworkApiModule {
     @ApplicationScope
     fun questionService(retrofit: Retrofit): IQuestion {
         return retrofit.create(IQuestion::class.java)
+    }
+
+    @Provides
+    @ApplicationScope
+    fun razorpayService(retrofit: Retrofit): IRazorpay {
+        return retrofit.create(IRazorpay::class.java)
     }
 }

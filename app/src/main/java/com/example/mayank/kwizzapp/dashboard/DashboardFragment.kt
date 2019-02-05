@@ -1,6 +1,8 @@
 package com.example.mayank.kwizzapp.dashboard
 
+import android.app.ActivityOptions
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -46,10 +48,16 @@ class DashboardFragment : Fragment(), View.OnClickListener {
             R.id.logoutLayout -> signOut()
             R.id.achievemnetLayout -> showAchievements()
             R.id.leaderboardLayout -> showLeaderBoards()
-            R.id.walletLayout -> startActivity<WalletActivity>()
+            R.id.walletLayout -> startWalletActivity()
             R.id.playLayout -> openGameMenuFragment()
             R.id.settingLayout -> startActivity<SettingsActivity>()
         }
+    }
+
+    private fun startWalletActivity() {
+        val options = ActivityOptions.makeSceneTransitionAnimation(activity)
+        val intent = Intent(activity, WalletActivity::class.java)
+        startActivity(intent, options.toBundle())
     }
 
     private fun openGameMenuFragment() {

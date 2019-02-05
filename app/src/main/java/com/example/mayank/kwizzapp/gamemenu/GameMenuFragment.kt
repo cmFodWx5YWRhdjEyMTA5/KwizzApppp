@@ -7,9 +7,11 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
+import android.transition.Explode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import com.example.mayank.googleplaygame.network.wallet.Transactions
 import com.example.mayank.kwizzapp.KwizzApp
 
@@ -37,8 +39,7 @@ class GameMenuFragment : Fragment(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-        }
+
         libPlayGame = LibPlayGame(activity!!)
         compositeDisposable = CompositeDisposable()
         val depComponent = DaggerInjectFragmentComponent.builder()
@@ -49,7 +50,9 @@ class GameMenuFragment : Fragment(), View.OnClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_game_menu, container, false)
-
+        val enterTransition = Explode()
+        enterTransition.duration = 1000
+        activity?.window?.enterTransition = enterTransition
         for (id in CLICKABLES) {
             view.find<CardView>(id).setOnClickListener(this)
         }
@@ -116,6 +119,7 @@ class GameMenuFragment : Fragment(), View.OnClickListener {
                         showDialog(activity!!, "Error", err.toString())
                     }))
         } else {
+            hideProgress()
             showDialog(activity!!, "Error", "Update mobile number to continue!")
         }
     }

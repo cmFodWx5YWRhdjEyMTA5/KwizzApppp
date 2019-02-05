@@ -42,4 +42,9 @@ object Constants {
         return formatter.format(date)
     }
 
+    fun getDateFormat(date : Date): String? {
+        val formatter : java.text.DateFormat = SimpleDateFormat(DISPLAY_FULL_DATE_FORMAT)
+        return formatter.format(date)
+    }
+
 }

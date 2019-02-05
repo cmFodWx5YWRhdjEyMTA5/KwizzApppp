@@ -25,6 +25,7 @@ class Transactions {
     }
 
     class AddPointToServer{
+        var paymentId : String? = null
         var firstName: String? = null
         var lastName: String? = null
         var playerId: String? = null
@@ -33,7 +34,6 @@ class Transactions {
         var productInfo: String? = null
         var amount: Double? = null
         var txnId : String? = null
-        var paymentId : String? = null
         var addedOn : String? = null
         var createdOn: String? = null
         var transactionType: String? = null

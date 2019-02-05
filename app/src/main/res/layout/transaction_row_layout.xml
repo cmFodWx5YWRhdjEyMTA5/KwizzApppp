@@ -1,83 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorWhite">
+    android:layout_marginStart="@dimen/dimen_8dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginEnd="@dimen/dimen_8dp"
+    android:layout_marginBottom="4dp"
+    android:orientation="horizontal">
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/dimen_5dp">
 
-        <android.support.v7.widget.CardView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/space10dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackground">
+            android:layout_margin="@dimen/space8dp"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/user_image"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="@dimen/space8dp"
+                android:src="@drawable/achievements_4"
+                app:civ_border_color="#FFFFFFFF"
+                app:civ_border_width="2dp" />
 
             <LinearLayout
-                android:layout_margin="@dimen/dimen_5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/user_image"
-                    android:padding="@dimen/dimen_5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_app_logo_round"/>
+                android:layout_marginStart="@dimen/space10dp"
+                android:layout_marginEnd="@dimen/space8dp"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/text_user_name"
-                            style="@style/TitleText"
-                            android:gravity="start"
-                            android:padding="@dimen/dimen_5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Mayank Sharma"/>
-
-                        <TextView
-                            android:id="@+id/text_transaction_amount"
-                            android:layout_marginEnd="@dimen/space10dp"
-                            style="@style/TitleText"
-                            android:textColor="@color/colorGreen"
-                            android:gravity="end"
-                            android:text="+300"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="@dimen/dimen_5dp"/>
-                    </LinearLayout>
-                    <TextView
-                        android:id="@+id/text_time_stamp"
-                        style="@style/SmallTitleText"
-                        android:padding="@dimen/dimen_5dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Date Text"/>
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/text_description"
-                        style="@style/DescriptionText"
-                        android:text="Reason for transaction whether its from wallet or anything"
-                        android:padding="@dimen/dimen_5dp"
+                        android:id="@+id/text_user_name"
+                        style="@style/TitleText"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Mayank Sharma" />
+
+                    <TextView
+                        android:id="@+id/text_transaction_amount"
+                        style="@style/TitleText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.8"
+                        android:gravity="end"
+                        android:text="+ 16.0"
+                        android:textColor="@color/colorGreen" />
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/text_time_stamp"
+                    style="@style/SmallTitleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_8dp"
+                    android:text="22-01-2019 01:03:26 AM" />
+
+                <TextView
+                    android:id="@+id/text_description"
+                    style="@style/DescriptionText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_8dp"
+                    android:text="Debited for play quiz." />
 
             </LinearLayout>
-        </android.support.v7.widget.CardView>
-    </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+
+</LinearLayout>

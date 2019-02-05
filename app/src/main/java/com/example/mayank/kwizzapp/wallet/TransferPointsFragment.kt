@@ -73,8 +73,8 @@ class TransferPointsFragment : Fragment(), View.OnClickListener {
         transfer.txnId = displayName + System.currentTimeMillis()
         transfer.transferToNumber = dataBinding.transferPointsVm?.transferTo
         transfer.playerId = activity?.getPref(SharedPrefKeys.PLAYER_ID, "")
-        transfer.addedOn = Constants.getFormatDate(Calendar.getInstance().time)
-        transfer.createdOn = Constants.getFormatDate(Calendar.getInstance().time)
+        transfer.addedOn = System.currentTimeMillis().toString()
+        transfer.createdOn = System.currentTimeMillis().toString()
         transfer.status = "Success"
 
         if (validate()) {

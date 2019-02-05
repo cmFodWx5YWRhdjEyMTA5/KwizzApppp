@@ -267,8 +267,8 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
                         subtractBalance.amount = amount?.toDouble()
                         subtractBalance.playerId = activity?.getPref(SharedPrefKeys.PLAYER_ID, "")
                         subtractBalance.productInfo = "Debited for play Quiz"
-                        subtractBalance.addedOn = Constants.getFormatDate(Calendar.getInstance().time)
-                        subtractBalance.createdOn = Constants.getFormatDate(Calendar.getInstance().time)
+                        subtractBalance.addedOn = System.currentTimeMillis().toString()
+                        subtractBalance.createdOn = System.currentTimeMillis().toString()
                         subtractBalance.transactionType = "Debited"
                         subtractBalance.status = "Success"
                         subtractBalance(subtractBalance)

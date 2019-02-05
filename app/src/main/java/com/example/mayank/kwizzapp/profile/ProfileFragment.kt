@@ -8,9 +8,13 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
+import android.widget.ImageView
 
 import com.example.mayank.kwizzapp.R
+import com.google.android.gms.common.images.ImageManager
+import net.rmitsolutions.libcam.LibCamera
 import net.rmitsolutions.mfexpert.lms.helpers.*
+import org.jetbrains.anko.find
 
 class ProfileFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
@@ -18,6 +22,9 @@ class ProfileFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     val adapter: ProfileViewAdapter by lazy { ProfileViewAdapter() }
     lateinit var modelList: MutableList<ProfileVm>
+    private lateinit var profileImage :ImageView
+    private lateinit var libCamera: LibCamera
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +33,13 @@ class ProfileFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
+
+        libCamera = LibCamera(activity!!)
+        profileImage = view.find(R.id.user_image)
+        val imageManager = ImageManager.create(activity)
+        val image = activity?.getPref(SharedPrefKeys.ICON_IMAGE, "")
+        imageManager.loadImage(profileImage, Uri.parse(image))
+
         recyclerView = view.findViewById(R.id.profile_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.setHasFixedSize(true)

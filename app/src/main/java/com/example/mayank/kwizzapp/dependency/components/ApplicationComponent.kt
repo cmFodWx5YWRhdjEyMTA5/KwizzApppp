@@ -7,6 +7,7 @@ import com.example.mayank.kwizzapp.dependency.modules.NetworkApiModule
 import com.example.mayank.kwizzapp.dependency.qualifiers.ApplicationContextQualifier
 import com.example.mayank.kwizzapp.dependency.scopes.ApplicationScope
 import com.example.mayank.kwizzapp.network.IQuestion
+import com.example.mayank.kwizzapp.network.IRazorpay
 import com.example.mayank.kwizzapp.network.ITransaction
 import com.example.mayank.kwizzapp.network.IUser
 import dagger.Component
@@ -27,4 +28,6 @@ interface ApplicationComponent {
     fun getTransactionService() : ITransaction
 
     fun getQuestionService() : IQuestion
+
+    fun getRazorPayService() : IRazorpay
 }

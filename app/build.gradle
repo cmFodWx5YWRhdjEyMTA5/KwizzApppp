@@ -98,6 +98,11 @@ dependencies {
 
     // Google Sign In Button
     implementation 'com.shobhitpuri.custombuttons:google-signin:1.0.0'
+
+    implementation 'com.github.techlibplanet:LibCamLibrary:1.0.0'
+
+    // Razorpay Payment Gateway
+    implementation 'com.razorpay:checkout:1.5.2'
 }
 
 apply plugin: 'com.google.gms.google-services'
