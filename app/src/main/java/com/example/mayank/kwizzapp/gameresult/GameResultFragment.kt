@@ -316,6 +316,11 @@ class GameResultFragment : Fragment(), View.OnClickListener{
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        context?.unregisterReceiver(resultBroadcastReceiver)
+    }
+
     private fun setRecyclerViewAdapter(list: List<ResultViewModel>) {
         adapter.items = list
         adapter.notifyDataSetChanged()
