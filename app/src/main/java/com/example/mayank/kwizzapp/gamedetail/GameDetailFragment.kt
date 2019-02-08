@@ -269,7 +269,7 @@ class GameDetailFragment : Fragment(), View.OnClickListener {
                         subtractBalance.productInfo = "Debited for play Quiz"
                         subtractBalance.addedOn = System.currentTimeMillis().toString()
                         subtractBalance.createdOn = System.currentTimeMillis().toString()
-                        subtractBalance.transactionType = "Debited"
+                        subtractBalance.transactionType  = "Debited"
                         subtractBalance.status = "Success"
                         subtractBalance(subtractBalance)
                     }

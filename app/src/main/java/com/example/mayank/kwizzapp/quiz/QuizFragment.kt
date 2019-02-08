@@ -38,6 +38,8 @@ class QuizFragment : Fragment(), View.OnClickListener {
     private val SUBJECT_CODE = "SubjectCode"
     private val SUBJECT = "Subject"
 
+    private var back_pressed = 0L
+
     @Inject
     lateinit var questionService: IQuestion
 
@@ -105,56 +107,85 @@ class QuizFragment : Fragment(), View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.layoutOptionA -> {
-                if (view.find<TextView>(R.id.textViewOptionA).text == answer) {
-                    rightAnswers++
-                } else {
-                    wrongAnswers++
+                when {
+                    System.currentTimeMillis() - back_pressed > 5000 -> {
+                        if (view.find<TextView>(R.id.textViewOptionA).text == answer) {
+                            rightAnswers++
+                        } else {
+                            wrongAnswers++
+                        }
+                        getQuestionFromServer()
+                    }
+                    else -> showWarning()
                 }
-
-                getQuestionFromServer()
 
             }
 
             R.id.layoutOptionB -> {
-                if (view.find<TextView>(R.id.textViewOptionB).text == answer) {
-                    rightAnswers++
-                } else {
-                    wrongAnswers++
+                when {
+                    System.currentTimeMillis() - back_pressed > 5000 -> {
+                        if (view.find<TextView>(R.id.textViewOptionB).text == answer) {
+                            rightAnswers++
+                        } else {
+                            wrongAnswers++
+                        }
+                        getQuestionFromServer()
+                    }
+                    else -> showWarning()
                 }
 
-                getQuestionFromServer()
 
             }
 
             R.id.layoutOptionC -> {
-                if (view.find<TextView>(R.id.textViewOptionC).text == answer) {
-                    rightAnswers++
-                } else {
-                    wrongAnswers++
+                when {
+                    System.currentTimeMillis() - back_pressed > 5000 -> {
+                        if (view.find<TextView>(R.id.textViewOptionC).text == answer) {
+                            rightAnswers++
+                        } else {
+                            wrongAnswers++
+                        }
+                        getQuestionFromServer()
+                    }
+                    else -> showWarning()
                 }
 
-                getQuestionFromServer()
             }
 
             R.id.layoutOptionD -> {
-                if (view.find<TextView>(R.id.textViewOptionD).text == answer) {
-                    rightAnswers++
-                } else {
-                    wrongAnswers++
+                when {
+                    System.currentTimeMillis() - back_pressed > 5000 -> {
+                        if (view.find<TextView>(R.id.textViewOptionD).text == answer) {
+                            rightAnswers++
+                        } else {
+                            wrongAnswers++
+                        }
+                        getQuestionFromServer()
+                    }
+                    else -> showWarning()
                 }
 
-                getQuestionFromServer()
+
             }
 
             R.id.layoutOptionE -> {
-                if (view.find<TextView>(R.id.textViewOptionE).text == answer) {
-                    rightAnswers++
-                } else {
-                    wrongAnswers++
+                when {
+                    System.currentTimeMillis() - back_pressed > 5000 -> {
+                        if (view.find<TextView>(R.id.textViewOptionE).text == answer) {
+                            rightAnswers++
+                        } else {
+                            wrongAnswers++
+                        }
+                        getQuestionFromServer()
+                    }
+                    else -> showWarning()
                 }
-                getQuestionFromServer()
             }
         }
+    }
+
+    private fun showWarning() {
+        showDialog(activity!!, "Warning", "Answer can submit after 5 seconds.")
     }
 
 
@@ -187,15 +218,18 @@ class QuizFragment : Fragment(), View.OnClickListener {
                                 if (response.isSuccess) {
                                     q++
                                     hideProgress()
+                                    back_pressed = System.currentTimeMillis()
                                     setQuestionTextViews(response)
                                     reset()
                                 } else {
                                     hideProgress()
                                     stopCountdown()
+                                    back_pressed = System.currentTimeMillis()
                                     showDialog(response.message)
                                 }
                             }, { err ->
                         hideProgress()
+                        back_pressed = System.currentTimeMillis()
                         showDialog(err.toString())
                     }
                     ))

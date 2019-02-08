@@ -53,12 +53,8 @@ import com.google.android.gms.games.Games
 import com.google.android.gms.games.multiplayer.Participant
 import com.technoholicdeveloper.kwizzapp.achievements.Achievements
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.result_layout.*
 import net.rmitsolutions.mfexpert.lms.helpers.*
-import org.jetbrains.anko.custom.style
 import org.jetbrains.anko.find
-import java.time.format.TextStyle
-import java.util.*
 import javax.inject.Inject
 
 class GameResultFragment : Fragment(), View.OnClickListener{
@@ -174,6 +170,7 @@ class GameResultFragment : Fragment(), View.OnClickListener{
     private var show: Boolean = false
 
     private fun updateScore() {
+        logD("Inside Update Score")
         if (mRoomId != null) {
             for (p in mParticipants!!) {
                 val pid = p.participantId
@@ -193,7 +190,9 @@ class GameResultFragment : Fragment(), View.OnClickListener{
                 val drop = if (mParticipantDrop.containsKey(pid)) mParticipantDrop[pid] else 0
 
                 if (mParticipants?.size == mFinishedParticipants.size) {
+                    logD("Participants and finished participants are equal")
                     if (p.displayName != displayName) {
+                        logD("Display name are equal")
                         if (!listResult.containsKey(p.displayName)) {
                             listResult[p.displayName] = ResultViewModel(p.displayName, score!!, p.hiResImageUri, wrong!!, drop!!)
                             logD("Opponent Image Uri - ${p.hiResImageUri}")
@@ -218,6 +217,8 @@ class GameResultFragment : Fragment(), View.OnClickListener{
             }
             setRecyclerViewAdapter(resultList!!)
             // Check this where to write coz of this also will be a problem
+        }else{
+            logD("Room Id is null")
         }
     }
 
@@ -228,7 +229,7 @@ class GameResultFragment : Fragment(), View.OnClickListener{
             if (resultList[0].rightAnswers == resultList[1].rightAnswers) {
                 if (!show) {
                     win = false
-                    showDialogResult(activity!!, "Sorry", "It's a Tie","Your bid points will credited to your wallet", R.mipmap.ic_loose)
+                    //showDialogResult(activity!!, "Sorry", "It's a Tie","Your bid points will credited to your wallet", R.mipmap.ic_loose)
                     updateResult.displayName = displayName
                     updateResult.amount = amount
                     updateResult.timeStamp = System.currentTimeMillis().toString()
@@ -240,7 +241,7 @@ class GameResultFragment : Fragment(), View.OnClickListener{
             } else {
                 if (!show) {
                     win = true
-                    showDialogResult(activity!!,"Congrats", "You Win !", "Your winning points will credited to your wallet", R.mipmap.ic_done)
+                    //showDialogResult(activity!!,"Congrats", "You Win !", "Your winning points will credited to your wallet", R.mipmap.ic_done)
                     val totalAmount = (amount?.times(mFinishedParticipants.size))?.times(80)?.div(100)
                     updateResult.displayName = displayName
                     updateResult.amount = totalAmount
@@ -254,7 +255,7 @@ class GameResultFragment : Fragment(), View.OnClickListener{
         } else {
             if (!show) {
                 win = false
-                showDialogResult(activity!!, "Sorry", "You Loose !", "Better luck next time", R.mipmap.ic_loose)
+                //showDialogResult(activity!!, "Sorry", "You Loose !", "Better luck next time", R.mipmap.ic_loose)
                 show = true
                 greetThree.textSize = 14F
                 greetThree.typeface = Typeface.DEFAULT
@@ -318,6 +319,7 @@ class GameResultFragment : Fragment(), View.OnClickListener{
 
     override fun onDestroy() {
         super.onDestroy()
+        //libPlayGame?.leaveRoom()
         context?.unregisterReceiver(resultBroadcastReceiver)
     }
 

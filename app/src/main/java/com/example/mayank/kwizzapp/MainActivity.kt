@@ -186,8 +186,9 @@ class MainActivity : AppCompatActivity(), LoginFragment.OnFragmentInteractionLis
                 showAlert(message)
             }
             else -> {
-                startActivity<MainActivity>()
-                finish()
+//                startActivity<MainActivity>()
+//                finish()
+                libPlayGame?.leaveRoom()
             }
         }
     }

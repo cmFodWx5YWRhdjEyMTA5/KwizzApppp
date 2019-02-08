@@ -105,6 +105,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
             }
             val email = activity?.getPref(SharedPrefKeys.EMAIL, "")
             val mobileNumber = activity?.getPref(SharedPrefKeys.MOBILE_NUMBER, "")
+            activity?.putPref(SharedPrefKeys.ICON_IMAGE, player.iconImageUri.toString())
             val libPlayGame = LibPlayGame(activity!!)
             GameConstants.mInvitationClient = Games.getInvitationsClient(activity!!, libPlayGame.getSignInAccount()!!)
             GameConstants.mInvitationClient?.registerInvitationCallback(libPlayGame.mInvitationCallbackHandler)
