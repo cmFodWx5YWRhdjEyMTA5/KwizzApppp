@@ -6,7 +6,7 @@ import android.os.Build
 import com.example.mayank.kwizzapp.R
 
 /**
- * Created by Madhu on 14-Jun-2017.
+ * Created by Mayank on 14-Jun-2017.
  */
 
 object SharedPrefKeys {

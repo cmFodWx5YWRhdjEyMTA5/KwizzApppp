@@ -41,5 +41,11 @@ class Users {
         var displayName: String? = null
     }
 
+    class Profile{
+        var playerId : String? = null
+    }
+
+    class ProfileData(val firstName : String, val lastName : String, val mobileNumber : String, val email : String, val displayName : String,  val totalWin : Double, val totalLoose : Double, val balance : Double) : CommonResult()
+
 
 }

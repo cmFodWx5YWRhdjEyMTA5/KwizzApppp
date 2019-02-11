@@ -230,6 +230,7 @@ class GameResultFragment : Fragment(), View.OnClickListener{
                 if (!show) {
                     win = false
                     //showDialogResult(activity!!, "Sorry", "It's a Tie","Your bid points will credited to your wallet", R.mipmap.ic_loose)
+                    updateResult.playerId = activity?.getPref(SharedPrefKeys.PLAYER_ID, "")
                     updateResult.displayName = displayName
                     updateResult.amount = amount
                     updateResult.timeStamp = System.currentTimeMillis().toString()
@@ -243,6 +244,7 @@ class GameResultFragment : Fragment(), View.OnClickListener{
                     win = true
                     //showDialogResult(activity!!,"Congrats", "You Win !", "Your winning points will credited to your wallet", R.mipmap.ic_done)
                     val totalAmount = (amount?.times(mFinishedParticipants.size))?.times(80)?.div(100)
+                    updateResult.playerId = activity?.getPref(SharedPrefKeys.PLAYER_ID, "")
                     updateResult.displayName = displayName
                     updateResult.amount = totalAmount
                     updateResult.timeStamp = System.currentTimeMillis().toString()
@@ -262,8 +264,29 @@ class GameResultFragment : Fragment(), View.OnClickListener{
                 setGreetingText("Sorry", "You Loose", "Better luck next time")
                 resultLayout.visibility = View.VISIBLE
                 achievements.checkAchievements(0, LibGameConstants.GameConstants.resultList?.size!!,win, rightAnswers!!)
+                updateLoosePoints()
             }
         }
+    }
+
+    private fun updateLoosePoints() {
+        val  updateLoosePoints = Transactions.UpdateLoosePoints()
+        updateLoosePoints.playerId = activity?.getPref(SharedPrefKeys.PLAYER_ID, "")
+        updateLoosePoints.amount =  amount
+        updateLoosePoints.timeStamp = System.currentTimeMillis().toString()
+        compositeDisposable.add(transactionService.updateLoosePoints(updateLoosePoints)
+                .processRequest(
+                        { transaction ->
+                            if (transaction.isSuccess){
+                                logD(transaction.message)
+                            }else{
+                                logD(transaction.message)
+                            }
+                        },
+                        {err->
+                            logD("Error - $err")
+                        }
+                ))
     }
 
     private fun submitScoreToLeaderboards(score : Long){

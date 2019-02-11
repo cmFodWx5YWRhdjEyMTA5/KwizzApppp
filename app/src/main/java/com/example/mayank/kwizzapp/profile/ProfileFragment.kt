@@ -9,12 +9,19 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.ImageView
+import com.example.mayank.kwizzapp.KwizzApp
 
 import com.example.mayank.kwizzapp.R
+import com.example.mayank.kwizzapp.dependency.components.DaggerInjectFragmentComponent
+import com.example.mayank.kwizzapp.helpers.processRequest
+import com.example.mayank.kwizzapp.network.IUser
+import com.example.mayank.kwizzapp.viewmodels.Users
 import com.google.android.gms.common.images.ImageManager
+import io.reactivex.disposables.CompositeDisposable
 import net.rmitsolutions.libcam.LibCamera
 import net.rmitsolutions.mfexpert.lms.helpers.*
 import org.jetbrains.anko.find
+import javax.inject.Inject
 
 class ProfileFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
@@ -24,11 +31,21 @@ class ProfileFragment : Fragment() {
     lateinit var modelList: MutableList<ProfileVm>
     private lateinit var profileImage :ImageView
     private lateinit var libCamera: LibCamera
+    @Inject
+    lateinit var userService: IUser
+    private lateinit var compositeDisposable: CompositeDisposable
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
+        val depComponent = DaggerInjectFragmentComponent.builder()
+                .applicationComponent(KwizzApp.applicationComponent)
+                .build()
+        depComponent.injectProfileFragment(this)
+
+        compositeDisposable = CompositeDisposable()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -47,6 +64,7 @@ class ProfileFragment : Fragment() {
         recyclerView.adapter = adapter
         modelList = mutableListOf<ProfileVm>()
         setProfileItem()
+        getWinLoosePoints()
         return view
     }
 
@@ -60,6 +78,26 @@ class ProfileFragment : Fragment() {
         modelList.add(ProfileVm("Email", activity?.getPref(SharedPrefKeys.EMAIL, "")!!))
         setRecyclerViewAdapter(modelList)
 
+    }
+
+    private fun getWinLoosePoints() {
+        val profile = Users.Profile()
+        profile.playerId = activity?.getPref(SharedPrefKeys.PLAYER_ID, "")
+        if (profile.playerId != "") {
+            compositeDisposable.add(userService.getProfileData(profile).processRequest(
+                    { profileData ->
+                        if (profileData.isSuccess){
+                            logD("Total Win - ${profileData.totalWin}\n" +
+                                    "Total Loose - ${profileData.totalLoose}")
+                        }else{
+                            toast(profileData.message)
+                        }
+                    },
+                    { err ->
+                        logD(err)
+                    }
+            ))
+        }
     }
 
     private fun setRecyclerViewAdapter(list: List<ProfileVm>) {

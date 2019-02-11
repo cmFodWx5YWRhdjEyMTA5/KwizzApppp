@@ -5,6 +5,7 @@ import com.example.mayank.kwizzapp.gamedetail.GameDetailFragment
 import com.example.mayank.kwizzapp.gamemenu.GameMenuFragment
 import com.example.mayank.kwizzapp.gameresult.GameResultFragment
 import com.example.mayank.kwizzapp.profile.EditProfileFragment
+import com.example.mayank.kwizzapp.profile.ProfileFragment
 import com.example.mayank.kwizzapp.quiz.QuizFragment
 import com.example.mayank.kwizzapp.singleplay.SinglePlayDetails
 import com.example.mayank.kwizzapp.singleplay.SinglePlayQuizFragment
@@ -31,4 +32,5 @@ interface InjectFragmentComponent {
     fun injectSinglePlayQuizFragment(singlePlayQuizFragment: SinglePlayQuizFragment)
     fun injectEditProfileFragment(editProfileFragment: EditProfileFragment)
     fun injectTransactionFragment(transactionFragment: TransactionFragment)
+    fun injectProfileFragment(profileFragment: ProfileFragment)
 }

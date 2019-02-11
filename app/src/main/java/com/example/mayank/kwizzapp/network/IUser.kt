@@ -21,4 +21,7 @@ interface IUser {
 
     @POST("payu/updateDisplayName.php")
     fun updateDisplayName(@Body updateDisplayName: Users.UpdateDisplayName) : Observable<CommonResult>
+
+    @POST("payu/getProfileData.php")
+    fun getProfileData(@Body profile : Users.Profile) : Observable<Users.ProfileData>
 }

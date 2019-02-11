@@ -75,10 +75,18 @@ class Transactions {
     }
 
     class ResultBalance{
+        var playerId : String? = null
         var displayName :  String? = null
         var amount : Double? = 0.0
         var timeStamp : String? = null
         var productInfo: String?= null
+    }
+
+    class UpdateLoosePoints {
+        var playerId: String? = null
+        var amount: Double? = null
+        var timeStamp: String? = null
+
     }
 
     class GetBalance : CommonResult() {
