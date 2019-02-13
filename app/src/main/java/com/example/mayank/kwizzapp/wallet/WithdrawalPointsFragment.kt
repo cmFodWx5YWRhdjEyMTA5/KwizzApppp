@@ -41,8 +41,6 @@ class WithdrawalPointsFragment : Fragment(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-        }
         val depComponent = DaggerInjectFragmentComponent.builder()
                 .applicationComponent(KwizzApp.applicationComponent)
                 .build()
@@ -170,7 +168,7 @@ class WithdrawalPointsFragment : Fragment(), View.OnClickListener {
         super.onAttach(context)
         when (context) {
             is OnFragmentInteractionListener -> listener = context
-            else -> throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            else -> throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 

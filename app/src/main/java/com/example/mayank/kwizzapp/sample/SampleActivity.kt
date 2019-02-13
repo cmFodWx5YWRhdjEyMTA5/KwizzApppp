@@ -48,33 +48,33 @@ class SampleActivity : AppCompatActivity() {
 
         compositeDisposable = CompositeDisposable()
 
-        postScore = find(R.id.postScore)
-        inputPoints = find(R.id.inputPoints)
-        leaderboards = find(R.id.leaderboards)
+//        postScore = find(R.id.postScore)
+//        inputPoints = find(R.id.inputPoints)
+//        leaderboards = find(R.id.leaderboards)
 
-        leaderboards.setOnClickListener{
-            showLeaderBoards()
-        }
+//        leaderboards.setOnClickListener{
+//            showLeaderBoards()
+//        }
 
-        postScore.setOnClickListener {
-            var points = inputPoints.text.toString().toLong()
-            points += points * 1000000
-
+//        postScore.setOnClickListener {
+//            var points = inputPoints.text.toString().toLong()
+//            points += points * 1000000
+//
+////            Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
+////                    .submitScore(getString(R.string.leaderboard_kwizz_toppers), points)
+//
+//            //Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!).submitScore(getString(R.string.leaderboard_top_scores), points)
+//
 //            Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
-//                    .submitScore(getString(R.string.leaderboard_kwizz_toppers), points)
+//                    .submitScoreImmediate(getString(R.string.leaderboard_top_scores), points).addOnFailureListener { error ->
+//                        logD("Error - ${error.message}")
+//                    }.addOnSuccessListener { scores ->
+//                        logD("${scores.playerId} ${scores.getScoreResult(0)}")
+//                    }
+//
+//            logD("Score posted")
 
-            //Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!).submitScore(getString(R.string.leaderboard_top_scores), points)
-
-            Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
-                    .submitScoreImmediate(getString(R.string.leaderboard_top_scores), points).addOnFailureListener { error ->
-                        logD("Error - ${error.message}")
-                    }.addOnSuccessListener { scores ->
-                        logD("${scores.playerId} ${scores.getScoreResult(0)}")
-                    }
-
-            logD("Score posted")
-
-        }
+//        }
     }
 
     private fun showLeaderBoards() {
