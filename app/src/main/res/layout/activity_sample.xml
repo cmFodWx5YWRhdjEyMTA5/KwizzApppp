@@ -36,16 +36,16 @@
                 <!--</android.support.design.widget.TextInputLayout>-->
 
 
-                <!--<Button-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:layout_margin="@dimen/space10dp"-->
-                    <!--style="@style/ThemeButton"-->
-                    <!--android:id="@+id/postScore"-->
-                    <!--android:background="@color/primaryColor"-->
-                    <!--android:padding="8dp"-->
-                    <!--android:text="Delete"-->
-                    <!--android:textColor="@color/white"-->
-                    <!--android:textSize="20sp" />-->
+                <Button
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/space10dp"
+                    style="@style/ThemeButton"
+                    android:id="@+id/postScore"
+                    android:background="@color/primaryColor"
+                    android:padding="8dp"
+                    android:text="Withdrawal to Paytm"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
 
                 <!--<Button-->
                     <!--android:layout_gravity="center"-->

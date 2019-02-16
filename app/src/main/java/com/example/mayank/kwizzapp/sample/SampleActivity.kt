@@ -10,7 +10,9 @@ import com.example.mayank.kwizzapp.R
 import com.example.mayank.kwizzapp.dependency.components.DaggerInjectActivityComponent
 import com.example.mayank.kwizzapp.helpers.JsonHelper
 import com.example.mayank.kwizzapp.helpers.processRequest
+import com.example.mayank.kwizzapp.network.IPaytm
 import com.example.mayank.kwizzapp.network.IUser
+import com.example.mayank.kwizzapp.paytm.Paytm
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.games.Games
 import io.reactivex.disposables.CompositeDisposable
@@ -21,25 +23,27 @@ import javax.inject.Inject
 import org.json.JSONObject
 
 
-
 class SampleActivity : AppCompatActivity() {
 
 
     @Inject
     lateinit var userService: IUser
 
-    private lateinit var compositeDisposable: CompositeDisposable
-    private lateinit var postScore : Button
-    private lateinit var inputPoints : TextInputEditText
-    private lateinit var leaderboards : Button
+    @Inject
+    lateinit var payTmService: IPaytm
 
-    val id = intArrayOf(2,4,3,1,5,9,8,7,6,10)
+    private lateinit var compositeDisposable: CompositeDisposable
+    private lateinit var postScore: Button
+    private lateinit var inputPoints: TextInputEditText
+    private lateinit var leaderboards: Button
+
+    val id = intArrayOf(2, 4, 3, 1, 5, 9, 8, 7, 6, 10)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sample)
-        val gameClient = Games.getGamesClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
-        gameClient.setViewForPopups(this.find(android.R.id.content))
+//        val gameClient = Games.getGamesClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
+//        gameClient.setViewForPopups(this.find(android.R.id.content))
 
         val depComponent = DaggerInjectActivityComponent.builder()
                 .applicationComponent(KwizzApp.applicationComponent)
@@ -48,7 +52,32 @@ class SampleActivity : AppCompatActivity() {
 
         compositeDisposable = CompositeDisposable()
 
-//        postScore = find(R.id.postScore)
+
+        postScore = find(R.id.postScore)
+
+        postScore.setOnClickListener {
+            logD("Button Clicked")
+            val transfer = Paytm.RequestTransferPointsToUser()
+            transfer.merchantOrderId = "kwizz${System.currentTimeMillis()}"
+            transfer.payeePhoneNumber = "7777777777"
+            transfer.amount = 1.0
+            compositeDisposable.add(payTmService.transferPointsToUser(transfer)
+                    .processRequest(
+                            { response ->
+
+                                logD("Status - ${response.status}")
+                                logD("${response.statusMessage}")
+                                logD("Request GUID ${response.requestGuid}")
+                                val res = response.response
+                                logD("Wallet Transaction Id - ${res.walletSysTransactionId}")
+
+                            },
+                            { err ->
+                                logD(err)
+
+                            }
+                    ))
+        }
 //        inputPoints = find(R.id.inputPoints)
 //        leaderboards = find(R.id.leaderboards)
 
@@ -80,7 +109,7 @@ class SampleActivity : AppCompatActivity() {
     private fun showLeaderBoards() {
         Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
                 .getLeaderboardIntent(getString(R.string.leaderboard_top_scores))
-                .addOnSuccessListener { intent -> startActivityForResult(intent, Constants.RC_LEADERBOARD_UI) }.addOnFailureListener{ e->
+                .addOnSuccessListener { intent -> startActivityForResult(intent, Constants.RC_LEADERBOARD_UI) }.addOnFailureListener { e ->
                     logD("Error = $e")
                 }
     }

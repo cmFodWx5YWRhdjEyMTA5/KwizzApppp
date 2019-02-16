@@ -6,10 +6,7 @@ import com.example.mayank.kwizzapp.dependency.modules.DatabaseModule
 import com.example.mayank.kwizzapp.dependency.modules.NetworkApiModule
 import com.example.mayank.kwizzapp.dependency.qualifiers.ApplicationContextQualifier
 import com.example.mayank.kwizzapp.dependency.scopes.ApplicationScope
-import com.example.mayank.kwizzapp.network.IQuestion
-import com.example.mayank.kwizzapp.network.IRazorpay
-import com.example.mayank.kwizzapp.network.ITransaction
-import com.example.mayank.kwizzapp.network.IUser
+import com.example.mayank.kwizzapp.network.*
 import dagger.Component
 import okhttp3.OkHttpClient
 
@@ -30,4 +27,6 @@ interface ApplicationComponent {
     fun getQuestionService() : IQuestion
 
     fun getRazorPayService() : IRazorpay
+
+    fun getPaytmService() : IPaytm
 }
